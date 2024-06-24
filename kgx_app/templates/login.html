@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: hsl(200, 80%, 90%) !important;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .user_card {
+            width: 350px;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: hsl(48, 100%, 75%);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+            border-radius: 20px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .user_card:hover {
+            transform: scale(1.05);
+            background-color: hsl(48, 100%, 80%);
+        }
+
+        .form_container {
+            margin-top: 20px;
+        }
+
+        #form-title {
+            color: hsl(200, 80%, 40%);
+            text-shadow: 2px 2px hsl(200, 100%, 80%);
+            font-size: 1.5rem;
+        }
+
+        .login_btn {
+            width: 100%;
+            background: hsl(150, 80%, 50%) !important;
+            color: white !important;
+            border-radius: 10px;
+            transition: background-color 0.2s ease;
+        }
+
+        .login_btn:hover {
+            background-color: hsl(150, 80%, 40%) !important;
+        }
+
+        .login_btn:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+
+        .login_container {
+            padding: 0 2rem;
+        }
+
+        .input-group-text {
+            background: hsl(280, 80%, 50%) !important;
+            color: white !important;
+            border: 0 !important;
+            border-radius: 10px 0 0 10px !important;
+        }
+
+        .input_user,
+        .input_pass:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+
+        .input_user,
+        .input_pass {
+            border-radius: 0 10px 10px 0 !important;
+        }
+
+        .links a {
+            color: hsl(200, 80%, 40%);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .right-image {
+            width: 70%;
+            height: 70%;
+            background: url('http://clipart-library.com/images_k/teamwork-transparent-background/teamwork-transparent-background-24.png') no-repeat center center;
+            background-size: cover;
+            border-radius: 15px;
+            margin-left: 120px;
+            margin-top: 130px;
+            /* Increase the margin-left value to move it slightly to the right */
+        }
+    </style>
+</head>
+<body>
+    <div class="container h-100">
+        <div id="messages" class="mt-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="d-flex justify-content-between h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <h3 id="form-title">LOGIN</h3>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            {{ form.username }}
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            {{ form.password }}
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <input class="btn login_btn" type="submit" value="Login">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="right-image"></div>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
