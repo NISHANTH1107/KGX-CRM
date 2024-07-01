@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <a href="{% url 'profile' %}" class="button">Profile</a>
+    <a href="{% url 'learn_by_practice' %}" class="button">Learn by Practice</a>
+    <a href="{% url 'wifi' %}" class="button">WiFi</a>
+    <a href="{% url 'work_on_holidays' %}" class="button">Work on Holidays</a>
+    <a href="{% url 'hackathon' %}" class="button">Hackathon</a>
+    <a href="{% url 'internship' %}" class="button">Internship</a>
+    <a href="{% url 'inventory' %}" class="button">Inventory</a>
+</body>
+</html>

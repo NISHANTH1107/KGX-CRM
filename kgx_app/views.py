@@ -3,7 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import LoginForm
 from django.views.decorators.csrf import csrf_protect
-
+from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from .models import Profile
 
 @csrf_protect
 def login_view(request):
@@ -28,5 +30,28 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-def home_view(request):
-    return render(request, 'home.html')
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
+
+def profile(request):
+    profile = get_object_or_404(Profile, roll_no=request.user.username)
+    return render(request, 'profile.html', {'profile': profile})
+    
+
+def learn_by_practice(request):
+    return render(request, 'learn_by_practice.html')
+
+def wifi(request):
+    return render(request, 'wifi.html')
+
+def work_on_holidays(request):
+    return render(request, 'work_on_holidays.html')
+
+def hackathon(request):
+    return render(request, 'hackathon.html')
+
+def internship(request):
+    return render(request, 'internship.html')
+
+def inventory(request):
+    return render(request, 'inventory.html')
