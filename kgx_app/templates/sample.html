@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.background-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sphere {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #530061 0%, #3D0351 27%, #2C0645 38%, #0D0A30 100%);
+    opacity: 0.6;
+}
+
+.sphere1 {
+    width: 200px;
+    height: 200px;
+    bottom: 20%;
+    right: 10%;
+}
+
+.sphere2 {
+   
+    width: 300px;
+    height: 300px;
+    top: 20%;
+    left: 10%;
+}
+
+.login-container {
+    width: 600px;
+    padding: 40px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.14) 100%), 
+                linear-gradient(321deg, rgba(191, 191, 191, 0.06) 0%, rgba(0, 0, 0, 0) 100%);
+    box-shadow: -8px 4px 5px rgba(0, 0, 0, 0.24);
+    border-radius: 30px;
+    border: 1px rgba(255, 255, 255, 0.60) solid;
+    backdrop-filter: blur(53px);
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 10px;
+}
+
+.login-container p {
+    margin-bottom: 20px;
+    color: #aaaaaa;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #222;
+    color: white;
+}
+
+input::placeholder {
+    color: #888;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+}
+
+.footer-links {
+    margin-top: 20px;
+}
+
+.footer-links a {
+    margin: 0 10px;
+    color: #aaaaaa;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Tablets and small laptops */
+@media (max-width: 900px) {
+    .login-container {
+        width: 80%;
+        padding: 30px;
+    }
+
+    .sphere1 {
+        width: 200px;
+        height: 200px;
+        top: 15%;
+        left: 5%;
+    }
+
+    .sphere2 {
+        width: 150px;
+        height: 150px;
+        bottom: 15%;
+        right: 5%;
+    }
+}
+
+/* Mobile devices (landscape) */
+@media (max-width: 600px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .login-container h2 {
+        font-size: 20px;
+    }
+
+    .login-container p {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .footer-links a {
+        font-size: 12px;
+    }
+
+    .sphere1 {
+        width: 150px;
+        height: 150px;
+        top: 10%;
+        left: 5%;
+    }
+
+    .sphere2 {
+        width: 100px;
+        height: 100px;
+        bottom: 10%;
+        right: 5%;
+    }
+}
+
+/* Mobile devices (portrait) */
+@media (max-width: 480px) {
+    .login-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .login-container h2 {
+        font-size: 18px;
+    }
+
+    .login-container p {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 12px;
+    }
+
+    .footer-links a {
+        font-size: 10px;
+    }
+
+    .sphere1 {
+        width: 120px;
+        height: 120px;
+        top: 5%;
+        left: 5%;
+    }
+
+    .sphere2 {
+        width: 80px;
+        height: 80px;
+        bottom: 5%;
+        right: 5%;
+    }
+}
+
+</style>
+<body>
+    <div class="background-container">
+        <div class="sphere sphere1"></div>
+        <div class="sphere sphere2"></div>
+        <div class="login-container">
+            <h2>Login</h2>
+            <p>Glad you're back!</p>
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Support</a>
+                <a href="#">Customer Care</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
