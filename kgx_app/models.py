@@ -40,3 +40,10 @@ class Holiday(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.roll_no}) - {self.date}"
+
+class Hackathon(models.Model):
+    image = models.ImageField(upload_to='images/')
+    link = models.URLField()
+
+    def __str__(self):
+        return self.image.name

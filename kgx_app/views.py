@@ -48,7 +48,8 @@ def work_on_holidays(request):
     return render(request, 'work_on_holidays.html')
 
 def hackathon(request):
-    return render(request, 'hackathon.html')
+    images = hackathon.objects.all()
+    return render(request, 'hackathon.html', {'images': images})
 
 def internship(request):
     return render(request, 'internship.html')
