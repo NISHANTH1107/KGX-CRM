@@ -5,7 +5,7 @@ from .forms import LoginForm
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
-from .models import Profile
+from .models import Profile,Hackathon,Learnbypractice,Internship
 
 @csrf_protect
 def login_view(request):
@@ -39,7 +39,8 @@ def profile(request):
     
 
 def learn_by_practice(request):
-    return render(request, 'learn_by_practice.html')
+    learnbypractices = Learnbypractice.objects.all()
+    return render(request, 'learnbypractice.html', {'learnbypractices': learnbypractices})
 
 def wifi(request):
     return render(request, 'wifi.html')
@@ -48,11 +49,12 @@ def work_on_holidays(request):
     return render(request, 'work_on_holidays.html')
 
 def hackathon(request):
-    images = hackathon.objects.all()
+    images = Hackathon.objects.all()
     return render(request, 'hackathon.html', {'images': images})
 
 def internship(request):
-    return render(request, 'internship.html')
+    internships = Internship.objects.all()
+    return render(request, 'internship.html', {'internships': internships})
 
 def inventory(request):
     return render(request, 'inventory.html')

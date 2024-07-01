@@ -1,9 +1,31 @@
+<!-- learnbypractice_list.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Learn by Practice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn by Practice Gallery</title>
+    <style>
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .image-container img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Learn by Practice Page</h1>
+    <div class="image-container">
+        {% for learnbypractice in learnbypractices %}
+            <a href="{{ learnbypractice.link }}" target="_blank">
+                <img src="{{ learnbypractice.image.url }}" alt="Learn by Practice Image">
+            </a>
+        {% endfor %}
+    </div>
 </body>
 </html>

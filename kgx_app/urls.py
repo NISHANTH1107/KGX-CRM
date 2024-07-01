@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 urlpatterns = [
    path('', views.login_view, name="login"),
@@ -10,4 +12,4 @@ urlpatterns = [
    path('work_on_holidays/', views.work_on_holidays, name='work_on_holidays'),
    path('hackathon/', views.hackathon, name='hackathon'),
    path('internship/', views.internship, name='internship'),
-   path('inventory/', views.inventory, name='inventory')]
+   path('inventory/', views.inventory, name='inventory')]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

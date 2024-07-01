@@ -47,3 +47,18 @@ class Hackathon(models.Model):
 
     def __str__(self):
         return self.image.name
+    
+class Internship(models.Model):
+    image = models.ImageField(upload_to='images/')
+    link = models.URLField()
+
+    def __str__(self):
+        return self.image.name
+    
+
+class Learnbypractice(models.Model):
+    image = models.ImageField(upload_to='images/')
+    link = models.URLField()
+
+    def __str__(self):
+        return self.image.name
