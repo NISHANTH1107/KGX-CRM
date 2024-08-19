@@ -29,6 +29,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+LOGIN_REDIRECT_URL = 'dashboard'  # Redirect to the dashboard after successful login
+LOGOUT_REDIRECT_URL = 'login'  # Redirect to the login page after logout
 
 
 # Quick-start development settings - unsuitable for production

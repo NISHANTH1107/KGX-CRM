@@ -4,192 +4,188 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Left Corner Box with Navigation</title>
+    <title>Dashboard</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body, html {
-    height: 100%;
-    margin: 0;
-    background: linear-gradient(180deg, #3B1149 0%, #000000 100%); /* Black gradient background */
-}
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(180deg, #3B1149 0%, #000000 100%); /* Black gradient background */
+        }
 
-.left-corner-box {
-    width: 17%;
-    height: 100%;
-    background: #1E1E1E;
- /* Make the box transparent */
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0; /* Padding to manage space inside the box */
-    box-sizing: border-box;
-    overflow: hidden; /* Prevents content from spilling out */
-    border-right: 2px solid rgba(255, 255, 255, 0.2); /* Optional: Light border to demarcate the box */
-}
+        .left-corner-box {
+            width: 17%;
+            height: 100%;
+            background: #1E1E1E;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+        }
 
-.logo-container {
-    width: 100%; /* Full width of the box */
-    display: flex;
-    justify-content: center; /* Center the logo horizontally */
-    align-items: center; /* Center the logo vertically */
-    padding: 0 10px; /* Add some horizontal padding */
-    box-sizing: border-box;
-    margin-bottom: 0; /* Space between logo and navigation */
-}
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 0;
+        }
 
-.logo-icon {
-    max-width: 80%; /* Adjust the width to fit within the container */
-    height: auto; /* Maintain aspect ratio */
-    margin-top: 10px; /* Optional: adjust if needed */
-}
+        .logo-icon {
+            max-width: 80%;
+            height: auto;
+            margin-top: 10px;
+        }
 
+        .navigation {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 5px;
+        }
 
-.navigation {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Align items to the right end */
-    margin-top: 5px; /* Slight margin to bring navigation closer to the logo */
-}
+        .nav-button {
+            width: 80%;
+            text-align: left;
+            margin: 7px 0;
+            padding: 10px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 13px;
+            color: #AEAEAE;
+            text-decoration: none;
+            transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+            background-color: transparent;
+            border: none;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-.nav-button {
-    width: 80%; /* Width of the navigation button */
-    text-align: left; /* Align text and icon to the left */
-    margin: 7px 0; /* Reduced margin to bring navigation buttons closer */
-    padding: 10px;
-    font-family: 'Raleway', sans-serif; /* Applied typography */
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 13px;
-    color: #AEAEAE; /* Changed to match the box's background */
-    text-decoration: none;
-    transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
-    background-color: transparent; /* Removed the background box */
-    border: none;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    position: relative; /* Allow absolute positioning of the arrow */
-    overflow: hidden; /* Prevents gradient from spilling out */
-}
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
 
-.nav-icon {
-    width: 20px; /* Size of the icons */
-    height: 20px; /* Size of the icons */
-    margin-right: 12px; /* Space between icon and text */
-}
+        .arrow {
+            font-size: 14px;
+            margin-left: auto;
+            margin-right: 15px;
+        }
 
-.arrow {
-    font-size: 14px; /* Size of the arrow */
-    margin-left: auto; /* Pushes the arrow to the right end */
-    margin-right: 15px; /* Space from the right edge */
-}
+        .dot {
+            position: absolute;
+            right: 15px;
+            width: 8px;
+            height: 8px;
+            background-color: green;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+        }
 
-.dot {
-    position: absolute;
-    right: 15px; /* Adjust this value to place the dot away from the right edge */
-    width: 8px; /* Size of the dot */
-    height: 8px; /* Size of the dot */
-    background-color: green; /* Color of the dot */
-    border-radius: 50%; /* Makes the dot round */
-    top: 50%; /* Vertically center the dot */
-    transform: translateY(-50%); /* Adjust the position to center the dot vertically */
-    display: none; /* Hide by default */
-}
+        .hackathons-button .dot {
+            display: block;
+        }
 
-.hackathons-button .dot {
-    display: block; /* Show the dot only for the Hackathons/Events button */
-}
+        .nav-button:hover {
+            background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%);
+            color: #fff;
+            transform: scale(1.05);
+        }
 
-.nav-button:hover {
-    background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%); /* Gradient background on hover */
-    color: #fff; /* White text color on hover */
-    transform: scale(1.05); /* Slightly enlarges the button */
-}
+        .logout {
+            text-decoration: none;
+            font-family: 'Raleway', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 13px;
+            color: #ddd;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            transition: color 0.3s ease;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
 
-.logout {
-    text-decoration: none;
-    font-family: 'Raleway', sans-serif; /* Applied typography */
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 13px;
-    color: #ddd;
-    padding: 10px 20px;
-    margin-bottom: 20px; /* Space between navigation and logout button */
-    border-radius: 5px;
-    transition: color 0.3s ease;
-    background-color: transparent; /* Removed the background box */
-    display: flex;
-    align-items: center;
-    overflow: hidden; /* Prevents gradient from spilling out */
-}
+        .logout-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
 
-.logout-icon {
-    width: 20px; /* Size of the logout icon */
-    height: 20px; /* Size of the logout icon */
-    margin-right: 12px; /* Space between icon and text */
-}
-
-.logout:hover {
-    color: #fff; /* White color on hover */
-    background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%); /* Gradient background on hover */
-    transform: scale(1.05); /* Slightly enlarges the button */
-}
-
+        .logout:hover {
+            color: #fff;
+            background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
     <div class="left-corner-box">
         <div class="logo-container">
-            <img src="{% static 'kgx_app\logo.png' %}" alt="Logo" class="logo-icon">
+            <img src="{% static 'kgx_app/logo.png' %}" alt="Logo" class="logo-icon">
         </div>
         
-        
         <nav class="navigation">
-            <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\dashboard.png' %}" alt="Dashboard" class="nav-icon">
+            <a href="{% url 'dashboard' %}" class="nav-button">
+                <img src="{% static 'kgx_app/dashboard.png' %}" alt="Dashboard" class="nav-icon">
                 Dashboard
             </a>
-            <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\profile.png' %}" alt="Profile" class="nav-icon">
+            <a href="{% url 'profile' %}" class="nav-button">
+                <img src="{% static 'kgx_app/profile.png' %}" alt="Profile" class="nav-icon">
                 Profile 
                 <i class="fas fa-chevron-right arrow"></i>
             </a>
-            <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\learn by practice.png' %}" alt="Learn by Practice" class="nav-icon">
+            <a href="{% url 'learn_by_practice' %}" class="nav-button">
+                <img src="{% static 'kgx_app/learn_by_practice.png' %}" alt="Learn by Practice" class="nav-icon">
                 Learn by practice 
                 <i class="fas fa-chevron-right arrow"></i>
             </a>
-            <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\wifi.png' %}" alt="WI-FI" class="nav-icon">
+            <a href="{% url 'wifi' %}" class="nav-button">
+                <img src="{% static 'kgx_app/wifi.png' %}" alt="WI-FI" class="nav-icon">
                 WI-FI
             </a>
-            <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\work on holidays.png' %}" alt="Work on Holidays" class="nav-icon">
+            <a href="{% url 'work_on_holidays' %}" class="nav-button">
+                <img src="{% static 'kgx_app/work_on_holidays.png' %}" alt="Work on Holidays" class="nav-icon">
                 Work on Holidays
             </a>
-            <a href="#" class="nav-button hackathons-button">
-                <img src="{% static 'kgx_app\hackathons.png' %}" alt="Hackathons/Events" class="nav-icon">
+            <a href="{% url 'hackathon' %}" class="nav-button hackathons-button">
+                <img src="{% static 'kgx_app/hackathons.png' %}" alt="Hackathons/Events" class="nav-icon">
                 Hackathons/Events 
                 <span class="dot"></span>
             </a>
-            <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\internships.png' %}" alt="Internships" class="nav-icon">
+            <a href="{% url 'internship' %}" class="nav-button">
+                <img src="{% static 'kgx_app/internships.png' %}" alt="Internships" class="nav-icon">
                 Internships
             </a>
             <a href="#" class="nav-button">
-                <img src="{% static 'kgx_app\contact us.png' %}" alt="Contact Us" class="nav-icon">
+                <img src="{% static 'kgx_app/contact_us.png' %}" alt="Contact Us" class="nav-icon">
                 Contact Us
             </a>
         </nav>
 
-        <a href="#" class="logout">
-            <img src="{% static 'kgx_app\logout.png' %}" alt="Logout" class="logout-icon">
+        <a href="{% url 'logout' %}" class="logout">
+            <img src="{% static 'kgx_app/logout.png' %}" alt="Logout" class="logout-icon">
             Logout
         </a>
     </div>
