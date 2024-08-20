@@ -132,6 +132,22 @@
         .login-container .links a:hover {
             color: #ddd;
         }
+
+        .popup-message {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: #ff4c4c;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -144,6 +160,13 @@
         <h2>Login</h2>
         <p>Glad you're back.!</p>
         <!-- Use Django's URL template tag for form action -->
+        {% if messages %}
+        <div id="popup-message" class="popup-message">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
             <input type="text" name="username" placeholder="Username" required>
@@ -160,5 +183,21 @@
             <a href="#">Customer Care</a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const popupMessage = document.getElementById('popup-message');
+
+            // Display popup message if it exists
+            if (popupMessage) {
+                popupMessage.style.display = 'block';
+
+                // Hide the popup message after a few seconds
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 1500); // Adjust the duration as needed
+            }
+        });
+    </script>
 </body>
 </html>
