@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
+from django.utils import timezone
 
 from django.db import models
 
@@ -30,16 +29,28 @@ class Wifi(models.Model):
         return f"{self.roll_no} - {self.mac}"
 
 
+
+from django.db import models
+from django.core.exceptions import ValidationError
+
 class Holiday(models.Model):
-    name = models.CharField(max_length=100)
-    roll_no = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    purpose = models.CharField(max_length=200)
-    entry_time = models.TimeField()
-    exit_time = models.TimeField()
-    date = models.DateField()
-    
+    name = models.CharField(max_length=100, verbose_name="Holiday Name")
+    department = models.CharField(max_length=100, verbose_name="Department")
+    purpose = models.CharField(max_length=200, verbose_name="Purpose of Holiday")
+    entry_time = models.TimeField(verbose_name="Entry Time")
+    exit_time = models.TimeField(verbose_name="Exit Time")
+    date_submitted = models.DateTimeField(default=timezone.now)
+
+
+    def clean(self):
+        # Custom validation to ensure exit_time is after entry_time
+        if self.exit_time <= self.entry_time:
+            raise ValidationError('Exit time must be after entry time.')
+
     def __str__(self):
-        return f"{self.name} ({self.roll_no}) - {self.date}"
+        return f"{self.name} ({self.department}) - {self.entry_time}"
+
+
 
 class Hackathon(models.Model):
     image = models.ImageField(upload_to='images/')
