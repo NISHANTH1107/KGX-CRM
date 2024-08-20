@@ -1,31 +1,30 @@
 <!-- image_list.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery</title>
-    <style>
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .image-container img {
-            width: 200px;
-            height: auto;
-            margin: 10px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="image-container">
-        {% for image in images %}
-            <a href="{{ image.link }}" target="_blank">
-                <img src="{{ image.image.url }}" alt="Image">
-            </a>
-        {% endfor %}
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Image Gallery{% endblock %}
+
+{% block extra_css %}
+<style>
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .image-container img {
+        width: 200px;
+        height: auto;
+        margin: 10px;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="image-container">
+    {% for image in images %}
+        <a href="{{ image.link }}" target="_blank">
+            <img src="{{ image.image.url }}" alt="Image">
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

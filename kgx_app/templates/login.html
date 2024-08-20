@@ -1,160 +1,202 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KGXperience Login</title>
     <style>
-        body,
-        html {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            background: hsl(200, 80%, 90%) !important;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-        }
-
-        .user_card {
-            width: 350px;
-            margin-top: auto;
-            margin-bottom: auto;
-            background: hsl(48, 100%, 75%);
-            position: relative;
             display: flex;
             justify-content: center;
-            flex-direction: column;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
-            border-radius: 20px;
-            transition: transform 0.2s ease, background-color 0.3s ease;
+            align-items: center;
+            height: 100vh;
+            background-color: #0b0b0b;
+            font-family: Arial, sans-serif;
+            position: relative;
         }
 
-        .user_card:hover {
-            transform: scale(1.05);
-            background-color: hsl(48, 100%, 80%);
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
-        .form_container {
+        .logo img {
+            width: 180px; /* Increased logo size */
+            border: none; /* Removed border */
+        }
+
+        .login-container {
+            width: calc(100% - 240px); /* Adjusted width to accommodate new padding */
+            max-width: 720px; /* Maximum width for larger screens */
+            padding: 40px 120px; /* Increased horizontal padding */
+            border-radius: 12px;
+            background-color: transparent;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            position: relative;
+            border: 1px solid #fff; /* Wider white border */
+            box-sizing: border-box; /* Ensures padding and border are included in the width */
+        }
+
+        .login-container::before, .login-container::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(#530061, #3D0351, #2C0645, #0D0A30);
+            z-index: -1;
+            filter: blur(30px);
+        }
+
+        .login-container::before {
+            width: 200px; /* Adjusted size */
+            height: 200px;
+            bottom: -80px; /* Adjusted position */
+            left: -80px; /* Adjusted position */
+        }
+
+        .login-container::after {
+            width: 250px; /* Adjusted size */
+            height: 250px;
+            top: -80px; /* Adjusted position */
+            right: -120px; /* Adjusted position */
+        }
+
+        .login-container h2 {
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 28px; /* Increased size */
+            font-weight: normal;
+            border-bottom: none; /* Removed the line under "Login" */
+        }
+
+        .login-container p {
+            color: #fff; /* Made text white */
+            margin-bottom: 30px;
+            font-size: 18px; /* Increased size */
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: calc(100% - 30px); /* Adjusted for padding */
+            padding: 15px 0px;
+            margin-bottom: 20px;
+            border: 1px solid #fff; /* Thin white border */
+            border-radius: 6px;
+            background-color: #222;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .login-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .login-container label {
+            color: #fff; /* Made text white */
+            font-size: 14px;
+        }
+
+        .login-container input[type="submit"] {
+            width: calc(100% - 30px); /* Adjusted for padding */
+            padding: 15px;
+            background: linear-gradient(135deg, #2C0645 0%, #851B97 100%);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-container input[type="submit"]:hover {
+            background: linear-gradient(135deg, #3D0351 0%, #a13c9e 100%);
+        }
+
+        .login-container .links {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
         }
 
-        #form-title {
-            color: hsl(200, 80%, 40%);
-            text-shadow: 2px 2px hsl(200, 100%, 80%);
-            font-size: 1.5rem;
-        }
-
-        .login_btn {
-            width: 100%;
-            background: hsl(150, 80%, 50%) !important;
-            color: white !important;
-            border-radius: 10px;
-            transition: background-color 0.2s ease;
-        }
-
-        .login_btn:hover {
-            background-color: hsl(150, 80%, 40%) !important;
-        }
-
-        .login_btn:focus {
-            box-shadow: none !important;
-            outline: 0px !important;
-        }
-
-        .login_container {
-            padding: 0 2rem;
-        }
-
-        .input-group-text {
-            background: hsl(280, 80%, 50%) !important;
-            color: white !important;
-            border: 0 !important;
-            border-radius: 10px 0 0 10px !important;
-        }
-
-        .input_user,
-        .input_pass:focus {
-            box-shadow: none !important;
-            outline: 0px !important;
-        }
-
-        .input_user,
-        .input_pass {
-            border-radius: 0 10px 10px 0 !important;
-        }
-
-        .links a {
-            color: hsl(200, 80%, 40%);
+        .login-container .links a {
+            color: #fff; /* Made text white */
+            font-size: 12px;
             text-decoration: none;
-            font-weight: bold;
+            transition: color 0.3s;
         }
 
-        .links a:hover {
-            text-decoration: underline;
+        .login-container .links a:hover {
+            color: #ddd;
         }
 
-        .right-image {
-            width: 70%;
-            height: 70%;
-            background: url('http://clipart-library.com/images_k/teamwork-transparent-background/teamwork-transparent-background-24.png') no-repeat center center;
-            background-size: cover;
-            border-radius: 15px;
-            margin-left: 120px;
-            margin-top: 130px;
-            /* Increase the margin-left value to move it slightly to the right */
+        .popup-message {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: #ff4c4c;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
-    <div class="container h-100">
-        <div id="messages" class="mt-3">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endfor %}
-            {% endif %}
+    <div class="logo">
+        <!-- Use Django's static template tag for the logo -->
+        <img src="{% static 'kgx_app\logo.png' %}" alt="KGXperience Logo">
+    </div>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <p>Glad you're back.!</p>
+        <!-- Use Django's URL template tag for form action -->
+        {% if messages %}
+        <div id="popup-message" class="popup-message">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
         </div>
-        <div class="d-flex justify-content-between h-100">
-            <div class="user_card">
-                <div class="d-flex justify-content-center">
-                    <h3 id="form-title">LOGIN</h3>
-                </div>
-                <div class="d-flex justify-content-center form_container">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            </div>
-                            {{ form.username }}
-                        </div>
-                        <div class="input-group mb-2">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            </div>
-                            {{ form.password }}
-                        </div>
-                        <div class="d-flex justify-content-center mt-3 login_container">
-                            <input class="btn login_btn" type="submit" value="Login">
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="right-image"></div>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <label>
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+            <input type="submit" value="Login">
+        </form>
+        
+        <div class="links">
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Support</a>
+            <a href="#">Customer Care</a>
         </div>
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
     <script>
-        $(document).ready(function() {
-            setTimeout(function() {
-                $(".alert").alert('close');
-            }, 2000);
+        document.addEventListener('DOMContentLoaded', function() {
+            const popupMessage = document.getElementById('popup-message');
+
+            // Display popup message if it exists
+            if (popupMessage) {
+                popupMessage.style.display = 'block';
+
+                // Hide the popup message after a few seconds
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 1500); // Adjust the duration as needed
+            }
         });
     </script>
 </body>
