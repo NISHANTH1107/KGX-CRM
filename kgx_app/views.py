@@ -8,6 +8,18 @@ from django.shortcuts import render, get_object_or_404
 from .models import Profile,Hackathon,Learnbypractice,Internship
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.core.exceptions import ValidationError
+from .forms import HolidayForm
+from .models import Holiday
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import HolidayForm
+from .models import Holiday
+import threading
+import subprocess
+from .import generate_pdf,email_service
+
+
 
 @csrf_protect
 def login_view(request):
@@ -49,9 +61,31 @@ def learn_by_practice(request):
 def wifi(request):
     return render(request, 'wifi.html')
 
+
 @login_required
 def work_on_holidays(request):
-    return render(request, 'work_on_holidays.html')
+    if request.method == 'POST':
+        form = HolidayForm(request.POST)
+        if form.is_valid():
+            new_entry = form.save(commit=False)
+            new_entry.save()
+
+            # Generate PDF and send email
+            pdf_filename = generate_pdf.generate_pdf([new_entry])  # Adapt generate_pdf for Django context
+            #email_service.send_email(pdf_filename)  # Uncomment if email sending is needed
+
+            # Generate and send access pass
+            # access_pass.send_access_pass(new_entry)  # Adapt access_pass for Django context
+
+            messages.success(request, 'Submitted Successfully!')
+            return redirect('work_on_holidays')
+        else:
+            messages.error(request, 'There was an error with your submission. Please check the form and try again.')
+    else:
+        form = HolidayForm()
+
+    return render(request, 'work_on_holidays.html', {'form': form})
+
 
 @login_required
 def hackathon(request):
