@@ -14,4 +14,9 @@
 <p><strong>Domain:</strong> {{ profile.domain }}</p>
 <p><strong>Skills:</strong> {{ profile.skills }}</p>
 <p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
+<div class="image-container">
+    <a href="{{ profile.link }}" target="_blank">
+    <img src="{{ profile.image.url }}" alt="profile Image">
+    </a>
+</div>
 {% endblock %}
