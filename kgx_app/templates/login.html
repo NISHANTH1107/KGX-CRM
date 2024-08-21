@@ -35,11 +35,15 @@
             max-width: 720px; /* Maximum width for larger screens */
             padding: 40px 120px; /* Increased horizontal padding */
             border-radius: 12px;
-            background-color: transparent;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            background-color: linear-gradient(-38.77deg, rgba(191, 191, 191, 0.06), transparent), rgba(0, 0, 0, 0.14);;
+            box-shadow: -8px 4px 5px rgba(0, 0, 0, 0.24);
             position: relative;
             border: 1px solid #fff; /* Wider white border */
             box-sizing: border-box; /* Ensures padding and border are included in the width */
+            height: 487px;
+            width: 100%;
+            background: linear-gradient(-38.77deg, rgba(191, 191, 191, 0.06), transparent), rgba(0, 0, 0, 0.14); 
+            border: 1px solid var(--glass1-stroke-carey);
         }
 
         .login-container::before, .login-container::after {
@@ -48,7 +52,6 @@
             border-radius: 50%;
             background: linear-gradient(#530061, #3D0351, #2C0645, #0D0A30);
             z-index: -1;
-            filter: blur(30px);
         }
 
         .login-container::before {
@@ -82,22 +85,14 @@
         .login-container input[type="text"],
         .login-container input[type="password"] {
             width: calc(100% - 30px); /* Adjusted for padding */
-            padding: 15px 0px;
+            padding: 15px 15px;
             margin-bottom: 20px;
             border: 1px solid #fff; /* Thin white border */
             border-radius: 6px;
             background-color: #222;
             color: #fff;
-            font-size: 14px;
-        }
-
-        .login-container input[type="checkbox"] {
-            margin-right: 10px;
-        }
-
-        .login-container label {
-            color: #fff; /* Made text white */
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
+            box-sizing: border-box;
         }
 
         .login-container input[type="submit"] {
@@ -107,30 +102,13 @@
             border: none;
             border-radius: 6px;
             color: #fff;
-            font-size: 16px;
+            font-size: 18px; /* Increased font size */
             cursor: pointer;
             transition: background 0.3s;
         }
 
         .login-container input[type="submit"]:hover {
             background: linear-gradient(135deg, #3D0351 0%, #a13c9e 100%);
-        }
-
-        .login-container .links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .login-container .links a {
-            color: #fff; /* Made text white */
-            font-size: 12px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .login-container .links a:hover {
-            color: #ddd;
         }
 
         .popup-message {
@@ -153,7 +131,7 @@
 <body>
     <div class="logo">
         <!-- Use Django's static template tag for the logo -->
-        <img src="{% static 'kgx_app\logo.png' %}" alt="KGXperience Logo">
+        <img src="{% static 'kgx_app/logo.png' %}" alt="KGXperience Logo">
     </div>
 
     <div class="login-container">
@@ -171,15 +149,8 @@
             {% csrf_token %}
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-            
             <input type="submit" value="Login">
         </form>
-        
-        <!-- <div class="links">
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Support</a>
-            <a href="#">Customer Care</a>
-        </div> -->
     </div>
 
     <script>
