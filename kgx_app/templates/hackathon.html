@@ -3,7 +3,7 @@
 
 {% block title %}Image Gallery{% endblock %}
 
-{% block extra_css %}
+{% block content %}
 <style>
     .image-container {
         display: flex;
@@ -17,9 +17,6 @@
         cursor: pointer;
     }
 </style>
-{% endblock %}
-
-{% block content %}
 <div class="image-container">
     {% for image in images %}
         <a href="{{ image.link }}" target="_blank">
