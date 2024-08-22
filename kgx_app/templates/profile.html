@@ -2,21 +2,119 @@
 
 {% block title %}Profile{% endblock %}
 
+{% block body_class %}profile{% endblock %}
+
 {% block content %}
-<h1>{{ profile.name }}'s Profile</h1>
-<p><strong>Roll No:</strong> {{ profile.roll_no }}</p>
-<p><strong>Department:</strong> {{ profile.dept }}</p>
-<p><strong>Personal Email:</strong> {{ profile.email_p }}</p>
-<p><strong>College Email:</strong> {{ profile.email_clg }}</p>
-<p><strong>Phone Number:</strong> {{ profile.phn_no }}</p>
-<p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}">{{ profile.linked_in }}</a></p>
-<p><strong>GitHub:</strong> <a href="{{ profile.github }}">{{ profile.github }}</a></p>
-<p><strong>Domain:</strong> {{ profile.domain }}</p>
-<p><strong>Skills:</strong> {{ profile.skills }}</p>
-<p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
-<div class="image-container">
-    <a href="{{ profile.link }}" target="_blank">
-    <img src="{{ profile.image.url }}" alt="profile Image">
-    </a>
+<div class="profile-header">
+    <input type="text" class="search-bar" placeholder="Search...">
 </div>
+
+<div class="split-container">
+    <div class="profile-container">
+        <div class="left-box">
+            <h1>{{ profile.name }}'s Profile</h1>
+            <div class="profile-details">
+                <p><strong>Roll No:</strong> {{ profile.roll_no }}</p>
+                <p><strong>Department:</strong> {{ profile.dept }}</p>
+                <p><strong>Personal Email:</strong> <a href="mailto:{{ profile.email_p }}">{{ profile.email_p }}</a></p>
+                <p><strong>College Email:</strong> <a href="mailto:{{ profile.email_clg }}">{{ profile.email_clg }}</a></p>
+                <p><strong>Phone Number:</strong> {{ profile.phn_no }}</p>
+                <p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}" target="_blank">{{ profile.linked_in }}</a></p>
+                <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
+            </div>
+        </div>
+
+        <div class="right-box">
+            <div class="profile-details">
+                <p><strong>Domain:</strong> {{ profile.domain }}</p>
+                <p><strong>Skills:</strong> {{ profile.skills }}</p>
+                <p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile {
+        background-color: #f9f9f9; /* Light background specific to the profile page */
+    }
+
+    .profile-header {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .search-bar {
+        width: 50%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+    .split-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .profile-container {
+        display: flex;
+        width: 100%;
+        max-width: 1200px;
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .left-box, .right-box {
+        width: 50%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .profile-container h1 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: #333333;
+        background: linear-gradient(90.57deg, #e0e0e0 35.14%, #c0c0c0 91.56%);
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .profile-details p {
+        font-family: 'Raleway', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 15px 0;
+        color: #333333;
+    }
+
+    .profile-details p strong {
+        color: #000000;
+        margin-right: 8px;
+    }
+
+    .profile-details a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.3s ease;
+    }
+
+    .profile-details a:hover {
+        color: #0056b3;
+    }
+</style>
 {% endblock %}
