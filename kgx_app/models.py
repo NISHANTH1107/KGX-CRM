@@ -16,7 +16,7 @@ class Profile(models.Model):
     domain = models.CharField(max_length=100)
     skills = models.CharField(max_length=200)
     hackathon = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/',null=True, blank=True)
     
     def __str__(self):
         return self.roll_no
