@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 
+{% load static %}  <!-- Load static files -->
+
 {% block title %}Profile{% endblock %}
 
 {% block body_class %}profile{% endblock %}
 
 {% block content %}
-<div class="profile-header">
-    <input type="text" class="search-bar" placeholder="Search...">
-</div>
-
 <div class="split-container">
     <div class="profile-container">
         <div class="left-box">
@@ -21,11 +19,6 @@
                 <p><strong>Phone Number:</strong> {{ profile.phn_no }}</p>
                 <p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}" target="_blank">{{ profile.linked_in }}</a></p>
                 <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
-                <div class="image-container">
-                    <a href="{{profile.link}}" target="_blank">
-                        <img src="{{profile.image.url}}" alt="profile image">
-                    </a>
-                </div>
             </div>
         </div>
 
@@ -34,6 +27,11 @@
                 <p><strong>Domain:</strong> {{ profile.domain }}</p>
                 <p><strong>Skills:</strong> {{ profile.skills }}</p>
                 <p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
+                <div class="image-container">
+                    <a href="{{profile.link}}" target="_blank">
+                        <img src="{{profile.image.url}}" alt="profile image">
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -42,84 +40,127 @@
 
 {% block extra_css %}
 <style>
-    .profile {
-        background-color: #f9f9f9; /* Light background specific to the profile page */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrolling */
     }
 
-    .profile-header {
+    .profile {
         display: flex;
         justify-content: center;
-        margin: 20px 0;
-    }
-
-    .search-bar {
-        width: 50%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
+        align-items: center;
+        height: 100vh; /* Make sure the profile takes the full height of the viewport */
+        background: url("{% static 'kgx_app/bg-kgx.jpg' %}") no-repeat center center fixed; /* Use background image from static files */
+        background-size: cover;
     }
 
     .split-container {
+        width: 100%;
+        height: 100%;
         display: flex;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         padding: 20px;
         box-sizing: border-box;
     }
 
     .profile-container {
         display: flex;
-        width: 100%;
-        max-width: 1200px;
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        flex-direction: row;
+        width: 90%; /* Adjust the width to prevent horizontal overflow */
+        max-width: 1000px;
+        height: 90%; /* Adjust the height to prevent vertical overflow */
+        background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
     }
 
     .left-box, .right-box {
         width: 50%;
-        padding: 20px;
+        padding: 15px; /* Reduced padding to fit content */
         box-sizing: border-box;
+    }
+
+    .left-box {
+        background-color: #0f0f0f; /* Updated background color for the left box */
+        border-right: 2px solid #e0e0e0;
+    }
+
+    .right-box {
+        background-color: #00000066; /* Updated background color for the right box */
     }
 
     .profile-container h1 {
         font-family: 'Raleway', sans-serif;
-        font-size: 30px;
-        font-weight: 800;
+        font-size: 24px; /* Reduced font size to fit content */
+        font-weight: 700;
         margin-bottom: 20px;
-        color: #333333;
-        background: linear-gradient(90.57deg, #e0e0e0 35.14%, #c0c0c0 91.56%);
-        padding: 12px;
-        border-radius: 8px;
-        text-align: center;
+        color: #ffffff; /* Updated text color */
+        text-align: left;
     }
 
     .profile-details p {
         font-family: 'Raleway', sans-serif;
-        font-size: 18px;
+        font-size: 16px; /* Reduced font size to fit content */
         font-weight: 600;
-        margin: 15px 0;
-        color: #333333;
+        margin: 10px 0;
+        color: #f0f0f0; /* Updated text color */
     }
 
     .profile-details p strong {
-        color: #000000;
+        color: #ffffff; /* Updated strong text color */
         margin-right: 8px;
     }
 
     .profile-details a {
-        color: #007bff;
+        color: #1e90ff; /* Updated link color */
         text-decoration: none;
-        font-weight: 700;
+        font-weight: 600;
         transition: color 0.3s ease;
     }
 
     .profile-details a:hover {
-        color: #0056b3;
+        color: #4682b4; /* Updated link hover color */
+        text-decoration: underline;
+    }
+
+    .image-container {
+        margin-top: 10px; /* Reduced margin to fit content */
+        text-align: center;
+    }
+
+    .image-container img {
+        max-width: 80%;
+        border-radius: 50%;
+        border: 4px solid #f0f0f0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .image-container img:hover {
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            flex-direction: column;
+            width: 95%;
+            height: auto; /* Adjust height for smaller screens */
+        }
+
+        .left-box, .right-box {
+            width: 100%;
+            padding: 10px;
+            border-right: none;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .left-box {
+            border-bottom: none;
+        }
     }
 </style>
 {% endblock %}
