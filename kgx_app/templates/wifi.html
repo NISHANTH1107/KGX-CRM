@@ -32,7 +32,12 @@
         </form>
     </div>
     <div class="info-container">
-        <h3>Find Your MAC Address!</h3>
+
+        <div class="mac-info-header">
+            <h3>Find Your MAC Address!</h3>
+            <img src="{% static 'kgx_app/macadd.png' %}" alt="MAC Address" class="mac-image">
+        </div>
+
         <p><strong>macOS:</strong></p>
         <ul>
             <li>Open "System Settings" (or "System Preferences").</li>
@@ -69,17 +74,19 @@
     
     .form-container, .info-container {
         padding: 30px;
-        border-radius: 10px;
+        border-radius: 60px;
         margin: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         width: 40%;
-        border: 1px solid #ffffff; /* White border */
+        border: none; /* White border */
         display: flex;
         flex-direction: column; /* Ensure containers are flexible */
+       
     }
     
     .form-container {
         background-color: #1E1E1E;
+        margin-top: -20px;
     }
     
     .info-container {
@@ -105,18 +112,21 @@
     }
     
     input[type="text"], input[type="file"] {
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 15px; /* Rounded corners */
-        border: none;
-        background-color: #3c3c3c; /* Background color with 70% opacity */
-        color: #000; /* Text color for better contrast */
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 60px;
+            border: none;
+            background-color: #3c3c3c;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 14px;
+            height: 50px;
     }
     
     .file-input-container {
         position: relative;
-        width: 70%; /* Reduced width for a smaller length */
+        width: 100%; /* Reduced width for a smaller length */
         max-width: 250px; /* Set max width */
         height: 80px; /* Increased height */
         margin-bottom: 20px;
@@ -136,17 +146,17 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 90%;
+        height: 150%;
         display: flex;
         justify-content: center;
         align-items: center;
         border: 2px #ccc;
-        border-radius: 15px; /* Smooth rounded corners */
+        border-radius: 40px; /* Smooth rounded corners */
         background-color: #3c3c3c;
         color: #000;
         cursor: pointer;
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        
     }
 
     .file-input-label img {
@@ -154,23 +164,24 @@
         max-height: 50%;
     }
 
-    button {
-        padding: 15px;
-        border: none;
-        border-radius: 5px;
-        background: linear-gradient(to right, #530061, #720083); /* Initial background gradient */
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.3s; /* Include transition for smooth effect */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        margin-top: 10px; /* Add margin for spacing */
-    }
+    button[type="submit"] {
+            background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 60px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            height: 50px;
+            margin-top: 40px;
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+        }
     
-    button:hover {
-        background: linear-gradient(to right, #720083, #530061); /* Background gradient on hover */
-        transform: scale(1.05); /* Optional: Add slight zoom effect on hover */
-    }
     
     .info-container p strong {
         text-decoration: underline;
