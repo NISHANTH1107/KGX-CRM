@@ -7,125 +7,240 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KGXperience Login</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #0b0b0b;
-            font-family: Arial, sans-serif;
-            position: relative;
-        }
+        /* General styles */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0b0b0b;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
 
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
 
-        .logo img {
-            width: 180px; /* Increased logo size */
-            border: none; /* Removed border */
-        }
+.logo img {
+    width: 180px; /* Increased logo size */
+    border: none; /* Removed border */
+}
 
-        .login-container {
-            width: calc(100% - 240px); /* Adjusted width to accommodate new padding */
-            max-width: 720px; /* Maximum width for larger screens */
-            padding: 40px 120px; /* Increased horizontal padding */
-            border-radius: 12px;
-            background-color: linear-gradient(-38.77deg, rgba(191, 191, 191, 0.06), transparent), rgba(0, 0, 0, 0.14);;
-            box-shadow: -8px 4px 5px rgba(0, 0, 0, 0.24);
-            position: relative;
-            border: 1px solid #fff; /* Wider white border */
-            box-sizing: border-box; /* Ensures padding and border are included in the width */
-            height: 487px;
-            width: 100%;
-            background: linear-gradient(-38.77deg, rgba(191, 191, 191, 0.06), transparent), rgba(0, 0, 0, 0.14); 
-            border: 1px solid var(--glass1-stroke-carey);
-        }
+.login-container {
+    width: calc(100% - 240px); /* Adjusted width to accommodate new padding */
+    max-width: 720px; /* Maximum width for larger screens */
+    padding: 40px 120px; /* Increased horizontal padding */
+    border-radius: 12px;
+    background-color: linear-gradient(-38.77deg, rgba(191, 191, 191, 0.06), transparent), rgba(0, 0, 0, 0.14);;
+    box-shadow: -8px 4px 5px rgba(0, 0, 0, 0.24);
+    position: relative;
+    border: 1px solid #fff; /* Wider white border */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+    height: 487px;
+    width: 100%;
+    background: linear-gradient(-38.77deg, rgba(191, 191, 191, 0.06), transparent), rgba(0, 0, 0, 0.14); 
+    border: 1px solid var(--glass1-stroke-carey);
+}
 
-        .login-container::before, .login-container::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(#530061, #3D0351, #2C0645, #0D0A30);
-            z-index: -1;
-        }
+.login-container::before, .login-container::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(#530061, #3D0351, #2C0645, #0D0A30);
+    z-index: -1;
+}
 
-        .login-container::before {
-            width: 200px; /* Adjusted size */
-            height: 200px;
-            bottom: -80px; /* Adjusted position */
-            left: -80px; /* Adjusted position */
-        }
+.login-container::before {
+    width: 200px; /* Adjusted size */
+    height: 200px;
+    bottom: -80px; /* Adjusted position */
+    left: -80px; /* Adjusted position */
+}
 
-        .login-container::after {
-            width: 250px; /* Adjusted size */
-            height: 250px;
-            top: -80px; /* Adjusted position */
-            right: -120px; /* Adjusted position */
-        }
+.login-container::after {
+    width: 250px; /* Adjusted size */
+    height: 250px;
+    top: -80px; /* Adjusted position */
+    right: -120px; /* Adjusted position */
+}
 
-        .login-container h2 {
-            margin-bottom: 10px;
-            color: #fff;
-            font-size: 28px; /* Increased size */
-            font-weight: normal;
-            border-bottom: none; /* Removed the line under "Login" */
-        }
+.login-container h2 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 28px; /* Increased size */
+    font-weight: normal;
+    border-bottom: none; /* Removed the line under "Login" */
+}
 
-        .login-container p {
-            color: #fff; /* Made text white */
-            margin-bottom: 30px;
-            font-size: 18px; /* Increased size */
-        }
+.login-container p {
+    color: #fff; /* Made text white */
+    margin-bottom: 30px;
+    font-size: 18px; /* Increased size */
+}
 
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
-            width: calc(100% - 30px); /* Adjusted for padding */
-            padding: 15px 15px;
-            margin-bottom: 20px;
-            border: 1px solid #fff; /* Thin white border */
-            border-radius: 6px;
-            background-color: #222;
-            color: #fff;
-            font-size: 16px; /* Increased font size */
-            box-sizing: border-box;
-        }
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: calc(100% - 30px); /* Adjusted for padding */
+    padding: 15px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #fff; /* Thin white border */
+    border-radius: 6px;
+    background-color: #222;
+    color: #fff;
+    font-size: 16px; /* Increased font size */
+    box-sizing: border-box;
+}
 
-        .login-container input[type="submit"] {
-            width: calc(100% - 30px); /* Adjusted for padding */
-            padding: 15px;
-            background: linear-gradient(135deg, #2C0645 0%, #851B97 100%);
-            border: none;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 18px; /* Increased font size */
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+.login-container input[type="submit"] {
+    width: calc(100% - 30px); /* Adjusted for padding */
+    padding: 15px;
+    background: linear-gradient(135deg, #2C0645 0%, #851B97 100%);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 18px; /* Increased font size */
+    cursor: pointer;
+    transition: background 0.3s;
+}
 
-        .login-container input[type="submit"]:hover {
-            background: linear-gradient(135deg, #3D0351 0%, #a13c9e 100%);
-        }
+.login-container input[type="submit"]:hover {
+    background: linear-gradient(135deg, #3D0351 0%, #a13c9e 100%);
+}
 
-        .popup-message {
-            display: none; /* Hidden by default */
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px;
-            background-color: #ff4c4c;
-            color: #fff;
-            border-radius: 5px;
-            font-size: 14px;
-            text-align: center;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
+.popup-message {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #ff4c4c;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Tablet View */
+@media (max-width: 1024px) {
+    .login-container {
+        width: calc(100% - 40px); /* Adjust width to use more screen space */
+        padding: 30px 60px; /* Adjusted padding for tablets */
+        height: auto; /* Allow height to adjust automatically */
+    }
+
+    .login-container::before {
+        width: 150px; /* Smaller background circle */
+        height: 150px;
+        bottom: -60px; /* Adjusted position */
+        left: -60px; /* Adjusted position */
+    }
+
+    .login-container::after {
+        width: 200px; /* Smaller background circle */
+        height: 200px;
+        top: -60px; /* Adjusted position */
+        right: -80px; /* Adjusted position */
+    }
+
+    .login-container h2 {
+        font-size: 24px; /* Adjusted font size */
+    }
+
+    .login-container p {
+        font-size: 16px; /* Adjusted font size */
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"],
+    .login-container input[type="submit"] {
+        font-size: 14px; /* Adjusted font size for tablets */
+    }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    body {
+        padding: 0 10px; /* Added padding to avoid edge-to-edge layout */
+    }
+
+    .login-container {
+        width: 100%;
+        padding: 20px;
+        height: auto; /* Allow height to adjust automatically */
+    }
+
+    .login-container::before {
+        width: 100px; /* Smaller background circle */
+        height: 100px;
+        bottom: -40px; /* Adjusted position */
+        left: -40px; /* Adjusted position */
+    }
+
+    .login-container::after {
+        width: 150px; /* Smaller background circle */
+        height: 150px;
+        top: -40px; /* Adjusted position */
+        right: -40px; /* Adjusted position */
+    }
+
+    .login-container h2 {
+        font-size: 20px; /* Adjusted font size */
+    }
+
+    .login-container p {
+        font-size: 14px; /* Adjusted font size */
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"],
+    .login-container input[type="submit"] {
+        font-size: 14px; /* Adjusted font size for mobile */
+    }
+}
+
+/* Extra Small Mobile Devices */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 15px;
+    }
+
+    .login-container::before {
+        width: 80px; /* Smaller background circle */
+        height: 80px;
+        bottom: -20px; /* Adjusted position */
+        left: -20px; /* Adjusted position */
+    }
+
+    .login-container::after {
+        width: 120px; /* Smaller background circle */
+        height: 120px;
+        top: -20px; /* Adjusted position */
+        right: -20px; /* Adjusted position */
+    }
+
+    .login-container h2 {
+        font-size: 18px; /* Adjusted font size */
+    }
+
+    .login-container p {
+        font-size: 12px; /* Adjusted font size */
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"],
+    .login-container input[type="submit"] {
+        font-size: 12px; /* Adjusted font size for smaller screens */
+    }
+}
+
     </style>
 </head>
 <body>
