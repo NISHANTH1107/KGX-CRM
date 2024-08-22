@@ -90,22 +90,6 @@
             margin-right: 15px;
         }
 
-        .dot {
-            position: absolute;
-            right: 15px;
-            width: 8px;
-            height: 8px;
-            background-color: green;
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-            display: none;
-        }
-
-        .hackathons-button .dot {
-            display: block;
-        }
-
         .nav-button:hover {
             background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%);
             color: #fff;
@@ -266,12 +250,12 @@
             <a href="{% url 'profile' %}" class="nav-button">
                 <img src="{% static 'kgx_app/profile.png' %}" alt="Profile" class="nav-icon">
                 Profile 
-                <i class="fas fa-chevron-right arrow"></i>
+                
             </a>
             <a href="{% url 'learn_by_practice' %}" class="nav-button">
                 <img src="{% static 'kgx_app/learn_by_practice.png' %}" alt="Learn by Practice" class="nav-icon">
                 Learn by practice 
-                <i class="fas fa-chevron-right arrow"></i>
+                
             </a>
             <a href="{% url 'wifi' %}" class="nav-button">
                 <img src="{% static 'kgx_app/wifi.png' %}" alt="WI-FI" class="nav-icon">
@@ -281,6 +265,12 @@
                 <img src="{% static 'kgx_app/work_on_holidays.png' %}" alt="Work on Holidays" class="nav-icon">
                 Work on Holidays
             </a>
+
+            <a href="{% url 'inventory' %}" class="nav-button">
+                <img src="{% static 'kgx_app/inventory.png' %}" alt="Inventory" class="nav-icon">
+                Inventory
+            </a>
+
             <a href="{% url 'hackathon' %}" class="nav-button hackathons-button">
                 <img src="{% static 'kgx_app/hackathons.png' %}" alt="Hackathons/Events" class="nav-icon">
                 Hackathons/Events 

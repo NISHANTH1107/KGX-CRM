@@ -1,41 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Holiday</title>
+    <style>
+        body {
+            background-color: #1c1c1c;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            width: 100%;
+            
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #2c2c2c;
+            padding: 40px;
+            border-radius: 60px;
+            width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 50px;
+        }
+
+        label {
+            color: #ffffff; /* Bright white */
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px; /* Increased font size */
+            font-weight: bold; /* Made the text bold */
+        }
+
+        input[type="text"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 60px;
+            border: none;
+            background-color: #3c3c3c;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 14px;
+            height: 50px;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="time"]::placeholder,
+        select::placeholder {
+            color: #a6a6a6;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 60px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            height: 50px;
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+        }
+
+        .image-container {
+            width: 450px; /* Adjust the width of the image container */
+            padding-left: 20px;
+            margin-top: 60px;
+            margin-left: 80px;
+        }
+
+        .image-container img {
+            width: 100%; /* Image will take up full width of the container */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 20px;
+        }
+    </style>
 </head>
+
 {% extends 'base.html' %}
+{% load static %} <!-- This line is important -->
+
 
 {% block title %}Work_on_holidays{% endblock %}
 
 {% block content %}
 <body>
-    <h1>Submit Holiday</h1>
-    <form method="post">
-        {% csrf_token %}
+    <div class="container">
         <div>
-            <label for="id_name">Holiday Name:</label>
-            {{ form.name }}
+            <h1>FILL TO WORK ON HOLIDAYS</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="id_name">Name</label>
+                    {{ form.name }}
+                </div>
+                <div>
+                    <label for="id_department">Department / Year</label>
+                    {{ form.department }}
+                </div>
+
+                <div>
+                    <label for="id_purpose">Purpose</label>
+                    {{ form.purpose }}
+                </div>
+                <div>
+                    <label for="id_entry_time">Entry Time</label>
+                    {{ form.entry_time }}
+                </div>
+                <div>
+                    <label for="id_exit_time">Exit Time</label>
+                    {{ form.exit_time }}
+                </div>
+                <button type="submit">Submit</button>
+            </form>
         </div>
-        <div>
-            <label for="id_department">Department:</label>
-            {{ form.department }}
+        <div class="image-container">
+            <img src="{% static 'kgx_app/note.png' %}" alt="Note Image">
         </div>
-        <div>
-            <label for="id_purpose">Purpose of Holiday:</label>
-            {{ form.purpose }}
-        </div>
-        <div>
-            <label for="id_entry_time">Entry Time:</label>
-            {{ form.entry_time }}
-        </div>
-        <div>
-            <label for="id_exit_time">Exit Time:</label>
-            {{ form.exit_time }}
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+    </div>
 </body>
 {% endblock %}
+
 </html>
