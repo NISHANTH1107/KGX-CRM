@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
+{% load static %}  <!-- Load static files -->
+
 {% block title %}Profile{% endblock %}
 
 {% block body_class %}profile{% endblock %}
 
 {% block content %}
-<div class="profile-header">
-    <input type="text" class="search-bar" placeholder="Search...">
-</div>
-
 <div class="split-container">
     <div class="profile-container">
         <div class="left-box">
+            <div class="image-container">
+                <a href="{{profile.link}}" target="_blank">
+                    <img src="{{profile.image.url}}" alt="profile image">
+                </a>
+            </div>
             <h1>{{ profile.name }}'s Profile</h1>
             <div class="profile-details">
                 <p><strong>Roll No:</strong> {{ profile.roll_no }}</p>
@@ -19,21 +22,24 @@
                 <p><strong>Personal Email:</strong> <a href="mailto:{{ profile.email_p }}">{{ profile.email_p }}</a></p>
                 <p><strong>College Email:</strong> <a href="mailto:{{ profile.email_clg }}">{{ profile.email_clg }}</a></p>
                 <p><strong>Phone Number:</strong> {{ profile.phn_no }}</p>
-                <p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}" target="_blank">{{ profile.linked_in }}</a></p>
-                <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
-                <div class="image-container">
-                    <a href="{{profile.link}}" target="_blank">
-                        <img src="{{profile.image.url}}" alt="profile image">
-                    </a>
-                </div>
             </div>
         </div>
 
         <div class="right-box">
             <div class="profile-details">
+                <p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}" target="_blank">{{ profile.linked_in }}</a></p>
+                <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
                 <p><strong>Domain:</strong> {{ profile.domain }}</p>
-                <p><strong>Skills:</strong> {{ profile.skills }}</p>
                 <p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
+            </div>
+            <div class="skills-section">
+                <h2>Skills <span class="add-skill">+</span></h2>
+                <div class="skills-boxes">
+                    <div class="skill-box">Skill 1</div>
+                    <div class="skill-box">Skill 2</div>
+                    <div class="skill-box">Skill 3</div>
+                    <!-- Add more skill boxes as needed -->
+                </div>
             </div>
         </div>
     </div>
@@ -42,42 +48,46 @@
 
 {% block extra_css %}
 <style>
-    .profile {
-        background-color: #f9f9f9; /* Light background specific to the profile page */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #121212 0%, #333333 100%);
     }
 
-    .profile-header {
+    .profile {
         display: flex;
         justify-content: center;
-        margin: 20px 0;
-    }
-
-    .search-bar {
-        width: 50%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
+        align-items: center;
+        height: 100%;
+        padding: 20px;
     }
 
     .split-container {
+        width: 100%;
+        max-height: 100%;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        padding: 20px;
-        box-sizing: border-box;
+        overflow: auto;
     }
 
     .profile-container {
         display: flex;
-        width: 100%;
+        flex-direction: row;
+        width: 95%;
         max-width: 1200px;
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        height: auto;
+        background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .profile-container:hover {
+        transform: scale(1.02);
     }
 
     .left-box, .right-box {
@@ -86,40 +96,168 @@
         box-sizing: border-box;
     }
 
+    .left-box {
+        background: linear-gradient(135deg, #1c1c1c 0%, #2c2c2c 100%);
+        color: #f0f0f0;
+        border-right: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .right-box {
+        background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+        color: #f0f0f0;
+    }
+
     .profile-container h1 {
         font-family: 'Raleway', sans-serif;
-        font-size: 30px;
-        font-weight: 800;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 23.48px;
+        text-align: left;
         margin-bottom: 20px;
-        color: #333333;
-        background: linear-gradient(90.57deg, #e0e0e0 35.14%, #c0c0c0 91.56%);
-        padding: 12px;
-        border-radius: 8px;
-        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: linear-gradient(135deg, #ffffff 0%, #ffcc00 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .profile-details p {
         font-family: 'Raleway', sans-serif;
-        font-size: 18px;
-        font-weight: 600;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 23.48px;
+        text-align: left;
         margin: 15px 0;
-        color: #333333;
+        color: #e0e0e0;
+        position: relative;
+        transition: color 0.3s ease;
     }
 
-    .profile-details p strong {
-        color: #000000;
-        margin-right: 8px;
+    .profile-details p:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0%;
+        background: #ffcc00;
+        transition: width 0.3s ease;
+    }
+
+    .profile-details p:hover {
+        color: #ffcc00;
+    }
+
+    .profile-details p:hover:before {
+        width: 100%;
     }
 
     .profile-details a {
-        color: #007bff;
+        color: #ffcc00;
         text-decoration: none;
-        font-weight: 700;
+        font-weight: 600;
         transition: color 0.3s ease;
     }
 
     .profile-details a:hover {
-        color: #0056b3;
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    .image-container {
+        margin-bottom: 20px;
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .image-container img {
+        max-width: 60%;
+        border-radius: 50%;
+        border: 5px solid #ffcc00;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-container img:hover {
+        transform: scale(1.1);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .skills-section {
+        margin-top: 20px;
+    }
+
+    .skills-section h2 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 23.48px;
+        text-align: left;
+        color: #ffcc00;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .skills-section .add-skill {
+        font-size: 24px;
+        margin-left: 10px;
+        color: #ffcc00;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .skills-section .add-skill:hover {
+        color: #ffffff;
+    }
+
+    .skills-boxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .skill-box {
+        background: #2a2a2a;
+        border: 2px solid #ffcc00;
+        border-radius: 10px;
+        padding: 10px 15px;
+        color: #f0f0f0;
+        font-family: 'Raleway', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        flex: 1 1 200px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .skill-box:hover {
+        background-color: #1c1c1c;
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            flex-direction: column;
+            width: 95%;
+            height: auto;
+        }
+
+        .left-box, .right-box {
+            width: 100%;
+            padding: 15px;
+            border-right: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .left-box {
+            border-bottom: none;
+        }
     }
 </style>
 {% endblock %}
