@@ -21,6 +21,11 @@
                 <p><strong>Phone Number:</strong> {{ profile.phn_no }}</p>
                 <p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}" target="_blank">{{ profile.linked_in }}</a></p>
                 <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
+                <div class="image-container">
+                    <a href="{{profile.link}}" target="_blank">
+                        <img src="{{profile.image.url}}" alt="profile image">
+                    </a>
+                </div>
             </div>
         </div>
 
