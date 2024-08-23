@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
-{% load static %}  <!-- Load static files -->
+{% load static %}
 
 {% block title %}Profile{% endblock %}
 
 {% block body_class %}profile{% endblock %}
 
 {% block content %}
+<div class="profile-header">
+    <h1>Profile</h1>
+</div>
 <div class="split-container">
     <div class="profile-container">
         <div class="left-box">
@@ -14,8 +17,16 @@
                 <a href="{{profile.link}}" target="_blank">
                     <img src="{{profile.image.url}}" alt="profile image">
                 </a>
+                <h2>{{ profile.name }}</h2>
+                <div class="social-icons">
+                    <a href="{{ profile.linked_in }}" target="_blank" class="social-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="{{ profile.github }}" target="_blank" class="social-icon">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
             </div>
-            <h1>{{ profile.name }}'s Profile</h1>
             <div class="profile-details">
                 <p><strong>Roll No:</strong> {{ profile.roll_no }}</p>
                 <p><strong>Department:</strong> {{ profile.dept }}</p>
@@ -27,18 +38,17 @@
 
         <div class="right-box">
             <div class="profile-details">
-                <p><strong>LinkedIn:</strong> <a href="{{ profile.linked_in }}" target="_blank">{{ profile.linked_in }}</a></p>
-                <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
                 <p><strong>Domain:</strong> {{ profile.domain }}</p>
                 <p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
             </div>
             <div class="skills-section">
                 <h2>Skills <span class="add-skill">+</span></h2>
                 <div class="skills-boxes">
-                    <div class="skill-box">Skill 1</div>
-                    <div class="skill-box">Skill 2</div>
-                    <div class="skill-box">Skill 3</div>
-                    <!-- Add more skill boxes as needed -->
+                    {% for skill in profile.skills.all %}
+                        <div class="skill-box">{{ skill.name }}</div>
+                    {% empty %}
+                        <p>No skills listed.</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -56,28 +66,31 @@
         background: linear-gradient(135deg, #121212 0%, #333333 100%);
     }
 
-    .profile {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        padding: 20px;
+    .profile-header {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .profile-header h1 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #ffffff;
     }
 
     .split-container {
         width: 100%;
-        max-height: 100%;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        overflow: auto;
+        overflow: hidden;
     }
 
     .profile-container {
         display: flex;
         flex-direction: row;
-        width: 95%;
-        max-width: 1200px;
+        width: 90%;
+        max-width: 1400px;
         height: auto;
         background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
         border-radius: 20px;
@@ -107,25 +120,63 @@
         color: #f0f0f0;
     }
 
-    .profile-container h1 {
+    .image-container {
+        margin-bottom: 20px;
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .image-container img {
+        width: 250px;
+        height: 250px;
+        border-radius: 60%;
+        border: 5px solid #580475;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-container img:hover {
+        transform: scale(1.1);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .profile-container h2 {
         font-family: 'Raleway', sans-serif;
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
-        line-height: 23.48px;
-        text-align: left;
+        line-height: 28px;
+        text-align: center;
+        margin-top: 15px;
         margin-bottom: 20px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        background: linear-gradient(135deg, #ffffff 0%, #ffcc00 100%);
+        background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .social-icon {
+        color: #580475;
+        font-size: 30px;
+        transition: color 0.3s ease;
+    }
+
+    .social-icon:hover {
+        color: #ffffff;
     }
 
     .profile-details p {
         font-family: 'Raleway', sans-serif;
         font-size: 20px;
         font-weight: 700;
-        line-height: 23.48px;
+        line-height: 26px;
         text-align: left;
         margin: 15px 0;
         color: #e0e0e0;
@@ -140,12 +191,12 @@
         bottom: 0;
         height: 2px;
         width: 0%;
-        background: #ffcc00;
+        background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
         transition: width 0.3s ease;
     }
 
     .profile-details p:hover {
-        color: #ffcc00;
+        color: #580475;
     }
 
     .profile-details p:hover:before {
@@ -153,7 +204,7 @@
     }
 
     .profile-details a {
-        color: #ffcc00;
+        color: #580475;
         text-decoration: none;
         font-weight: 600;
         transition: color 0.3s ease;
@@ -162,25 +213,6 @@
     .profile-details a:hover {
         color: #ffffff;
         text-decoration: underline;
-    }
-
-    .image-container {
-        margin-bottom: 20px;
-        text-align: center;
-        animation: fadeIn 1s ease-in-out;
-    }
-
-    .image-container img {
-        max-width: 60%;
-        border-radius: 50%;
-        border: 5px solid #ffcc00;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .image-container img:hover {
-        transform: scale(1.1);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
     }
 
     @keyframes fadeIn {
@@ -198,7 +230,7 @@
         font-weight: 700;
         line-height: 23.48px;
         text-align: left;
-        color: #ffcc00;
+        color: #580475;
         margin-bottom: 15px;
         display: flex;
         align-items: center;
@@ -207,7 +239,7 @@
     .skills-section .add-skill {
         font-size: 24px;
         margin-left: 10px;
-        color: #ffcc00;
+        color: #580475;
         cursor: pointer;
         transition: color 0.3s ease;
     }
@@ -224,7 +256,7 @@
 
     .skill-box {
         background: #2a2a2a;
-        border: 2px solid #ffcc00;
+        border: 2px solid #580475;
         border-radius: 10px;
         padding: 10px 15px;
         color: #f0f0f0;
@@ -239,25 +271,6 @@
     .skill-box:hover {
         background-color: #1c1c1c;
         transform: scale(1.05);
-    }
-
-    @media (max-width: 768px) {
-        .profile-container {
-            flex-direction: column;
-            width: 95%;
-            height: auto;
-        }
-
-        .left-box, .right-box {
-            width: 100%;
-            padding: 15px;
-            border-right: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .left-box {
-            border-bottom: none;
-        }
     }
 </style>
 {% endblock %}
