@@ -7,6 +7,10 @@
 {% block body_class %}profile{% endblock %}
 
 {% block content %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
 <div class="profile-header">
     <h1>Profile</h1>
 </div>
@@ -14,19 +18,22 @@
     <div class="profile-container">
         <div class="left-box">
             <div class="image-container">
-                <a href="{{profile.link}}" target="_blank">
-                    <img src="{{profile.image.url}}" alt="profile image">
+                <a href="{{ profile.link }}" target="_blank">
+                    <img src="{{ profile.image.url }}" alt="profile image">
                 </a>
-                <h2>{{ profile.name }}</h2>
-                <div class="social-icons">
-                    <a href="{{ profile.linked_in }}" target="_blank" class="social-icon">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="{{ profile.github }}" target="_blank" class="social-icon">
-                        <i class="fab fa-github"></i>
-                    </a>
+                <div class="info-container">
+                    <h2>{{ profile.name|capfirst }}</h2>
+                    <div class="social-icons">
+                        <a href="{{ profile.linked_in }}" target="_blank" class="social-icon">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="{{ profile.github }}" target="_blank" class="social-icon">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
+            
             <div class="profile-details">
                 <p><strong>Roll No:</strong> {{ profile.roll_no }}</p>
                 <p><strong>Department:</strong> {{ profile.dept }}</p>
@@ -41,13 +48,14 @@
                 <p><strong>Domain:</strong> {{ profile.domain }}</p>
                 <p><strong>Hackathon:</strong> {{ profile.hackathon }}</p>
             </div>
+            
             <div class="skills-section">
-                <h2>Skills <span class="add-skill">+</span></h2>
-                <div class="skills-boxes">
+                <h2>Skills</h2>
+                <div class="skills-box">
                     {% for skill in profile.skills.all %}
-                        <div class="skill-box">{{ skill.name }}</div>
+                        <div class="skill-item">{{ skill.name }}</div>
                     {% empty %}
-                        <p>No skills listed.</p>
+                    <p><strong>{{profile.skills|capfirst}}</strong></p>
                     {% endfor %}
                 </div>
             </div>
@@ -58,153 +66,194 @@
 
 {% block extra_css %}
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap');
+
     html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #121212 0%, #333333 100%);
-    }
-
-    .profile-header {
-        text-align: center;
-        margin: 20px 0;
+        font-family: 'Raleway', sans-serif; /* Applied Raleway font to entire page */
+        background: linear-gradient(135deg, #0f0f0f, #2a2a2a);
+        color: #e0e0e0;
+        overflow: hidden;
     }
 
     .profile-header h1 {
-        font-family: 'Raleway', sans-serif;
-        font-size: 32px;
+        font-size: 40px;
         font-weight: 700;
         color: #ffffff;
+        margin: 0;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #580475, #A507DB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 2px;
     }
 
     .split-container {
-        width: 100%;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        overflow: hidden;
+        padding: 20px;
     }
 
     .profile-container {
         display: flex;
-        flex-direction: row;
-        width: 90%;
-        max-width: 1400px;
-        height: auto;
-        background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
+        width: 100%;
+        max-width: 1200px;
+        background: #1f1f1f;
         border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         overflow: hidden;
         transition: transform 0.3s ease-in-out;
     }
 
     .profile-container:hover {
-        transform: scale(1.02);
+        transform: scale(1.03);
     }
 
     .left-box, .right-box {
         width: 50%;
         padding: 20px;
-        box-sizing: border-box;
     }
 
     .left-box {
-        background: linear-gradient(135deg, #1c1c1c 0%, #2c2c2c 100%);
+        background: #2a2a2a;
         color: #f0f0f0;
-        border-right: 2px solid rgba(255, 255, 255, 0.1);
+        border-right: 1px solid #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .right-box {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+        background: #1f1f1f;
         color: #f0f0f0;
     }
 
     .image-container {
-        margin-bottom: 20px;
+        position: relative;
         text-align: center;
-        animation: fadeIn 1s ease-in-out;
     }
 
     .image-container img {
-        width: 250px;
-        height: 250px;
-        border-radius: 60%;
-        border: 5px solid #580475;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 4px solid #580475;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        object-fit: cover;
     }
 
     .image-container img:hover {
-        transform: scale(1.1);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+        transform: scale(1.08);
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.7);
     }
 
-    .profile-container h2 {
-        font-family: 'Raleway', sans-serif;
-        font-size: 24px;
-        font-weight: 700;
-        line-height: 28px;
+    .info-container {
+        background: linear-gradient(135deg, #2a2a2a, #3b3b3b);
+        padding: 20px;
+        border-radius: 15px;
+        width: 80%;
+        max-width: 320px;
+        margin-top: 10px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
         text-align: center;
-        margin-top: 15px;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 10px;
+    }
+
+    .info-container:hover {
+        background: linear-gradient(135deg, #3b3b3b, #2a2a2a);
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .info-container h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #ffffff;
+        text-transform: capitalize;
     }
 
     .social-icons {
+        margin-top: 10px;
         display: flex;
         justify-content: center;
         gap: 15px;
-        margin-top: 15px;
     }
 
     .social-icon {
-        color: #580475;
-        font-size: 30px;
-        transition: color 0.3s ease;
+        color: #ffffff;
+        font-size: 26px;
+        transition: color 0.3s ease, transform 0.3s ease;
     }
 
     .social-icon:hover {
+        transform: scale(1.2);
+    }
+
+    .social-icon i.fa-github:hover {
         color: #ffffff;
+        
+    }
+
+    .social-icon i.fa-linkedin:hover {
+        color: #0e76a8;
+        
+    }
+
+    .profile-details {
+        margin-top: 20px;
     }
 
     .profile-details p {
-        font-family: 'Raleway', sans-serif;
         font-size: 20px;
         font-weight: 700;
-        line-height: 26px;
-        text-align: left;
-        margin: 15px 0;
+        line-height: 23.48px;
         color: #e0e0e0;
+        margin: 15px 0;
         position: relative;
+        padding-left: 25px;
+        text-align: left;
         transition: color 0.3s ease;
+    }
+
+    .profile-details p:hover {
+        color: #A507DB;
+    }
+
+    .profile-details p::after {
+        content: '';
+        display: block;
+        height: 2px;
+        background: #A507DB;
+        width: 0;
+        transition: width 0.3s ease;
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+    }
+
+    .profile-details p:hover::after {
+        width: 100%;
     }
 
     .profile-details p:before {
         content: '';
         position: absolute;
         left: 0;
-        bottom: 0;
-        height: 2px;
-        width: 0%;
-        background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
-        transition: width 0.3s ease;
-    }
-
-    .profile-details p:hover {
-        color: #580475;
-    }
-
-    .profile-details p:hover:before {
-        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 20px;
+        width: 5px;
+        background: linear-gradient(180deg, #580475, #A507DB);
+        border-radius: 3px;
     }
 
     .profile-details a {
-        color: #580475;
+        color: white;
         text-decoration: none;
         font-weight: 600;
         transition: color 0.3s ease;
@@ -215,62 +264,43 @@
         text-decoration: underline;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    .skills-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+    background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
+    border-radius: 15px;
+    width: fit-content; /* Reduced the width of the skills box */
+    margin-left: 20px; /* Center the skills box */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
 
-    .skills-section {
-        margin-top: 20px;
-    }
+.skills-box:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, #A507DB 0%, #580475 100%); /* Color change on hover */
+    border: 2px solid #ffffff; /* Added border effect on hover */
+}
 
-    .skills-section h2 {
-        font-family: 'Raleway', sans-serif;
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 23.48px;
-        text-align: left;
-        color: #580475;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-    }
+.skill-item {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    padding: 10px 20px;
+    background: #2a2a2a;
+    border-radius: 20px;
+    transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
 
-    .skills-section .add-skill {
-        font-size: 24px;
-        margin-left: 10px;
-        color: #580475;
-        cursor: pointer;
-        transition: color 0.3s ease;
-    }
+.skill-item:hover {
+    background: #ffffff;
+    color: #2a2a2a;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px; /* Slight increase in spacing on hover */
+}
 
-    .skills-section .add-skill:hover {
-        color: #ffffff;
-    }
 
-    .skills-boxes {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .skill-box {
-        background: #2a2a2a;
-        border: 2px solid #580475;
-        border-radius: 10px;
-        padding: 10px 15px;
-        color: #f0f0f0;
-        font-family: 'Raleway', sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        text-align: center;
-        flex: 1 1 200px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .skill-box:hover {
-        background-color: #1c1c1c;
-        transform: scale(1.05);
-    }
 </style>
 {% endblock %}
