@@ -32,7 +32,6 @@
         </form>
     </div>
     <div class="info-container">
-
         <div class="mac-info-header">
             <h3>Find Your MAC Address!</h3>
             <img src="{% static 'kgx_app/macadd.png' %}" alt="MAC Address" class="mac-image">
@@ -81,7 +80,6 @@
         border: none; /* White border */
         display: flex;
         flex-direction: column; /* Ensure containers are flexible */
-       
     }
     
     .form-container {
@@ -113,15 +111,15 @@
     
     input[type="text"], input[type="file"] {
         width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 60px;
-            border: none;
-            background-color: #3c3c3c;
-            color: #fff;
-            box-sizing: border-box;
-            font-size: 14px;
-            height: 50px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 60px;
+        border: none;
+        background-color: #3c3c3c;
+        color: #fff;
+        box-sizing: border-box;
+        font-size: 14px;
+        height: 50px;
     }
     
     .file-input-container {
@@ -156,7 +154,6 @@
         background-color: #3c3c3c;
         color: #000;
         cursor: pointer;
-        
     }
 
     .file-input-label img {
@@ -165,45 +162,78 @@
     }
 
     button[type="submit"] {
-            background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 60px;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-            height: 50px;
-            margin-top: 40px;
-        }
+        background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
+        padding: 10px;
+        width: 100%;
+        border: none;
+        border-radius: 60px;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        height: 50px;
+        margin-top: 40px;
+    }
 
-        button[type="submit"]:hover {
-            background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
-        }
-    
+    button[type="submit"]:hover {
+        background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+    }
     
     .info-container p strong {
         text-decoration: underline;
     }
     
     /* Increase line spacing and adjust list dots */
-.info-container ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin: 0;
-    line-height: 1.8; /* Increase line spacing */
-}
+    .info-container ul {
+        list-style-type: disc;
+        padding-left: 20px;
+        margin: 0;
+        line-height: 1.8; /* Increase line spacing */
+    }
 
-.info-container ul li {
-    margin-bottom: 10px;
-    position: relative;
-}
+    .info-container ul li {
+        margin-bottom: 10px;
+        position: relative;
+    }
 
-.info-container ul li::marker {
-    color: #720083; /* Purple color for dots */
-    font-size: 1.2em; /* Increase size of dots */
-}
-    
+    .info-container ul li::marker {
+        color: #720083; /* Purple color for dots */
+        font-size: 1.2em; /* Increase size of dots */
+    }
+
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) { /* Tablets */
+        .container {
+            flex-direction: column; /* Stack containers vertically */
+            align-items: center;
+        }
+
+        .form-container, .info-container {
+            width: 80%; /* Adjust width for smaller screens */
+        }
+    }
+
+    @media (max-width: 480px) { /* Mobile devices */
+        .form-container, .info-container {
+            width: 100%; /* Full width on mobile devices */
+            padding: 20px; /* Adjust padding for mobile */
+            border-radius: 20px; /* Adjust border-radius for mobile */
+        }
+
+        button[type="submit"] {
+            font-size: 14px; /* Adjust font size for mobile */
+            padding: 8px; /* Adjust padding for mobile */
+        }
+
+        .file-input-label {
+            width: 100%; /* Adjust width for mobile */
+            height: 100px; /* Adjust height for mobile */
+        }
+
+        .file-input-label img {
+            max-width: 40%; /* Adjust image size for mobile */
+            max-height: 40%;
+        }
+    }
 </style>
 {% endblock %}
