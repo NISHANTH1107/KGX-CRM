@@ -22,7 +22,7 @@
                     {% if profile.image %}
                         <img src="{{ profile.image.url }}" alt="profile image">
                     {% else %}
-                        <img src="{% static 'images/default_profile.png' %}" >
+                        <img src="{% static 'kgx_app/default_profile.png' %}" >
                     {% endif %}
                 </a>
                 <div class="info-container">
@@ -81,6 +81,8 @@
         margin: 0;
         padding: 0;
         font-family: 'Raleway', sans-serif; /* Applied Raleway font to entire page */
+        background: url("{% static 'kgx_app/bg_kgx.png' %}") no-repeat center center fixed;
+        background-size: cover;
         background: linear-gradient(135deg, #0f0f0f, #2a2a2a);
         color: #e0e0e0;
         overflow: hidden;
