@@ -19,17 +19,25 @@
         <div class="left-box">
             <div class="image-container">
                 <a href="{{ profile.link }}" target="_blank">
-                    <img src="{{ profile.image.url }}" alt="profile image">
+                    {% if profile.image %}
+                        <img src="{{ profile.image.url }}" alt="profile image">
+                    {% else %}
+                        <img src="{% static 'images/default_profile.png' %}" >
+                    {% endif %}
                 </a>
                 <div class="info-container">
                     <h2>{{ profile.name|capfirst }}</h2>
                     <div class="social-icons">
-                        <a href="{{ profile.linked_in }}" target="_blank" class="social-icon">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="{{ profile.github }}" target="_blank" class="social-icon">
-                            <i class="fab fa-github"></i>
-                        </a>
+                        {% if profile.linked_in %}
+                            <a href="{{ profile.linked_in }}" target="_blank" class="social-icon">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        {% endif %}
+                        {% if profile.github %}
+                            <a href="{{ profile.github }}" target="_blank" class="social-icon">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
