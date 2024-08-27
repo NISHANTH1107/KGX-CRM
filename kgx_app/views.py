@@ -101,7 +101,14 @@ def internship(request):
 def inventory(request):
     return render(request, 'inventory.html')
 
+from django.shortcuts import render
+
+def contact_view(request):
+    return render(request, 'contact.html')
+
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have successfully logged out.')
     return redirect('login')
+
+

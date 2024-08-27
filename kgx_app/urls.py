@@ -13,4 +13,5 @@ urlpatterns = [
    path('work_on_holidays/', views.work_on_holidays, name='work_on_holidays'),
    path('hackathon/', views.hackathon, name='hackathon'),
    path('internship/', views.internship, name='internship'),
+   path('contact/', views.contact_view, name='contact'),
    path('inventory/', views.inventory, name='inventory')]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
