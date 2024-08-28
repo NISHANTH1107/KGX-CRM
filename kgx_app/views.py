@@ -94,23 +94,23 @@ def hackathon(request):
 
 @login_required
 def internship(request):
-    internships = Internship.objects.all()
+    internships = Internship.objects.all()  # Get all internships
     return render(request, 'internship.html', {'internships': internships})
+
 
 @login_required
 def inventory(request):
     return render(request, 'inventory.html')
 
-from django.shortcuts import render
 
+@login_required
 def contact_view(request):
     return render(request, 'contact.html')
-
+@login_required
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have successfully logged out.')
     return redirect('login')
 
-def internship_list_view(request):
-    internships = Internship.objects.all()[:6]  # Only get the first 6 internships
-    return render(request, 'internship_list.html', {'internships': internships})
+
+    
