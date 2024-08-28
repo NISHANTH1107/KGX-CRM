@@ -80,7 +80,7 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        font-family: 'Raleway', sans-serif; /* Applied Raleway font to entire page */
+        font-family: 'Raleway', sans-serif;
         background: url("{% static 'kgx_app/bg_kgx.png' %}") no-repeat center center fixed;
         background-size: cover;
         background: linear-gradient(135deg, #0f0f0f, #2a2a2a);
@@ -275,42 +275,133 @@
     }
 
     .skills-box {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding: 20px;
-    background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
-    border-radius: 15px;
-    width: fit-content; /* Reduced the width of the skills box */
-    margin-left: 20px; /* Center the skills box */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 20px;
+        background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
+        border-radius: 15px;
+        width: fit-content;
+        margin-left: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
 
-.skills-box:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(180deg, #A507DB 0%, #580475 100%); /* Color change on hover */
-    border: 2px solid #ffffff; /* Added border effect on hover */
-}
+    .skills-box:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(180deg, #A507DB 0%, #580475 100%);
+        border: 2px solid #ffffff;
+    }
 
-.skill-item {
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
-    padding: 10px 20px;
-    background: #2a2a2a;
-    border-radius: 20px;
-    transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
-}
+    .skill-item {
+        font-size: 20px;
+        font-weight: 700;
+        color: #ffffff;
+        padding: 10px 20px;
+        background: #2a2a2a;
+        border-radius: 20px;
+        transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    }
 
-.skill-item:hover {
-    background: #ffffff;
-    color: #2a2a2a;
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    letter-spacing: 1px; /* Slight increase in spacing on hover */
-}
+    .skill-item:hover {
+        background: #ffffff;
+        color: #2a2a2a;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
+    }
 
+    /* Media Queries for Responsiveness */
+    @media screen and (max-width: 1024px) {
+        .split-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-container {
+            flex-direction: column;
+            width: 90%;
+        }
+
+        .left-box, .right-box {
+            width: 100%;
+            padding: 20px 10px;
+        }
+
+        .profile-header h1 {
+            font-size: 32px;
+        }
+
+        .skills-box {
+            margin: 0 auto;
+            width: 90%;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .profile-header h1 {
+            font-size: 28px;
+        }
+
+        .profile-container {
+            width: 95%;
+        }
+
+        .image-container img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .info-container h2 {
+            font-size: 18px;
+        }
+
+        .profile-details p {
+            font-size: 18px;
+        }
+
+        .skills-box {
+            padding: 15px;
+        }
+
+        .skill-item {
+            font-size: 18px;
+            padding: 8px 15px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .profile-header h1 {
+            font-size: 24px;
+        }
+
+        .profile-container {
+            width: 100%;
+        }
+
+        .image-container img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .info-container h2 {
+            font-size: 16px;
+        }
+
+        .profile-details p {
+            font-size: 16px;
+        }
+
+        .skills-box {
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .skill-item {
+            font-size: 16px;
+            padding: 6px 10px;
+        }
+    }
 
 </style>
 {% endblock %}

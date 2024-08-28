@@ -12,17 +12,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px; /* Add padding to prevent content from touching the edges */
+            box-sizing: border-box;
         }
 
         .container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             max-width: 1200px;
             width: 100%;
-            
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+            gap: 20px; /* Space between containers */
         }
 
         h1 {
@@ -35,9 +38,11 @@
             background-color: #2c2c2c;
             padding: 40px;
             border-radius: 60px;
-            width: 500px;
+            width: 100%; /* Make the form adaptive */
+            max-width: 600px; /* Set a maximum width */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             margin-bottom: 50px;
+            box-sizing: border-box;
         }
 
         label {
@@ -87,10 +92,11 @@
         }
 
         .image-container {
-            width: 450px; /* Adjust the width of the image container */
-            padding-left: 20px;
-            margin-top: 60px;
-            margin-left: 80px;
+            width: 100%; /* Make the image container adaptive */
+            max-width: 600px; /* Set a maximum width */
+            padding: 20px; /* Add some padding */
+            box-sizing: border-box;
+            margin-top: 20px;
         }
 
         .image-container img {
@@ -98,12 +104,41 @@
             height: auto; /* Maintain aspect ratio */
             border-radius: 20px;
         }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) { /* Tablets */
+            .container {
+                flex-direction: column; /* Stack containers vertically */
+                align-items: center;
+            }
+
+            form,
+            .image-container {
+                max-width: 100%; /* Ensure full width for containers */
+                padding: 20px; /* Adjust padding for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) { /* Mobile devices */
+            form {
+                padding: 20px; /* Adjust padding for mobile */
+                border-radius: 20px; /* Adjust border-radius for mobile */
+            }
+
+            button[type="submit"] {
+                font-size: 14px; /* Adjust font size for mobile */
+                padding: 8px; /* Adjust padding for mobile */
+            }
+
+            .image-container {
+                padding: 10px; /* Reduce padding for mobile */
+            }
+        }
     </style>
 </head>
 
 {% extends 'base.html' %}
-{% load static %} <!-- This line is important -->
-
+{% load static %}
 
 {% block title %}Work_on_holidays{% endblock %}
 
