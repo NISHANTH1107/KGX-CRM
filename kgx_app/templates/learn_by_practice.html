@@ -1,78 +1,73 @@
 {% extends 'base.html' %}
 
-{% block title %}Learn by Practice Gallery{% endblock %}
-
-{% load static %}
+{% block title %}Learn by practice{% endblock %}
 
 {% block content %}
-    <style>
-        .learn-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .card {
-            width: 30%;
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #2c2c2c;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            color: white; /* Set text color to white */
-            position: relative;
-        }
-        
-        .card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: white; /* Set text color to white */
-        }
-        
-        .card p {
-            font-size: 1rem;
-            color: white; /* Set text color to white */
-        }
-        
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-        }
-        
-        .card h2, .card p {
-            position: relative;
-            z-index: 1;
-        }
-        
-        @media screen and (max-width: 1024px) {
-            .card {
-                width: 48%;
-            }
-        }
-        
-        @media screen and (max-width: 768px) {
-            .card {
-                width: 100%;
-            }
-        }
-    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
 
-    <div class="learn-container">
+    .image-container {
+        display: grid;
+        grid-template-columns: repeat(3, 234px); /* 3 columns for images */
+        gap: 115px; /* Space between images */
+        justify-content: center; /* Center the grid horizontally */
+        margin: 20px auto;
+        padding: 20px;
+        position: relative; /* Required for absolute positioning of small boxes */
+    }
+
+    .box {
+        width: 234px;
+        height: 205px;
+        background-size: cover; /* Ensure the background image covers the entire box */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Prevent the background image from repeating */
+        border-radius: 30px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        position: relative; /* Required for positioning small boxes within */
+        margin-bottom: 30px; /* Space between the big box and small box */
+        border: 2px solid #861C99; /* Thin border of shade 861C99 */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation for hover effect */
+    }
+
+    .box:hover {
+        transform: scale(1.05); /* Slightly increase size on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+    }
+
+    .small-box {
+        width: 141px;
+        height: 52px;
+        background: linear-gradient(135deg, #3B1149, #861C99); /* Gradient background */
+        border-radius: 70px; /* Rounded corners */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* More visible shadow effect */
+        border: 1px solid #ffffff; /* Thin white stroke border */
+        position: absolute; /* Absolute positioning within the big box */
+        bottom: -67px; /* Move the small box further down to avoid overlap */
+        left: 50%; /* Center the small box horizontally */
+        transform: translateX(-50%); /* Center the small box horizontally */
+        cursor: pointer;
+        transition: box-shadow 0.3s ease; /* Animation for hover effect */
+        font-family: 'Outfit', sans-serif; /* Outfit font */
+        font-size: 16px; /* Font size */
+        font-weight: 500; /* Medium font weight */
+        color: #ffffff; /* White text color */
+        text-align: center; /* Center the text */
+        line-height: 52px; /* Vertically center the text */
+    }
+
+    .small-box:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5); /* Larger shadow on hover */
+    }
+</style>
+
+    <div class="image-container">
         {% if learnbypractices %}
             {% for practice in learnbypractices %}
-                <a href="{{ practice.link }}" class="card" style="background-image: url('{{ practice.image.url }}'); background-size: cover; background-position: center;">
-                    <h2>{{ practice.description }}</h2>
-                    <p>{{ practice.description }}</p>
-                </a>
+                
+                <div class="box" style="background-image: url('{{ practice.image.url }}');">
+                    <div class="small-box" onclick="window.location.href='{{ practice.link }}';">Click Here!!</div>
+                </div>
             {% endfor %}
         {% else %}
             <p style="color: white;">No courses available right now.</p> <!-- Set text color to white -->
