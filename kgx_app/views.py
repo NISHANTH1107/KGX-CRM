@@ -15,8 +15,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import HolidayForm
 from .models import Holiday
-import threading
-import subprocess
 from .import generate_pdf,email_service
 
 
