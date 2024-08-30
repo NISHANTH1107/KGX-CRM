@@ -15,10 +15,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import HolidayForm
 from .models import Holiday
-import threading
-import subprocess
 from .import generate_pdf,email_service
 
+from django.shortcuts import redirect
+
+def home_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')  # Redirect to the dashboard if logged in
+    else:
+        return redirect('login')  # Redirect to the login page if not logged in
 
 
 @csrf_protect

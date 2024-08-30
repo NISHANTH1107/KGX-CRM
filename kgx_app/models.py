@@ -69,7 +69,6 @@ class Internship(models.Model):
     
 
 class Learnbypractice(models.Model):
-    description = models.TextField(default="No description available")
     image = models.ImageField(upload_to='images/')
     link = models.URLField()
 

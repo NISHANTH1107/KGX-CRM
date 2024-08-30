@@ -4,8 +4,13 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); /* Import the Inter font with the necessary weights */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+     /* Import the Inter font with the necessary weights */
 
     body {
         background-image: {% static 'kgx_app/bg_kgx.png' %};
@@ -216,20 +221,18 @@
     }
     /* Comment Section Styles */
    /* Highlighted Comment Section Styles */
-.comment-section {
-    background: linear-gradient(135deg, #e0e0e0 0%, #ffffff 100%);
-    /* Gradient background */
+   .comment-section {
+    background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for depth */
-    border: 2px solid #580475;
-    /* Border to frame the section */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    border: 2px solid #580475; /* Border to frame the section */
     overflow-y: hidden;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    backdrop-filter: blur(10px); /* Optional: Adds a blur effect to the background */
 }
 
 .comment {
@@ -237,11 +240,21 @@
     align-items: center;
     padding: 15px;
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background for comments */
     margin-bottom: 15px;
     flex-grow: 1;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    /* Soft shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.comment .comment-content {
+    flex-grow: 1;
+    background: rgba(255, 255, 255, 0.2); /* Slightly more transparent white background for the comment content */
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Shadow for the comment content */
+    font-size: 16px;
+    line-height: 1.5;
+    color: white; /* Ensure text color is white for readability */
 }
 
 .comment img {
@@ -249,13 +262,13 @@
     height: 50px;
     border-radius: 50%;
     margin-right: 15px;
-    border: 2px solid #580475;
-    /* Border around the avatar */
+    border: 2px solid #580475; /* Border around the avatar */
 }
+
 
 .comment .comment-content {
     flex-grow: 1;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(7, 6, 6, 0.9);
     padding: 15px;
     border-radius: 15px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -283,22 +296,42 @@
 }
 
 .comment-box button {
-    padding: 12px 25px;
+    padding: 12px;
+    width: 50px;
+    height: 50px;
     border: none;
-    border-radius: 10px;
+    border-radius: 50%;
     background-color: #580475;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Button shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Button shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .comment-box button:hover {
     background-color: #A507DB;
     /* Brighter color on hover */
 }
+
+.comment-box button i {
+    font-size: 20px;
+}
+.comment-box .logo-icon {
+    font-size: 24px; /* Adjust the icon size */
+    color: #580475; /* Match the theme color */
+    margin-right: 10px; /* Space between icon and input field */
+    border-radius: 50%; /* Optional: Make it round */
+    background-color: rgba(255, 255, 255, 0.1); /* Add background */
+    padding: 8px; /* Space inside the icon */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+
+
 
 </style>
 
@@ -362,9 +395,15 @@ daily at the new South Texas Starfactory​
             </div>
             <!-- Comment Box -->
             <div class="comment-box">
+                <!-- Font Awesome Icon -->
+                <i class="fas fa-comment-dots logo-icon"></i>
                 <input type="text" placeholder="Type your message...">
-                <button type="submit">Send</button>
+                <button type="submit"><i class="fas fa-paper-plane"></i></button>
             </div>
+            
+            
+            
+            
         </div>
     </div>
 </div>
