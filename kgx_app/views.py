@@ -1,23 +1,18 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginForm
-from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render
-from django.shortcuts import render, get_object_or_404
-from .models import Profile,Hackathon,Learnbypractice,Internship
+from .forms import LoginForm,HolidayForm,CommentForm
+from django.views.decorators.csrf import csrf_protect ,csrf_exempt
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Profile,Hackathon,Learnbypractice,Internship,Holiday,Comment
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.core.exceptions import ValidationError
-from .forms import HolidayForm
-from .models import Holiday
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import HolidayForm
-from .models import Holiday
 from .import generate_pdf,email_service
-
-from django.shortcuts import redirect
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+import json
+from django.utils import timezone
+from datetime import timedelta
+from django.templatetags.static import static
 
 def home_redirect(request):
     if request.user.is_authenticated:
@@ -50,7 +45,22 @@ def login_view(request):
 
 @login_required
 def dashboard_view(request):
-    return render(request, 'dashboard.html')
+    comments = Comment.objects.select_related('user').all().order_by('-created_at')  # Fetch comments with user profile
+    for comment in comments:
+        try:
+            # Assuming the username is the roll number
+            profile = Profile.objects.get(roll_no=comment.user.username)
+            comment.profile_image_url = profile.image.url if profile.image else '/static/kgx_app/default_profile.png'
+        except Profile.DoesNotExist:
+            comment.profile_image_url = '/static/kgx_app/default_profile.png'  # Default image if profile does not exist
+
+   # Calculate the time 24 hours ago
+    twenty_four_hours_ago = timezone.now() - timedelta(hours=24)
+
+    # Filter comments created in the last 24 hours
+    recent_comments = Comment.objects.filter(created_at__gte=twenty_four_hours_ago)
+
+    return render(request, 'dashboard.html', {'comments': recent_comments})
 
 @login_required
 def profile(request):
@@ -117,5 +127,30 @@ def logout_view(request):
     messages.success(request, 'You have successfully logged out.')
     return redirect('login')
 
-
-    
+@login_required
+@require_POST
+@csrf_exempt  # Use for testing, but ideally, keep CSRF protection enabled in production
+def add_comment(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            content = data.get('content')
+            if content:
+                # Create a new comment in your Comment model
+                new_comment = Comment(user=request.user, content=content)  # Associate with the logged-in user
+                new_comment.save()
+                
+                # Prepare response data
+               
+                #response_data = {
+                #    'success': True,
+                #   'comment': content,
+                #    'profile_image': new_comment.user.profile.image.url if new_comment.user.profile.image else static('kgx_app/default_profile.png')
+                #}
+            
+                return JsonResponse({'success': True, 'comment': content})
+            else:
+                return JsonResponse({'success': False, 'error': 'Comment cannot be empty.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})

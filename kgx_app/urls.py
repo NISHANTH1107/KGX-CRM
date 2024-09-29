@@ -15,4 +15,5 @@ urlpatterns = [
    path('hackathon/', views.hackathon, name='hackathon'),
    path('internship/', views.internship, name='internship'),
    path('contact/', views.contact_view, name='contact'),
+   path('add_comment/', views.add_comment, name='add_comment'),
    path('inventory/', views.inventory, name='inventory')]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

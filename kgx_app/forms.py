@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Holiday
+from .models import Comment
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={
@@ -11,10 +13,6 @@ class LoginForm(AuthenticationForm):
         'placeholder': 'Password...'
     }))
 
-from django import forms
-from .models import Holiday
-
-
 class HolidayForm(forms.ModelForm):
     class Meta:
         model = Holiday
@@ -23,3 +21,8 @@ class HolidayForm(forms.ModelForm):
             'entry_time': forms.TimeInput(attrs={'type': 'time'}),
             'exit_time': forms.TimeInput(attrs={'type': 'time'}),
         }
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']

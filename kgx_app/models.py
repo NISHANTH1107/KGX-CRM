@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
 from django.db import models
 
 class Profile(models.Model):
@@ -17,7 +17,7 @@ class Profile(models.Model):
     skills = models.CharField(max_length=200)
     hackathon = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images/',null=True, blank=True)
-    
+
     def __str__(self):
         return self.roll_no
 
@@ -28,11 +28,6 @@ class Wifi(models.Model):
     
     def __str__(self):
         return f"{self.roll_no} - {self.mac}"
-
-
-
-from django.db import models
-from django.core.exceptions import ValidationError
 
 class Holiday(models.Model):
     name = models.CharField(max_length=100, verbose_name="Holiday Name")
@@ -74,3 +69,14 @@ class Learnbypractice(models.Model):
 
     def __str__(self):
         return self.image.name
+    
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}: {self.content[:20]}..."  # Show first 20 characters
+    
+    def is_recent(self):
+        return (timezone.now() - self.created_at) <= timezone.timedelta(hours=24)

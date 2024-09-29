@@ -1,5 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
+{% csrf_token %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -227,7 +228,7 @@
     padding: 30px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     border: 2px solid #580475; /* Border to frame the section */
-    overflow-y: hidden;
+    overflow-y: auto;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -360,51 +361,74 @@
         </div>
     </div>
     <div class="section-two">
-        <div class="comment-section">
-            <!-- Example Messages -->
-            <div class="comment">
-                <img src="{% static 'kgx_app/commenter1.png' %}" alt="Commenter 1">
-                <div class="comment-content">
-                    SpaceX successfully launched
-                    its Starship rocket, achieving
-                    its first soft ocean landing
-                    (World Economic Forum)​.
+        <div class="comment-section" id="comment-section">
+            {% for comment in comments %}
+                <div class="comment">
+                    <!-- Display the profile image in a circle -->
+                    <img src="{{ comment.user.profile.image.url }}" 
+                    onerror="this.onerror=null; 
+                    this.src='{% static 'kgx_app/default_profile.png' %}';" 
+                    alt="Profile Picture" class="profile-pic" />
+
+                    <div class="comment-content">
+                        <p>{{ comment.content }}</p>
+                        <p>{{ comment.profile_image }}</p> 
+                    </div>
                 </div>
-            </div>
-            <div class="comment">
-                <img src="{% static 'kgx_app/commenter2.png' %}" alt="Commenter 2">
-                <div class="comment-content">
-                    SpaceX successfully launched
- its Starship rocket, achieving
- its first soft ocean landing. 
-They plan to build one Starship 
-daily at the new South Texas Starfactory​
- (World Economic Forum)​.
-                </div>
-            </div>
-            <div class="comment">
-                <img src="{% static 'kgx_app/commenter3.png' %}" alt="Commenter 3">
-                <div class="comment-content">
-                    SpaceX successfully launched
- its Starship rocket, achieving
- its first soft ocean landing. 
-They plan to build one Starship 
-daily at the new South Texas Starfactory​
- (World Economic Forum)​.
-                </div>
-            </div>
+            {% endfor %}
+        </div>        
             <!-- Comment Box -->
-            <div class="comment-box">
+        <div class="comment-box">
                 <!-- Font Awesome Icon -->
                 <i class="fas fa-comment-dots logo-icon"></i>
-                <input type="text" placeholder="Type your message...">
-                <button type="submit"><i class="fas fa-paper-plane"></i></button>
-            </div>
-            
-            
-            
-            
+                <input type="text" id="comment-input" placeholder="Type your message...">
+                <button id="submit-comment"><i class="fas fa-paper-plane"></i></button>
+            </div> 
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('submit-comment').addEventListener('click', function() {
+        const content = document.getElementById('comment-input').value.trim();
+        const commentSection = document.getElementById('comment-section'); // Should now work correctly
+    
+        if (content) {
+            fetch("{% url 'add_comment' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ content: content }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const newComment = document.createElement('div');
+                    newComment.classList.add('comment');
+                    newComment.innerHTML = `
+                        <img src="${data.profile_image}" alt="Commenter">
+                        <div class="comment-content">${data.comment}</div>
+                    `;
+                    commentSection.insertBefore(newComment, commentSection.lastElementChild); // Inserts above input box
+                    document.getElementById('comment-input').value = ''; // Clear input box
+                } else {
+                    alert("Failed to add comment: " + (data.error || "Please try again."));
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert("An error occurred while submitting the comment. Please try again.");
+            });
+        } else {
+            alert("Please enter a comment before submitting.");
+        }
+    });
+    </script>    
 {% endblock %}
