@@ -6,7 +6,7 @@
 <div class="container">
     <div class="form-container">
         <h2>KGX WIFI ACCESS FORM</h2>
-        <form action="{% url 'wifi' %}" method="post" enctype="multipart/form-data">
+        <form id="wifi-form" action="{% url 'wifi' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
@@ -22,9 +22,9 @@
 
             <label for="screenshot">Screenshot (Add image)</label>
             <div class="file-input-container">
-                <input type="file" id="screenshot" name="screenshot" accept="image/*">
+                <input type="file" id="screenshot" name="screenshot" accept="image/*" required>
                 <label for="screenshot" class="file-input-label">
-                    <img src="{% static 'kgx_app/screenshot.png' %}" alt="Choose File">
+                    <img id="selected-image" src="{% static 'kgx_app/screenshot.png' %}" alt="Choose File">
                 </label>
             </div>
 
@@ -53,6 +53,13 @@
     </div>
 </div>
 
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <p>Form submitted successfully!</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+
 <style>
    body {
     background-color: #000000;
@@ -67,23 +74,23 @@
     justify-content: center;
     align-items: flex-start;
     padding: 10px;
-    max-width: 1000px; /* Reduce the max-width */
-    margin: 20px auto; /* Add some top margin to move the container up */
+    max-width: 1000px;
+    margin: 20px auto;
 }
 
 .form-container, .info-container {
-    padding: 20px; /* Reduce padding */
-    border-radius: 40px; /* Reduce border radius */
+    padding: 20px;
+    border-radius: 40px;
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 45%; /* Reduce the width of containers */
+    width: 45%;
     display: flex;
     flex-direction: column;
 }
 
 .form-container {
     background-color: #1E1E1E;
-    margin-top: -10px; /* Adjust to move the container up */
+    margin-top: -10px;
 }
 
 .info-container {
@@ -96,7 +103,7 @@
 h2, h3 {
     color: #fff;
     text-align: center;
-    margin-bottom: 20px; /* Add space below headings */
+    margin-bottom: 20px;
 }
 
 form {
@@ -105,29 +112,29 @@ form {
 }
 
 label {
-    margin-bottom: 8px; /* Reduce margin */
+    margin-bottom: 8px;
     font-weight: bold;
 }
 
 input[type="text"], input[type="file"] {
     width: 100%;
-    padding: 8px; /* Reduce padding */
-    margin-bottom: 10px; /* Reduce margin between fields */
-    border-radius: 40px; /* Reduce border radius */
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 40px;
     border: none;
     background-color: #3c3c3c;
     color: #fff;
     box-sizing: border-box;
     font-size: 14px;
-    height: 45px; /* Reduce height */
+    height: 45px;
 }
 
 .file-input-container {
     position: relative;
     width: 100%;
-    max-width: 200px; /* Reduce max width */
-    height: 70px; /* Adjust height */
-    margin-bottom: 15px; /* Adjust margin */
+    max-width: 200px;
+    height: 70px;
+    margin-bottom: 15px;
 }
 
 input[type="file"] {
@@ -150,33 +157,35 @@ input[type="file"] {
     justify-content: center;
     align-items: center;
     border: 2px #ccc;
-    border-radius: 40px; /* Reduce border radius */
+    border-radius: 40px;
     background-color: #3c3c3c;
     color: #000;
     cursor: pointer;
 }
 
 .file-input-label img {
-    max-width: 40%; /* Adjust image size */
-    max-height: 40%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Maintain aspect ratio */
 }
 
 button[type="submit"] {
     background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
-    padding: 8px; /* Reduce padding */
+    padding: 8px;
     width: 100%;
     border: none;
-    border-radius: 40px; /* Reduce border radius */
+    border-radius: 40px;
     color: #fff;
-    font-size: 14px; /* Reduce font size */
+    font-size: 14px;
     cursor: pointer;
-    transition: background 0.3s;
-    height: 45px; /* Reduce height */
-    margin-top: 20px; /* Reduce top margin */
+    transition: background 0.3s, transform 0.3s;
+    height: 45px;
+    margin-top: 20px;
 }
 
 button[type="submit"]:hover {
     background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+    transform: scale(1.1);
 }
 
 .info-container p strong {
@@ -187,51 +196,199 @@ button[type="submit"]:hover {
     list-style-type: disc;
     padding-left: 20px;
     margin: 0;
-    line-height: 1.6; /* Adjust line spacing */
+    line-height: 1.6;
 }
 
 .info-container ul li {
-    margin-bottom: 8px; /* Reduce margin */
+    margin-bottom: 8px;
 }
 
 .info-container ul li::marker {
-    color: #720083; /* Purple color for dots */
-    font-size: 1.1em; /* Adjust size of dots */
+    color: #720083;
+    font-size: 1.1em;
 }
 
-@media (max-width: 768px) { /* Tablets */
+@media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Stack containers vertically */
+        flex-direction: column;
         align-items: center;
     }
 
     .form-container, .info-container {
-        width: 80%; /* Adjust width for smaller screens */
+        width: 80%;
     }
 }
 
-@media (max-width: 480px) { /* Mobile devices */
+@media (max-width: 480px) {
     .form-container, .info-container {
-        width: 100%; /* Full width on mobile devices */
-        padding: 15px; /* Adjust padding for mobile */
-        border-radius: 20px; /* Adjust border-radius for mobile */
+        width: 100%;
+        padding: 15px;
+        border-radius: 20px;
     }
 
     button[type="submit"] {
-        font-size: 12px; /* Adjust font size for mobile */
-        padding: 6px; /* Adjust padding for mobile */
+        font-size: 12px;
+        padding: 6px;
     }
 
     .file-input-label {
         width: 100%;
-        height: 70px; /* Adjust height for mobile */
-    }
-
-    .file-input-label img {
-        max-width: 35%; /* Adjust image size for mobile */
-        max-height: 35%;
+        height: 70px;
     }
 }
 
+/* Popup styles */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), #580475);
+    border: 2px solid #ffffff;
+    border-radius: 30px;
+    padding: 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    color: white;
+    animation: bounceIn 0.5s ease-out;
+}
+
+.popup-content p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.popup-content button {
+    background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.popup-content button:hover {
+    background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+}
+
+/* Keyframe animations */
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes bounceOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 </style>
+
+<script>
+function closePopup() {
+    const popup = document.getElementById('popup');
+    popup.style.animation = 'fadeOut 0.5s ease-out, bounceOut 0.5s ease-out';
+    setTimeout(() => {
+        popup.style.display = 'none';
+        popup.style.animation = ''; // Reset animation
+    }, 500);
+    // Reset the form
+    document.getElementById('wifi-form').reset();
+    // Reset the image preview
+    document.getElementById('selected-image').src = "{% static 'kgx_app/screenshot.png' %}";
+}
+
+// Function to show the popup
+function showPopup() {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'flex';
+    popup.style.animation = 'bounceIn 0.5s ease-out';
+}
+
+// Function to preview selected image
+function previewImage(event) {
+    const fileInput = event.target;
+    const image = document.getElementById('selected-image');
+
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            image.src = e.target.result;
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+}
+
+// Handle form submission
+document.getElementById('wifi-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const fileInput = document.getElementById('screenshot');
+    if (fileInput.files.length === 0) {
+        alert('Please upload an image.');
+        return;
+    }
+
+    // Simulate form submission
+    setTimeout(function() {
+        showPopup(); // Show the popup after submission
+    }, 1000);
+});
+
+// Attach the change event to the file input
+document.getElementById('screenshot').addEventListener('change', previewImage);
+</script>
+
 {% endblock %}
