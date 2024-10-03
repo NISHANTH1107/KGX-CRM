@@ -12,7 +12,6 @@ urlpatterns = [
    path('learn_by_practice/', views.learn_by_practice, name='learn_by_practice'),
    path('wifi/', views.wifi, name='wifi'),
    path('work_on_holidays/', views.work_on_holidays, name='work_on_holidays'),
-   path('hackathon/', views.hackathon, name='hackathon'),
    path('internship/', views.internship, name='internship'),
    path('contact/', views.contact_view, name='contact'),
    path('add_comment/', views.add_comment, name='add_comment'),

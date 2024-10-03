@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import LoginForm,HolidayForm,CommentForm
 from django.views.decorators.csrf import csrf_protect ,csrf_exempt
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Profile,Hackathon,Learnbypractice,Internship,Holiday,Comment
+from .models import Profile,Learnbypractice,Internship,Holiday,Comment
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from .import generate_pdf,email_service
@@ -102,10 +102,7 @@ def work_on_holidays(request):
     return render(request, 'work_on_holidays.html', {'form': form})
 
 
-@login_required
-def hackathon(request):
-    images = Hackathon.objects.all()
-    return render(request, 'hackathon.html', {'images': images})
+
 
 @login_required
 def internship(request):
