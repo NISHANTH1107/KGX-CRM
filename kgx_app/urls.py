@@ -15,4 +15,10 @@ urlpatterns = [
    path('internship/', views.internship, name='internship'),
    path('contact/', views.contact_view, name='contact'),
    path('add_comment/', views.add_comment, name='add_comment'),
-   path('inventory/', views.inventory, name='inventory')]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+   path('inventory/', views.inventory, name='inventory'),
+   path('staff_dashboard/', views.staff_dashboard, name='staff_dashboard'),
+   path('assign-task/', views.assign_task, name='assign_task'),
+    path('to-do/', views.to_do, name='to_do'),
+    path('in-progress/', views.in_progress, name='in_progress'),
+    path('for-review/', views.for_review, name='for_review'),
+    path('done/', views.done, name='done'),]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

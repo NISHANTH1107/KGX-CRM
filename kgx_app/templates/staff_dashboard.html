@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}KGXperience{% endblock %}</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* General styles */
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: #171616;
+            overflow: hidden; /* Prevent body from scrolling */
+        }
+
+        /* Sidebar styles */
+        .left-corner-box {
+            width: 17%;
+            height: 100%;
+            background: #1E1E1E;
+            position: fixed; /* Fix the sidebar to the viewport */
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent scrolling within the sidebar */
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000; /* Ensure the sidebar is above other content */
+        }
+
+        /* Logo and Navigation */
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 0;
+        }
+
+        .logo-icon {
+            max-width: 80%;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .navigation {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 5px;
+        }
+
+        .nav-button {
+            width: 80%;
+            text-align: left;
+            margin: 7px 0;
+            padding: 10px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 13px;
+            color: #AEAEAE;
+            text-decoration: none;
+            transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+            background-color: transparent;
+            border: none;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+
+        .nav-button.active {
+            background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%);
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        .nav-button:hover {
+            background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .logout {
+            text-decoration: none;
+            font-family: 'Raleway', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 13px;
+            color: #ddd;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            transition: color 0.3s ease;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .logout:hover {
+            color: #fff;
+            background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%);
+            transform: scale(1.05);
+        }
+
+        /* Content styles */
+        .content {
+            margin-left: 17%; /* To avoid overlap with the sidebar */
+            padding: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            display: none; /* Hide toggle button by default */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .left-corner-box {
+                width: 0;
+                left: -100%; /* Hide the sidebar offscreen */
+                transition: left 0.3s ease;
+            }
+
+            .left-corner-box.active {
+                left: 0; /* Slide in the sidebar */
+                width: 80%;
+            }
+
+            .sidebar-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background-color: #1E1E1E;
+                border: none;
+                color: #fff;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-button {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="left-corner-box">
+        <div class="logo-container">
+            <img src="{% static 'kgx_app/logo.png' %}" alt="Logo" class="logo-icon">
+        </div>
+        
+        <nav class="navigation">
+            <a href="{% url 'assign_task' %}" class="nav-button {% if request.resolver_match.url_name == 'assign_task' %}active{% endif %}">
+                <img src="{% static 'kgx_app/assign_task.png' %}" alt="Assign Task" class="nav-icon">
+                Assign Task
+            </a>
+            <a href="{% url 'to_do' %}" class="nav-button {% if request.resolver_match.url_name == 'to_do' %}active{% endif %}">
+                <img src="{% static 'kgx_app/to_do.png' %}" alt="To-Do" class="nav-icon">
+                To-Do
+            </a>
+            <a href="{% url 'in_progress' %}" class="nav-button {% if request.resolver_match.url_name == 'in_progress' %}active{% endif %}">
+                <img src="{% static 'kgx_app/in_progress.png' %}" alt="In Progress" class="nav-icon">
+                In Progress
+            </a>
+            <a href="{% url 'for_review' %}" class="nav-button {% if request.resolver_match.url_name == 'for_review' %}active{% endif %}">
+                <img src="{% static 'kgx_app/for_review.png' %}" alt="For Review" class="nav-icon">
+                For Review
+            </a>
+            <a href="{% url 'done' %}" class="nav-button {% if request.resolver_match.url_name == 'done' %}active{% endif %}">
+                <img src="{% static 'kgx_app/done.png' %}" alt="Done" class="nav-icon">
+                Done
+            </a>
+        </nav>
+        
+        <a href="{% url 'logout' %}" class="logout">
+            <img src="{% static 'kgx_app/logout.png' %}" alt="Logout" class="logout-icon">
+            Logout
+        </a>
+    </div>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="content">
+        <script>
+            function toggleSidebar() {
+                var sidebar = document.querySelector('.left-corner-box');
+                var toggleButton = document.querySelector('.sidebar-toggle');
+                sidebar.classList.toggle('active');
+                toggleButton.classList.toggle('hide');
+            }
+        </script>
+
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+    </div>
+</body>
+</html>

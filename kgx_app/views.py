@@ -13,26 +13,47 @@ import json
 from django.utils import timezone
 from datetime import timedelta
 from django.templatetags.static import static
+from .decorators import role_required
 
 def home_redirect(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')  # Redirect to the dashboard if logged in
-    else:
-        return redirect('login')  # Redirect to the login page if not logged in
+    try:
+        # Assuming `request.user` is linked to a Profile instance
+        profile = Profile.objects.get(roll_no=request.user.username)  # Assuming roll_no is the same as username
+        if profile.role == 'staff':
+            return redirect('staff_dashboard')  # Redirect to the staff dashboard if the user is staff
+        else:
+            return redirect('dashboard')  # Redirect to the student dashboard if the user is not staff
+    except Profile.DoesNotExist:
+        return redirect('login')
 
+# views.py
 
 @csrf_protect
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')  # Assuming this is roll_no
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                
+                # Fetch the profile using roll_no
+                try:
+                    profile = Profile.objects.get(roll_no=username)
+                    
+                    # Redirect based on role
+                    if profile.role == Profile.STAFF:
+                        return redirect('staff_dashboard')  # Redirect to staff dashboard
+                    else:
+                        return redirect('dashboard')  # Redirect to student dashboard
+                
+                except Profile.DoesNotExist:
+                    messages.error(request, 'Profile not found.')
+                    return redirect('login')
+                
                 messages.success(request, 'Login successful.')
-                return redirect('dashboard')  # Redirect to a home page or dashboard after login
             else:
                 messages.error(request, 'Invalid username or password.')
                 return redirect('login')
@@ -43,7 +64,10 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
+
+
 @login_required
+@role_required(allowed_roles=['student'])
 def dashboard_view(request):
     comments = Comment.objects.select_related('user').all().order_by('-created_at')  # Fetch comments with user profile
     for comment in comments:
@@ -63,21 +87,25 @@ def dashboard_view(request):
     return render(request, 'dashboard.html', {'comments': recent_comments})
 
 @login_required
+@role_required(allowed_roles=['student'])
 def profile(request):
     profile = get_object_or_404(Profile, roll_no=request.user.username)
     return render(request, 'profile.html', {'profile': profile})
     
 @login_required
+@role_required(allowed_roles=['student'])
 def learn_by_practice(request):
     learnbypractices = Learnbypractice.objects.all()
     return render(request, 'learn_by_practice.html', {'learnbypractices': learnbypractices})
 
 @login_required
+@role_required(allowed_roles=['student'])
 def wifi(request):
     return render(request, 'wifi.html')
 
 
 @login_required
+@role_required(allowed_roles=['student'])
 def work_on_holidays(request):
     if request.method == 'POST':
         form = HolidayForm(request.POST)
@@ -105,19 +133,23 @@ def work_on_holidays(request):
 
 
 @login_required
+@role_required(allowed_roles=['student'])
 def internship(request):
     internships = Internship.objects.all()  # Get all internships
     return render(request, 'internship.html', {'internships': internships})
 
 
 @login_required
+@role_required(allowed_roles=['student'])
 def inventory(request):
     return render(request, 'inventory.html')
 
 
 @login_required
+@role_required(allowed_roles=['student'])
 def contact_view(request):
     return render(request, 'contact.html')
+
 @login_required
 def logout_view(request):
     logout(request)
@@ -126,7 +158,8 @@ def logout_view(request):
 
 @login_required
 @require_POST
-@csrf_exempt  # Use for testing, but ideally, keep CSRF protection enabled in production
+@csrf_exempt 
+@role_required(allowed_roles=['student']) # Use for testing, but ideally, keep CSRF protection enabled in production
 def add_comment(request):
     if request.method == 'POST':
         try:
@@ -151,3 +184,45 @@ def add_comment(request):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+
+
+@login_required
+@role_required(allowed_roles=['staff'])
+def staff_dashboard(request):
+    # Logic for staff dashboard
+    return render(request, 'staff_dashboard.html')
+
+
+@login_required
+@role_required(allowed_roles=['staff'])
+def assign_task(request):
+    # Logic for assigning a task
+    return render(request, 'assign_task.html')
+
+# To-Do View
+@login_required
+@role_required(allowed_roles=['staff'])
+def to_do(request):
+    # Logic for displaying To-Do tasks
+    return render(request, 'to_do.html')
+
+# In Progress View
+@login_required
+@role_required(allowed_roles=['staff'])
+def in_progress(request):
+    # Logic for displaying tasks that are in progress
+    return render(request, 'in_progress.html')
+
+# For Review View
+@login_required
+@role_required(allowed_roles=['staff'])
+def for_review(request):
+    # Logic for displaying tasks that are for review
+    return render(request, 'for_review.html')
+
+# Done View
+@login_required
+@role_required(allowed_roles=['staff'])
+def done(request):
+    # Logic for displaying completed tasks
+    return render(request, 'done.html')

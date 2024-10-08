@@ -5,18 +5,27 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 class Profile(models.Model):
+    STUDENT = 'student'
+    STAFF = 'staff'
+    ROLE_CHOICES = [
+        (STUDENT, 'Student'),
+        (STAFF, 'Staff'),
+    ]
+    
+    
     name = models.CharField(max_length=100)
     roll_no = models.CharField(primary_key=True, max_length=20)
     dept = models.CharField(max_length=100)
     email_p = models.EmailField()
     email_clg = models.EmailField()
-    phn_no = models.IntegerField()
+    phn_no = models.CharField(max_length=15)
     linked_in = models.URLField(blank=True, null=True)
     github = models.URLField(blank=True, null=True)
     domain = models.CharField(max_length=100)
     skills = models.CharField(max_length=200)
     hackathon = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/',null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=STUDENT)
 
     def __str__(self):
         return self.roll_no

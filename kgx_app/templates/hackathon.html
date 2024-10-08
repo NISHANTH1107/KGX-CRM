@@ -1,0 +1,72 @@
+<!-- internship_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Internship Gallery{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
+
+    .image-container {
+        display: grid;
+        grid-template-columns: repeat(3, 234px); /* 3 columns for images */
+        gap: 115px; /* Space between images */
+        justify-content: center; /* Center the grid horizontally */
+        margin: 20px auto;
+        padding: 20px;
+        position: relative; /* Required for absolute positioning of small boxes */
+    }
+
+    .box {
+        width: 234px;
+        height: 205px;
+        background-size: cover; /* Ensure the background image covers the entire box */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Prevent the background image from repeating */
+        border-radius: 30px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        position: relative; /* Required for positioning small boxes within */
+        margin-bottom: 30px; /* Space between the big box and small box */
+        border: 2px solid #861C99; /* Thin border of shade 861C99 */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation for hover effect */
+    }
+
+    .box:hover {
+        transform: scale(1.05); /* Slightly increase size on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+    }
+
+    .small-box {
+        width: 141px;
+        height: 52px;
+        background: linear-gradient(135deg, #3B1149, #861C99); /* Gradient background */
+        border-radius: 70px; /* Rounded corners */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* More visible shadow effect */
+        border: 1px solid #ffffff; /* Thin white stroke border */
+        position: absolute; /* Absolute positioning within the big box */
+        bottom: -67px; /* Move the small box further down to avoid overlap */
+        left: 50%; /* Center the small box horizontally */
+        transform: translateX(-50%); /* Center the small box horizontally */
+        cursor: pointer;
+        transition: box-shadow 0.3s ease; /* Animation for hover effect */
+        font-family: 'Outfit', sans-serif; /* Outfit font */
+        font-size: 16px; /* Font size */
+        font-weight: 500; /* Medium font weight */
+        color: #ffffff; /* White text color */
+        text-align: center; /* Center the text */
+        line-height: 52px; /* Vertically center the text */
+    }
+
+    .small-box:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5); /* Larger shadow on hover */
+    }
+</style>
+
+<div class="image-container">
+    {% for image in images %}
+        <div class="box" style="background-image: url('{{ image.image.url }}');">
+            <div class="small-box" onclick="window.location.href='{{ image.link }}';">Apply Now!</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
