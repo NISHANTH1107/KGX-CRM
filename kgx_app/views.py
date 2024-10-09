@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginForm,HolidayForm,CommentForm
+from .forms import LoginForm,HolidayForm,CommentForm,WifiForm
 from django.views.decorators.csrf import csrf_protect ,csrf_exempt
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Profile,Learnbypractice,Internship,Holiday,Comment
+from .models import Profile,Learnbypractice,Internship,Holiday,Comment,Wifi
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from .import generate_pdf,email_service
@@ -101,8 +101,19 @@ def learn_by_practice(request):
 @login_required
 @role_required(allowed_roles=['student'])
 def wifi(request):
-    return render(request, 'wifi.html')
+    user_profile = Profile.objects.get(roll_no=request.user.username)  # Assuming roll_no is used as the username
+    if request.method == 'POST':
+        form = WifiForm(request.POST, request.FILES)
+        if form.is_valid():
+            wifi_instance = form.save(commit=False)
+            wifi_instance.roll_no = user_profile  # Set the roll_no from the logged-in user's profile
+            wifi_instance.save()
+            messages.success(request, 'Form submitted successfully!')
+            return redirect('wifi')
+    else:
+        form = WifiForm()
 
+    return render(request, 'wifi.html', {'form': form})
 
 @login_required
 @role_required(allowed_roles=['student'])

@@ -30,13 +30,14 @@ class Profile(models.Model):
     def __str__(self):
         return self.roll_no
 
-
 class Wifi(models.Model):
     roll_no = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    mac = models.CharField(max_length=50)
-    
+    mac_address = models.CharField(max_length=50)
+    screenshot = models.ImageField(upload_to='wifi_screenshots/' , null=True, blank=True)  # Upload directory for screenshots
+    submitted_at = models.DateTimeField(auto_now_add=True , null=True, blank=True)
+
     def __str__(self):
-        return f"{self.roll_no} - {self.mac}"
+        return f"{self.roll_no} - {self.mac_address}"
 
 class Holiday(models.Model):
     name = models.CharField(max_length=100, verbose_name="Holiday Name")

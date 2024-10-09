@@ -60,12 +60,20 @@
             padding: 10px;
             margin-bottom: 15px;
             border-radius: 60px;
-            border: none;
+            border: 2px solid transparent; /* Set a transparent border initially */
             background-color: #3c3c3c;
             color: #fff;
             box-sizing: border-box;
             font-size: 14px;
             height: 50px;
+            transition: border-color 0.3s; /* Transition for border color */
+        }
+
+        input[type="text"]:hover,
+        input[type="time"]:hover,
+        select:hover {
+            border-color: #ffffff; /* Change to white border color on hover */
+            outline: none; /* Remove default outline */
         }
 
         input[type="text"]::placeholder,
@@ -83,8 +91,13 @@
             color: #fff;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s; /* Added transition for transform */
             height: 50px;
+        }
+        
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+            transform: scale(1.05); /* Slight expansion on hover */
         }
 
         button[type="submit"]:hover {
