@@ -14,6 +14,9 @@ from django.utils import timezone
 from datetime import timedelta
 from django.templatetags.static import static
 from .decorators import role_required
+import base64
+import requests
+from .utils import generate_wifi_report
 
 def home_redirect(request):
     try:
@@ -100,20 +103,25 @@ def learn_by_practice(request):
 
 @login_required
 @role_required(allowed_roles=['student'])
-def wifi(request):
-    user_profile = Profile.objects.get(roll_no=request.user.username)  # Assuming roll_no is used as the username
+def wifi_view(request):
     if request.method == 'POST':
-        form = WifiForm(request.POST, request.FILES)
-        if form.is_valid():
-            wifi_instance = form.save(commit=False)
-            wifi_instance.roll_no = user_profile  # Set the roll_no from the logged-in user's profile
-            wifi_instance.save()
-            messages.success(request, 'Form submitted successfully!')
-            return redirect('wifi')
-    else:
-        form = WifiForm()
+        # Create a new Wifi instance directly from the form data
+        wifi_instance = Wifi(
+            roll_no_id=request.POST.get('roll_no'),  # Use roll_no_id directly to set the foreign key
+            mac_address=request.POST.get('mac_address'),
+            screenshot=request.FILES.get('screenshot'),  # Get the uploaded screenshot
+        )
 
-    return render(request, 'wifi.html', {'form': form})
+        try:
+            wifi_instance.save()  # Save the Wifi instance to the database
+            messages.success(request, "Wifi access details submitted successfully.")
+            return JsonResponse({'success': True})  # Send a success response
+        except Exception as e:
+            messages.error(request, "There was an error submitting the form.")
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    # If the request is GET, just render the form
+    return render(request, 'wifi.html')
 
 @login_required
 @role_required(allowed_roles=['student'])
@@ -139,9 +147,6 @@ def work_on_holidays(request):
         form = HolidayForm()
 
     return render(request, 'work_on_holidays.html', {'form': form})
-
-
-
 
 @login_required
 @role_required(allowed_roles=['student'])
@@ -202,7 +207,6 @@ def add_comment(request):
 def staff_dashboard(request):
     # Logic for staff dashboard
     return render(request, 'staff_dashboard.html')
-
 
 @login_required
 @role_required(allowed_roles=['staff'])

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px; /* Add padding to prevent content from touching the edges */
+            padding: 20px;
             box-sizing: border-box;
         }
 
@@ -24,8 +24,8 @@
             align-items: flex-start;
             max-width: 1200px;
             width: 100%;
-            flex-wrap: wrap; /* Allow wrapping for smaller screens */
-            gap: 20px; /* Space between containers */
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         h1 {
@@ -38,19 +38,19 @@
             background-color: #2c2c2c;
             padding: 40px;
             border-radius: 60px;
-            width: 100%; /* Make the form adaptive */
-            max-width: 600px; /* Set a maximum width */
+            width: 100%;
+            max-width: 600px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             margin-bottom: 50px;
             box-sizing: border-box;
         }
 
         label {
-            color: #ffffff; /* Bright white */
+            color: #ffffff;
             display: block;
             margin-bottom: 8px;
-            font-size: 16px; /* Increased font size */
-            font-weight: bold; /* Made the text bold */
+            font-size: 16px;
+            font-weight: bold;
         }
 
         input[type="text"],
@@ -60,20 +60,20 @@
             padding: 10px;
             margin-bottom: 15px;
             border-radius: 60px;
-            border: 2px solid transparent; /* Set a transparent border initially */
+            border: 2px solid transparent;
             background-color: #3c3c3c;
             color: #fff;
             box-sizing: border-box;
             font-size: 14px;
             height: 50px;
-            transition: border-color 0.3s; /* Transition for border color */
+            transition: border-color 0.3s;
         }
 
         input[type="text"]:hover,
         input[type="time"]:hover,
         select:hover {
-            border-color: #ffffff; /* Change to white border color on hover */
-            outline: none; /* Remove default outline */
+            border-color: #ffffff;
+            outline: none;
         }
 
         input[type="text"]::placeholder,
@@ -91,36 +91,75 @@
             color: #fff;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.3s; /* Added transition for transform */
+            transition: background 0.3s, transform 0.3s;
             height: 50px;
-        }
-        
-        button[type="submit"]:hover {
-            background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
-            transform: scale(1.05); /* Slight expansion on hover */
         }
 
         button[type="submit"]:hover {
             background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
+            transform: scale(1.05);
         }
 
         .image-container {
-            width: 100%; /* Make the image container adaptive */
-            max-width: 600px; /* Set a maximum width */
-            padding: 20px; /* Add some padding */
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
             box-sizing: border-box;
             margin-top: 20px;
         }
 
         .image-container img {
-            width: 80%; /* Image will take up full width of the container */
-            height: auto; /* Maintain aspect ratio */
+            width: 80%;
+            height: auto;
             border-radius: 20px;
-            
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), #580475);
+            border: 2px solid #ffffff;
+            border-radius: 30px;
+            padding: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            color: white;
+        }
+
+        .popup-content p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .popup-content button {
+            background: linear-gradient(135deg, #3D0351 0%, #851B97 100%);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .popup-content button:hover {
+            background: linear-gradient(135deg, #530061 0%, #a13c9e 100%);
         }
 
         /* Media queries for responsiveness */
-        @media (max-width: 768px) { /* Tablets */
+        @media (max-width: 768px) {
             .container {
                 flex-direction: column; /* Stack containers vertically */
                 align-items: center;
@@ -133,7 +172,7 @@
             }
         }
 
-        @media (max-width: 480px) { /* Mobile devices */
+        @media (max-width: 480px) {
             form {
                 padding: 20px; /* Adjust padding for mobile */
                 border-radius: 20px; /* Adjust border-radius for mobile */
@@ -161,7 +200,7 @@
     <div class="container">
         <div>
             <h1>FILL TO WORK ON HOLIDAYS</h1>
-            <form method="post">
+            <form method="post" id="holidayForm">
                 {% csrf_token %}
                 <div>
                     <label for="id_name">Name</label>
@@ -171,7 +210,6 @@
                     <label for="id_department">Department / Year</label>
                     {{ form.department }}
                 </div>
-
                 <div>
                     <label for="id_purpose">Purpose</label>
                     {{ form.purpose }}
@@ -190,8 +228,44 @@
         <div class="image-container">
             <img src="{% static 'kgx_app/note.png' %}" alt="Note Image">
         </div>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <p>Your request has been submitted successfully!</p>
+                <button id="okButton">OK</button>
+            </div>
+        </div>
     </div>
 </body>
-{% endblock %}
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('holidayForm');
+        const popup = document.getElementById('popup');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Simulate a successful submission (you can replace this with your AJAX logic)
+            popup.style.display = 'flex';
+
+            // Optionally, reset the form after submission
+            form.reset();
+        });
+
+        // Function to close the popup
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+        okButton.addEventListener('click', closePopup);
+
+        // Allow clicking outside the popup to close it
+        window.addEventListener('click', function (event) {
+            if (event.target === popup) {
+                closePopup();
+            }
+        });
+    });
+</script>
+
+{% endblock %}
 </html>

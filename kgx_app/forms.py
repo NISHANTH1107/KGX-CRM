@@ -27,14 +27,12 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
-        
 
 class WifiForm(forms.ModelForm):
-    class Meta:
-        model = Wifi
-        fields = ['mac_address', 'screenshot']  # Exclude roll_no
+    roll_no = forms.CharField(max_length=100, required=True)  
+    mac_address = forms.CharField(max_length=100, required=True)
+    screenshot = forms.ImageField(required=True)
 
-    def clean_mac_address(self):
-        mac = self.cleaned_data.get('mac_address')
-        # Add any necessary MAC address validation here
-        return mac
+    class Meta:
+        model = Wifi  
+        fields = ['roll_no', 'mac_address', 'screenshot']

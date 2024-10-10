@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% url 'wifi' %}
+
 {% load static %}
 
 {% block content %}
@@ -15,10 +17,10 @@
             <input type="text" id="department" name="department" required>
 
             <label for="rollno">Roll No</label>
-            <input type="text" id="rollno" name="rollno" required>
+            <input type="text" id="rollno" name="roll_no" required>
 
             <label for="macaddress">Mac Address</label>
-            <input type="text" id="macaddress" name="macaddress" required>
+            <input type="text" id="macaddress" name="mac_address" required>
 
             <label for="screenshot">Screenshot (Add image)</label>
             <div class="file-input-container">
@@ -346,60 +348,90 @@ button[type="submit"]:hover {
 </style>
 
 <script>
-function closePopup() {
-    const popup = document.getElementById('popup');
-    popup.style.animation = 'fadeOut 0.5s ease-out, bounceOut 0.5s ease-out';
-    setTimeout(() => {
-        popup.style.display = 'none';
-        popup.style.animation = ''; // Reset animation
-    }, 500);
-    // Reset the form
-    document.getElementById('wifi-form').reset();
-    // Reset the image preview
-    document.getElementById('selected-image').src = "{% static 'kgx_app/screenshot.png' %}";
-}
-
-// Function to show the popup
-function showPopup() {
-    const popup = document.getElementById('popup');
-    popup.style.display = 'flex';
-    popup.style.animation = 'bounceIn 0.5s ease-out';
-}
-
-// Function to preview selected image
-function previewImage(event) {
-    const fileInput = event.target;
-    const image = document.getElementById('selected-image');
-
-    if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            image.src = e.target.result;
-        };
-
-        reader.readAsDataURL(fileInput.files[0]);
+    function closePopup() {
+        const popup = document.getElementById('popup');
+        popup.style.animation = 'fadeOut 0.5s ease-out, bounceOut 0.5s ease-out';
+        setTimeout(() => {
+            popup.style.display = 'none';
+            popup.style.animation = ''; // Reset animation
+        }, 500);
+        // Reset the form
+        document.getElementById('wifi-form').reset();
+        // Reset the image preview
+        document.getElementById('selected-image').src = "{% static 'kgx_app/screenshot.png' %}";
     }
-}
-
-// Handle form submission
-document.getElementById('wifi-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const fileInput = document.getElementById('screenshot');
-    if (fileInput.files.length === 0) {
-        alert('Please upload an image.');
-        return;
+    
+    // Function to show the popup
+    function showPopup() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'flex';
+        popup.style.animation = 'bounceIn 0.5s ease-out';
     }
-
-    // Simulate form submission
-    setTimeout(function() {
-        showPopup(); // Show the popup after submission
-    }, 1000);
-});
-
-// Attach the change event to the file input
-document.getElementById('screenshot').addEventListener('change', previewImage);
-</script>
+    
+    // Function to preview selected image
+    function previewImage(event) {
+        const fileInput = event.target;
+        const image = document.getElementById('selected-image');
+    
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+    
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            };
+    
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+    
+    // Utility function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Check if this cookie string begins with the name we want
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Handle form submission
+    document.getElementById('wifi-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+    
+        const formData = new FormData(this);
+    
+        // Simulate a POST request
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Add CSRF token
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                showPopup(); // Show the popup if submission is successful
+                this.reset(); // Reset the form after submission
+                document.getElementById('selected-image').src = "{% static 'kgx_app/screenshot.png' %}"; // Reset image preview
+            } else {
+                alert('Error submitting form. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error with your submission. Please try again.');
+        });
+    });
+    
+    // Attach the change event to the file input
+    document.getElementById('screenshot').addEventListener('change', previewImage);
+    </script>
 
 {% endblock %}
