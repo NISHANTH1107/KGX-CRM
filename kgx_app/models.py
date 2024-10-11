@@ -82,3 +82,53 @@ class Comment(models.Model):
     
     def is_recent(self):
         return (timezone.now() - self.created_at) <= timezone.timedelta(hours=24)
+    
+
+
+
+class ToDo(models.Model):
+    roll_no = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    task_title = models.CharField(max_length=200)
+    task_description = models.TextField()
+    reference_link = models.URLField(blank=True, null=True)
+    due_date = models.DateField()
+
+    def __str__(self):
+        return self.task_title
+
+class InProgress(models.Model):
+    roll_no = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    task_title = models.CharField(max_length=200)
+    task_description = models.TextField()
+    reference_link = models.URLField(blank=True, null=True)
+    due_date = models.DateField()
+
+    def __str__(self):
+        return self.task_title
+    
+
+class ForReview(models.Model):
+    roll_no = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    task_title = models.CharField(max_length=200)
+    task_description = models.TextField()
+    reference_link = models.URLField(blank=True, null=True)
+    task_link = models.URLField()  # New field for the submitted link
+    due_date = models.DateField()
+
+    def __str__(self):
+        return self.task_title
+    
+class Done(models.Model):
+    roll_no = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    task_title = models.CharField(max_length=200)
+    task_description = models.TextField()
+    reference_link = models.URLField(blank=True, null=True)
+    due_date = models.DateField()
+    task_link = models.URLField(blank=True, null=True)  # Include task link field
+
+    def __str__(self):
+        return self.task_title

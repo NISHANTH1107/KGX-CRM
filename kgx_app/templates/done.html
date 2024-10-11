@@ -3,5 +3,17 @@
 {% block title %}Done{% endblock %}
 
 {% block content %}
-
+<h2>Done</h2>
+<ul>
+    {% for task in done_tasks %}
+        <li>
+            <strong>Task Title:</strong> {{ task.task_title }} <br>
+            <strong>Description:</strong> {{ task.task_description }} <br>
+            <strong>Due Date:</strong> {{ task.due_date }} <br>
+            <strong>Reference Link:</strong> <a href="{{ task.reference_link }}">{{ task.reference_link }}</a> <br>
+        </li>
+    {% empty %}
+        <li>No completed tasks.</li>
+    {% endfor %}
+</ul>
 {% endblock %}

@@ -3,5 +3,27 @@
 {% block title %}Assign task{% endblock %}
 
 {% block content %}
-
+<h2>Assign Task</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label for="roll_no">Roll No:</label><br>
+    <input type="text" id="roll_no" name="roll_no" required><br><br>
+    
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+    
+    <label for="task_title">Task Title:</label><br>
+    <input type="text" id="task_title" name="task_title" required><br><br>
+    
+    <label for="task_description">Task Description:</label><br>
+    <textarea id="task_description" name="task_description" rows="4" cols="50" required></textarea><br><br>
+    
+    <label for="reference_link">Reference Link:</label><br>
+    <input type="url" id="reference_link" name="reference_link"><br><br>
+    
+    <label for="due_date">Due Date:</label><br>
+    <input type="date" id="due_date" name="due_date" required><br><br>
+    
+    <button type="submit">Submit</button>
+</form>
 {% endblock %}

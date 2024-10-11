@@ -347,10 +347,11 @@ body, html {
                 <img src="{% static 'kgx_app/profile.png' %}" alt="Profile" class="nav-icon">
                 Profile 
             </a>
-            <a href="{% url 'learn_by_practice' %}" class="nav-button {% if request.resolver_match.url_name == 'learn_by_practice' %}active{% endif %}">
+            <a href="{% url 'student_tasks' %}" class="nav-button {% if request.resolver_match.url_name == 'student_tasks' %}active{% endif %}">
                 <img src="{% static 'kgx_app/learn_by_practice.png' %}" alt="Tasks" class="nav-icon">
                 Tasks
             </a>
+            
             <a href="{% url 'wifi' %}" class="nav-button {% if request.resolver_match.url_name == 'wifi' %}active{% endif %}">
                 <img src="{% static 'kgx_app/wifi.png' %}" alt="WI-FI" class="nav-icon">
                 WI-FI

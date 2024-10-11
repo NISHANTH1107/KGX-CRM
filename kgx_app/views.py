@@ -3,7 +3,7 @@ from django.contrib import messages
 from .forms import LoginForm,HolidayForm,CommentForm,WifiForm
 from django.views.decorators.csrf import csrf_protect ,csrf_exempt
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Profile,Learnbypractice,Internship,Holiday,Comment,Wifi
+from .models import Profile,Learnbypractice,Internship,Holiday,Comment,Wifi,ToDo,InProgress,ForReview,Done
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from .import generate_pdf,email_service
@@ -17,6 +17,7 @@ from .decorators import role_required
 import base64
 import requests
 from .utils import generate_wifi_report
+from django.contrib import messages
 
 def home_redirect(request):
     try:
@@ -95,11 +96,27 @@ def profile(request):
     profile = get_object_or_404(Profile, roll_no=request.user.username)
     return render(request, 'profile.html', {'profile': profile})
     
+
 @login_required
 @role_required(allowed_roles=['student'])
-def learn_by_practice(request):
-    learnbypractices = Learnbypractice.objects.all()
-    return render(request, 'learn_by_practice.html', {'learnbypractices': learnbypractices})
+def student_tasks(request):
+    # Get the profile of the currently logged-in student
+    profile = get_object_or_404(Profile, roll_no=request.user.username)
+
+    # Retrieve tasks for the student using their roll number
+    to_do_tasks = ToDo.objects.filter(roll_no=profile.roll_no)  # Use the roll number from the profile
+    in_progress_tasks = InProgress.objects.filter(roll_no=profile.roll_no)
+    for_review_tasks = ForReview.objects.filter(roll_no=profile.roll_no)
+    done_tasks = Done.objects.filter(roll_no=profile.roll_no) 
+
+    # Render the student tasks page with the tasks retrieved
+    return render(request, 'student_tasks.html', {
+        'profile': profile,
+        'to_do_tasks': to_do_tasks,
+        'in_progress_tasks': in_progress_tasks,
+        'for_review_tasks': for_review_tasks,
+        'done_tasks': done_tasks,
+    })
 
 @login_required
 @role_required(allowed_roles=['student'])
@@ -208,18 +225,84 @@ def staff_dashboard(request):
     # Logic for staff dashboard
     return render(request, 'staff_dashboard.html')
 
+
 @login_required
 @role_required(allowed_roles=['staff'])
 def assign_task(request):
-    # Logic for assigning a task
+    if request.method == 'POST':
+        roll_no = request.POST.get('roll_no')
+        name = request.POST.get('name')
+        task_title = request.POST.get('task_title')
+        task_description = request.POST.get('task_description')
+        reference_link = request.POST.get('reference_link')
+        due_date = request.POST.get('due_date')
+        
+        # Save the task to the ToDo model
+        ToDo.objects.create(
+            roll_no=roll_no,
+            name=name,
+            task_title=task_title,
+            task_description=task_description,
+            reference_link=reference_link,
+            due_date=due_date
+        )
+        
+        messages.success(request, 'Task assigned successfully!')
+        return redirect('assign_task')  # Redirect to the same page or another page after submission
+
     return render(request, 'assign_task.html')
 
-# To-Do View
 @login_required
-@role_required(allowed_roles=['staff'])
-def to_do(request):
-    # Logic for displaying To-Do tasks
-    return render(request, 'to_do.html')
+def start_task(request, task_id):
+    if request.method == 'POST':
+        task = get_object_or_404(ToDo, id=task_id)
+        in_progress_task = InProgress(
+            task_title=task.task_title,
+            task_description=task.task_description,
+            due_date=task.due_date,
+            reference_link=task.reference_link,
+            roll_no=task.roll_no,
+            name=task.name  # Assuming roll_no is a field to associate with users
+        )
+        in_progress_task.save()
+        task.delete()  # Remove from ToDo
+        return redirect('student_tasks')
+
+    return redirect('student_tasks')
+
+
+@login_required
+@role_required(allowed_roles=['student'])  # Only students should access this
+def submit_task_link(request, task_id):
+    if request.method == 'POST':
+        task_link = request.POST.get('task_link')
+        
+        # Get the task from InProgress model
+        task = get_object_or_404(InProgress, id=task_id)
+        
+        # Create a new ForReview instance
+        ForReview.objects.create(
+            roll_no=task.roll_no,
+            name=task.name,
+            task_title=task.task_title,
+            task_description=task.task_description,
+            reference_link=task.reference_link,
+            task_link=task_link,  # The link provided by the student
+            due_date=task.due_date
+        )
+        
+        # Remove the task from InProgress
+        task.delete()
+        
+        return redirect('student_tasks')  # Redirect back to the tasks page
+    
+
+
+@login_required
+@role_required(allowed_roles=['staff'])  # Ensure only staff can access this view
+def to_do_list(request):
+    to_do_tasks = ToDo.objects.all()  # Retrieve all tasks from the ToDo model
+    return render(request, 'staff/to_do_list.html', {'to_do_tasks': to_do_tasks})
 
 # In Progress View
 @login_required
@@ -228,16 +311,63 @@ def in_progress(request):
     # Logic for displaying tasks that are in progress
     return render(request, 'in_progress.html')
 
-# For Review View
 @login_required
 @role_required(allowed_roles=['staff'])
 def for_review(request):
-    # Logic for displaying tasks that are for review
-    return render(request, 'for_review.html')
+    # Fetch tasks in the For Review model
+    for_review_tasks = ForReview.objects.all()
 
-# Done View
+    return render(request, 'for_review.html', {'for_review_tasks': for_review_tasks})
+
 @login_required
 @role_required(allowed_roles=['staff'])
-def done(request):
-    # Logic for displaying completed tasks
-    return render(request, 'done.html')
+def review_task(request, task_id):
+    task = get_object_or_404(ForReview, id=task_id)
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'correct':
+            # Move to Done model
+            Done.objects.create(
+                roll_no=task.roll_no,
+                name=task.name,
+                task_title=task.task_title,
+                task_description=task.task_description,
+                reference_link=task.reference_link,
+                due_date=task.due_date,
+                task_link=task.task_link  # Include task link in Done model
+            )
+            task.delete()  # Delete from ForReview model
+
+        elif action == 'wrong':
+            # Move back to ToDo model
+            ToDo.objects.create(
+                roll_no=task.roll_no,
+                name=task.name,
+                task_title=task.task_title,
+                task_description=task.task_description,
+                reference_link=task.reference_link,
+                due_date=task.due_date
+            )
+            task.delete()  # Delete from ForReview model
+
+        return redirect('for_review')
+    
+@login_required
+@role_required(allowed_roles=['staff'])
+def to_do_view(request):
+    to_do_tasks = ToDo.objects.all()  # Retrieve all tasks from ToDo
+    return render(request, 'to_do.html', {'to_do_tasks': to_do_tasks})
+
+@login_required
+@role_required(allowed_roles=['staff'])
+def in_progress_view(request):
+    in_progress_tasks = InProgress.objects.all()  # Retrieve all tasks from InProgress
+    return render(request, 'in_progress.html', {'in_progress_tasks': in_progress_tasks})
+
+@login_required
+@role_required(allowed_roles=['staff'])
+def done_view(request):
+    done_tasks = Done.objects.all()  # Retrieve all tasks from Done
+    return render(request, 'done.html', {'done_tasks': done_tasks})

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Learn by practice{% endblock %}
+
+{% block content %}
+<h2>To Do</h2>
+<ul>
+    {% for task in to_do_tasks %}
+        <li>
+            <strong>Task Title:</strong> {{ task.task_title }} <br>
+            <strong>Description:</strong> {{ task.task_description }} <br>
+            <strong>Due Date:</strong> {{ task.due_date }} <br>
+            <strong>Reference Link:</strong> <a href="{{ task.reference_link }}">{{ task.reference_link }}</a> <br>
+            
+            <!-- Start Task Button -->
+            <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Start</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>No tasks assigned.</li>
+    {% endfor %}
+</ul>
+
+<h2>In Progress</h2>
+<ul>
+    {% for in_progress_task in in_progress_tasks %}
+        <li>
+            <strong>Task Title:</strong> <a href="#" onclick="showLinkInput({{ in_progress_task.id }})">{{ in_progress_task.task_title }}</a> <br>
+            <strong>Description:</strong> {{ in_progress_task.task_description }} <br>
+            <strong>Due Date:</strong> {{ in_progress_task.due_date }} <br>
+            <strong>Reference Link:</strong> <a href="{{ in_progress_task.reference_link }}">{{ in_progress_task.reference_link }}</a><br>
+            
+            <!-- Floating Container for Link Input -->
+            <div id="link-input-{{ in_progress_task.id }}" class="floating-container">
+                <form action="{% url 'submit_task_link' in_progress_task.id %}" method="POST">
+                    {% csrf_token %}
+                    <label for="task_link">Add Task Link:</label>
+                    <input type="url" name="task_link" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </li>
+    {% empty %}
+        <li>No tasks in progress.</li>
+    {% endfor %}
+</ul>
+
+<h2>For Review</h2>
+<ul>
+    {% for review_task in for_review_tasks %}
+        <li>
+            <strong>Task Title:</strong> {{ review_task.task_title }} <br>
+            <strong>Description:</strong> {{ review_task.task_description }} <br>
+            <strong>Due Date:</strong> {{ review_task.due_date }} <br>
+            <strong>Reference Link:</strong> <a href="{{ review_task.reference_link }}">{{ review_task.reference_link }}</a> <br>
+            <strong>Task Link:</strong> {{ review_task.task_link }}  <!-- Display the task link -->
+        </li>
+    {% empty %}
+        <li>No tasks for review.</li>
+    {% endfor %}
+</ul>
+
+<h2>Done</h2>
+<ul>
+    {% for done_task in done_tasks %}
+        <li>
+            <strong>Task Title:</strong> {{ done_task.task_title }} <br>
+            <strong>Description:</strong> {{ done_task.task_description }} <br>
+            <strong>Due Date:</strong> {{ done_task.due_date }} <br>
+            <strong>Reference Link:</strong> <a href="{{ done_task.reference_link }}">{{ done_task.reference_link }}</a> <br>
+        </li>
+    {% empty %}
+        <li>No tasks completed.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

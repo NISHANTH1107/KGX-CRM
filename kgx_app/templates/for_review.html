@@ -3,5 +3,27 @@
 {% block title %}For Review{% endblock %}
 
 {% block content %}
+<h1>For Review</h1>
 
+{% if for_review_tasks %}
+    <ul>
+        {% for task in for_review_tasks %}
+            <li>
+                <strong>Task Title:</strong> {{ task.task_title }} <br>
+                <strong>Description:</strong> {{ task.task_description }} <br>
+                <strong>Due Date:</strong> {{ task.due_date }} <br>
+                <strong>Task Link:</strong> <a href="{{ task.task_link }}">{{ task.task_link }}</a> <br>
+
+                <!-- Buttons for Approving or Rejecting the Task -->
+                <form action="{% url 'review_task' task.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="correct">Correct</button>
+                    <button type="submit" name="action" value="wrong">Wrong</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No tasks for review.</p>
+{% endif %}
 {% endblock %}
