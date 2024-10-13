@@ -59,8 +59,46 @@
     .small-box:hover {
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5); /* Larger shadow on hover */
     }
+
+    @media (max-width: 1200px) {
+        .box-container {
+            grid-template-columns: repeat(2, 234px); /* 2 columns for medium screens */
+            gap: 80px; /* Adjust space between boxes */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .box-container {
+            grid-template-columns: 1fr; /* 1 column for small screens */
+            gap: 40px; /* Adjust space between boxes */
+        }
+
+        .box {
+            width: 90%; /* Adjust width for small screens */
+            margin: 0 auto 30px; /* Center the box and add bottom margin */
+        }
+
+        .small-box {
+            width: 80%; /* Adjust width for small screens */
+            bottom: -50px; /* Adjust position for small screens */
+        }
+    }
+    @media (max-width: 768px) {
+        .box {
+            width: 90%; /* Adjust width for small screens */
+            margin: 0 auto 30px; /* Center the box and add bottom margin */
+            height: auto; /* Maintain aspect ratio */
+            padding-bottom: 90%; /* Maintain aspect ratio */
+        }
+
+        .small-box {
+            width: 80%; /* Adjust width for small screens */
+            bottom: -50px; /* Adjust position for small screens */
+        }
+    }
 </style>
 
+  
 <div class="box-container">
     {% for internship in internships %}
         <div class="box" style="background-image: url('{{ internship.image.url }}');">
