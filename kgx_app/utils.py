@@ -7,7 +7,7 @@ from django.conf import settings
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image as ReportlabImage
 
-def generate_wifi_report(recipient_email):
+def generate_wifi_report():
     # Get today's date
     today = timezone.now().date()
     entries = Wifi.objects.filter(submitted_at__date=today)
@@ -25,15 +25,17 @@ def generate_wifi_report(recipient_email):
         pdf = SimpleDocTemplate(pdf_filename, pagesize=letter)
         elements = []
 
-        # Prepare data for table
+        # Prepare data for the table
         data = [['Roll No', 'MAC Address', 'Submitted At', 'Screenshot']]
+        
         for entry in entries:
-            # Prepare image path
+            # Prepare the image path
             img_path = entry.screenshot.path if entry.screenshot else None
             
-            # Create an image object if it exists, otherwise leave cell empty
-            if img_path:
+            # Check if the image file exists
+            if img_path and os.path.isfile(img_path):  # Ensure the file exists
                 img = ReportlabImage(img_path, width=1.5 * inch, height=1.5 * inch)  # Resize image
+                img.hAlign = 'CENTER'  # Center the image in the cell
                 data.append([
                     entry.roll_no.roll_no,
                     entry.mac_address,
@@ -67,7 +69,7 @@ def generate_wifi_report(recipient_email):
         pdf.build(elements)
 
         print(f"PDF report generated: {pdf_filename}")
-        
+        return pdf_filename
     else:
         print("No entries for today to generate a report.")
-
+        return None
