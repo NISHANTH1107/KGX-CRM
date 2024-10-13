@@ -237,35 +237,7 @@
     </div>
 </body>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('holidayForm');
-        const popup = document.getElementById('popup');
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Simulate a successful submission (you can replace this with your AJAX logic)
-            popup.style.display = 'flex';
-
-            // Optionally, reset the form after submission
-            form.reset();
-        });
-
-        // Function to close the popup
-        function closePopup() {
-            popup.style.display = 'none';
-        }
-        okButton.addEventListener('click', closePopup);
-
-        // Allow clicking outside the popup to close it
-        window.addEventListener('click', function (event) {
-            if (event.target === popup) {
-                closePopup();
-            }
-        });
-    });
-</script>
 
 {% endblock %}
 </html>
