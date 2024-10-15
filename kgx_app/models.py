@@ -47,7 +47,6 @@ class Holiday(models.Model):
     exit_time = models.TimeField(verbose_name="Exit Time")
     date_submitted = models.DateTimeField(default=timezone.now)
 
-
     def clean(self):
         # Custom validation to ensure exit_time is after entry_time
         if self.exit_time <= self.entry_time:
@@ -56,7 +55,6 @@ class Holiday(models.Model):
     def __str__(self):
         return f"{self.name} ({self.department}) - {self.entry_time}"
 
-
 class Internship(models.Model):
     image = models.ImageField(upload_to='images/')
     link = models.URLField()
@@ -64,7 +62,6 @@ class Internship(models.Model):
     def __str__(self):
         return self.image.name
     
-
 class Learnbypractice(models.Model):
     image = models.ImageField(upload_to='images/')
     link = models.URLField()
@@ -83,9 +80,6 @@ class Comment(models.Model):
     def is_recent(self):
         return (timezone.now() - self.created_at) <= timezone.timedelta(hours=24)
     
-
-
-
 class ToDo(models.Model):
     roll_no = models.CharField(max_length=50)
     name = models.CharField(max_length=100)

@@ -17,7 +17,7 @@ from .decorators import role_required
 import base64
 import requests
 from .utils import generate_wifi_report
-from django.contrib import messages
+from django.utils.decorators import method_decorator
 
 def home_redirect(request):
     try:
@@ -117,25 +117,34 @@ def student_tasks(request):
         'for_review_tasks': for_review_tasks,
         'done_tasks': done_tasks,
     })
-
+    
 @login_required
 @role_required(allowed_roles=['student'])
 def wifi_view(request):
     if request.method == 'POST':
+        roll_no_input = request.POST.get('roll_no')  # Get the roll number from the form
+        try:
+            # Check if the roll number exists in the Profile model
+            roll_no_instance = Profile.objects.get(roll_no=roll_no_input)  # Query Profile instead
+        except Profile.DoesNotExist:
+            return JsonResponse({'success': False, 'message': "User not found."})  # Send error response
+
         # Create a new Wifi instance directly from the form data
         wifi_instance = Wifi(
-            roll_no_id=request.POST.get('roll_no'),  # Use roll_no_id directly to set the foreign key
+            roll_no=roll_no_instance,  # Use the found Profile instance
             mac_address=request.POST.get('mac_address'),
             screenshot=request.FILES.get('screenshot'),  # Get the uploaded screenshot
         )
 
         try:
             wifi_instance.save()  # Save the Wifi instance to the database
-            messages.success(request, "Wifi access details submitted successfully.")
+            
+            # Call the report generation function and pass the user's email
+            generate_wifi_report(roll_no_instance.user.email)  # Assuming user email is accessible
+            
             return JsonResponse({'success': True})  # Send a success response
         except Exception as e:
-            messages.error(request, "There was an error submitting the form.")
-            return JsonResponse({'success': False, 'message': str(e)})
+            return JsonResponse({'success': False, 'message': str(e)})  # Send error response
 
     # If the request is GET, just render the form
     return render(request, 'wifi.html')
@@ -145,17 +154,16 @@ def wifi_view(request):
 def work_on_holidays(request):
     if request.method == 'POST':
         form = HolidayForm(request.POST)
+        print(f"Form valid: {form.is_valid()}")  # Check if form is valid
+        print(f"Form errors: {form.errors}")  # Output any form errors
         if form.is_valid():
             new_entry = form.save(commit=False)
+            print(f"Saving new entry: {new_entry}")  # Check the object before saving
             new_entry.save()
+            print(f"Saved new entry: {new_entry.id}")  # Check if the save was successful
 
             # Generate PDF and send email
-            pdf_filename = generate_pdf.generate_pdf([new_entry])  # Adapt generate_pdf for Django context
-            #email_service.send_email(pdf_filename)  # Uncomment if email sending is needed
-
-            # Generate and send access pass
-            # access_pass.send_access_pass(new_entry)  # Adapt access_pass for Django context
-
+            pdf_filename = generate_pdf.generate_pdf([new_entry])  
             messages.success(request, 'Submitted Successfully!')
             return redirect('work_on_holidays')
         else:
