@@ -21,6 +21,65 @@
         font-family: Inter, sans-serif; /* Apply Inter font globally */
     }
 
+    /* Media query for responsiveness */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            padding: 20px; /* Increase padding for a more spacious feel */
+            height: auto; /* Allow the container to grow naturally */
+        }
+    
+        .section-one,
+        .section-two {
+            width: 100%; /* Ensure both sections take full width */
+            margin: 0 0 20px 0; /* Add spacing between sections */
+        }
+    
+        .box-one, 
+        .box-two {
+            padding: 15px; /* Reduce padding to make content fit better */
+            margin-bottom: 20px; /* Increase spacing between boxes */
+        }
+    
+        .box-one h2 {
+            font-size: 28px; /* Decrease font size for smaller screens */
+            line-height: 34px; /* Adjust line height */
+        }
+    
+        .box-one p {
+            font-size: 16px; /* Smaller text size for readability */
+        }
+    
+        .percentage-container {
+            width: 120px; /* Reduce size for smaller screens */
+            height: 120px;
+        }
+    
+        .split-box {
+            font-size: 16px; /* Reduce font size in split-boxes */
+            padding: 8px; /* Adjust padding for smaller text */
+        }
+    
+        .comment-section {
+            padding: 15px; /* Reduce padding for a compact look */
+        }
+    
+        .comment img {
+            width: 40px; /* Adjust avatar size */
+            height: 40px;
+        }
+    
+        .comment-box input {
+            width: 70%; /* Adjust input width for better fit */
+            padding: 10px; /* Slightly reduce padding */
+        }
+    
+        .comment-box button {
+            width: 45px; /* Adjust button size */
+            height: 45px;
+        }
+    }    
+
     .container {
         display: flex;
         height: 100vh;
