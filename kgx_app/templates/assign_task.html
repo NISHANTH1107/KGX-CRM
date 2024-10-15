@@ -1,29 +1,137 @@
 {% extends 'staff_dashboard.html' %}
 
-{% block title %}Assign task{% endblock %}
+{% block title %}Assign Task{% endblock %}
 
 {% block content %}
-<h2>Assign Task</h2>
-<form method="POST">
-    {% csrf_token %}
-    <label for="roll_no">Roll No:</label><br>
-    <input type="text" id="roll_no" name="roll_no" required><br><br>
-    
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
-    
-    <label for="task_title">Task Title:</label><br>
-    <input type="text" id="task_title" name="task_title" required><br><br>
-    
-    <label for="task_description">Task Description:</label><br>
-    <textarea id="task_description" name="task_description" rows="4" cols="50" required></textarea><br><br>
-    
-    <label for="reference_link">Reference Link:</label><br>
-    <input type="url" id="reference_link" name="reference_link"><br><br>
-    
-    <label for="due_date">Due Date:</label><br>
-    <input type="date" id="due_date" name="due_date" required><br><br>
-    
-    <button type="submit">Submit</button>
-</form>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif; /* Updated font for a modern look */
+        }
+
+        input, textarea {
+            border-width: 0px 0px 0px 0px; /* Apply border width */
+            border-style: solid; /* Solid border */
+            border-color: #FFFFFFCC; /* White with opacity */
+        }
+
+        label {
+            margin-bottom: 8px; /* Gap between label and input box */
+        }
+    </style>
+</head>
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: black; margin: 0; overflow: hidden;">
+    <div style="
+        background-color: #1E1E1E; /* Darker background for the card */
+        border-radius: 12px; 
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); 
+        padding: 40px; 
+        max-width: 600px; /* Adjust width as needed */
+        width: 90%;
+        color: white; /* Text color */
+        display: flex;
+        flex-direction: column;
+        gap: 30px; /* Increased gap between elements for better spacing */
+    ">
+
+        <h2 style="text-align: center; color: #5b0868; margin-top: 0;">Assign a New Task</h2> <!-- Title with a different font color -->
+
+        <!-- Add a form tag for data submission -->
+        <form method="POST" action="{% url 'assign_task' %}">
+            {% csrf_token %}
+            
+            <div style="display: flex; gap: 30px;"> <!-- Flex container for Name and Roll No -->
+                <div style="flex: 1;">
+                    <label for="name" style="font-size: 1.2rem; color: #FFFFFF;">Name:</label>
+                    <input type="text" id="name" name="name" required style="
+                        width: 100%; 
+                        padding: 12px; 
+                        border-radius: 6px; 
+                        background-color: #333; 
+                        color: white;
+                        transition: background-color 0.3s, box-shadow 0.3s;
+                    " placeholder="Enter Name" onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #FFD700';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';">
+                </div>
+
+                <div style="flex: 1;">
+                    <label for="roll_no" style="font-size: 1.2rem; color: #FFFFFF;">Roll No:</label>
+                    <input type="text" id="roll_no" name="roll_no" required style="
+                        width: 100%; 
+                        padding: 12px; 
+                        border-radius: 6px; 
+                        background-color: #333; 
+                        color: white;
+                        transition: background-color 0.3s, box-shadow 0.3s;
+                    " placeholder="Enter Roll No" onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #FFD700';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';">
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;"> <!-- Add gap above task title -->
+                <label for="task_title" style="font-size: 1.2rem; color: #FFFFFF;">Task Title:</label>
+                <input type="text" id="task_title" name="task_title" required style="
+                    width: 100%; 
+                    padding: 12px; 
+                    border-radius: 6px; 
+                    background-color: #333; 
+                    color: white;
+                    transition: background-color 0.3s, box-shadow 0.3s;
+                " placeholder="Enter Task Title" onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #FFD700';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';">
+            </div>
+
+            <div style="margin-top: 20px;"> <!-- Add gap above task description -->
+                <label for="task_description" style="font-size: 1.2rem; color: #FFFFFF;">Task Description:</label>
+                <textarea id="task_description" name="task_description" rows="5" required style="
+                    width: 100%; 
+                    padding: 12px; 
+                    border-radius: 6px; 
+                    background-color: #333; 
+                    color: white;
+                    transition: background-color 0.3s, box-shadow 0.3s;
+                " placeholder="Describe the task..." onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #FFD700';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';"></textarea>
+            </div>
+
+            <div style="margin-top: 20px;"> <!-- Add gap above reference link -->
+                <label for="reference_link" style="font-size: 1.2rem; color: #FFFFFF;">Reference Link:</label>
+                <input type="url" id="reference_link" name="reference_link" style="
+                    width: 100%; 
+                    padding: 12px; 
+                    border-radius: 6px; 
+                    background-color: #333; 
+                    color: white;
+                    transition: background-color 0.3s, box-shadow 0.3s;
+                " placeholder="Enter Reference Link" onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #FFD700';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';">
+            </div>
+
+            <div style="margin-top: 20px;"> <!-- Add gap above due date -->
+                <label for="due_date" style="font-size: 1.2rem; color: #FFFFFF;">Due Date:</label>
+                <input type="date" id="due_date" name="due_date" required style="
+                    width: 100%; 
+                    padding: 12px; 
+                    border-radius: 6px; 
+                    background-color: #333; 
+                    color: white;
+                    transition: background-color 0.3s, box-shadow 0.3s;
+                " onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #333';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';">
+            </div>
+
+            <button type="submit" style="
+                border: none; 
+                border-radius: 50px; 
+                color: white; 
+                padding: 12px 20px; /* Increased padding for better size */
+                background: linear-gradient(90.57deg, #1E1E1E 9.91%, #3B1149 35.14%, #580475 91.56%); 
+                cursor: pointer; 
+                font-size: 18px; /* Slightly larger font */
+                transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+                width: 60%; /* Increased width for better visibility */
+                margin: 20px auto; 
+                display: block; 
+                text-align: center;
+            " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 10px #333';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">Assign Task</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

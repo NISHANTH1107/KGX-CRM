@@ -3,27 +3,181 @@
 {% block title %}For Review{% endblock %}
 
 {% block content %}
-<h1>For Review</h1>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1E1E1E; /* Dark background for the body */
+        }
 
-{% if for_review_tasks %}
-    <ul>
-        {% for task in for_review_tasks %}
-            <li>
-                <strong>Task Title:</strong> {{ task.task_title }} <br>
-                <strong>Description:</strong> {{ task.task_description }} <br>
-                <strong>Due Date:</strong> {{ task.due_date }} <br>
-                <strong>Task Link:</strong> <a href="{{ task.task_link }}">{{ task.task_link }}</a> <br>
+        .task-details {
+            display: none; /* Hide details by default */
+            padding: 20px; /* Increased padding for better spacing */
+            background-color: #1E1E1E; /* Slightly lighter background for contrast */
+            border: 1px solid #580475; /* Border for emphasis */
+            border-radius: 12px; /* Rounded corners */
+            margin-top: 10px; /* Space above details */
+            transition: all 0.3s ease; /* Smooth transition */
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        }
 
-                <!-- Buttons for Approving or Rejecting the Task -->
-                <form action="{% url 'review_task' task.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" name="action" value="correct">Correct</button>
-                    <button type="submit" name="action" value="wrong">Wrong</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No tasks for review.</p>
-{% endif %}
+        .task-details p {
+            margin: 8px 0; /* More space between lines */
+            color: #FFFFFF; /* Text color for the details */
+        }
+
+        .task-title {
+            color: #FFFFFF; /* Color for task titles */
+            font-weight: bold; /* Bold for emphasis */
+            font-size: 1.2em; /* Increased font size for titles */
+        }
+
+        .task-item {
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            margin-bottom: 20px; /* Space between tasks */
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between; /* Space between title and assigned to */
+            align-items: center; /* Center align items */
+            padding: 15px; /* Padding for the header */
+            background-color: #333; /* Dark background for the header */
+            border-radius: 12px; /* Rounded corners */
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
+            cursor: pointer; /* Pointer cursor for clickable */
+        }
+
+        .task-header:hover {
+            background-color: #444; /* Change background on hover */
+            transform: translateY(-2px); /* Slight lift effect on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
+        }
+
+        .task-details strong {
+            color: #580475; /* Color for headings in details */
+            font-size: 1.1em; /* Slightly larger font for emphasis */
+        }
+
+        .no-tasks {
+            padding: 20px; 
+            background-color: #333; 
+            border-radius: 12px; 
+            text-align: center; 
+            color: #580475; /* Color for no tasks message */
+        }
+
+        a {
+            color: blue; /* Color for reference links */
+            text-decoration: none; /* No underline */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        /* New styling for dropdown hover */
+        .task-details:hover {
+            border-color: #3B1149; /* Border on hover */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Deeper shadow on hover */
+        }
+        .button-correct, .button-wrong {
+    padding: 10px 15px; /* Padding for buttons */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1em; /* Font size */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Transition effects */
+    color: #FFFFFF; /* Text color */
+}
+
+.button-correct {
+    background-color: #5b0868; /* Background color for correct button */
+}
+
+.button-correct:hover {
+    background-color: #7c0c7a; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow on hover */
+}
+
+.button-wrong {
+    background-color: #ff1744; /* Background color for wrong button */
+}
+
+.button-wrong:hover {
+    background-color: #ff4f81; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow on hover */
+}
+
+    </style>
+    <script>
+        function toggleDetails(event) {
+            const details = event.currentTarget.nextElementSibling; // Get the details element
+            if (details.style.display === 'block') {
+                details.style.display = 'none'; // Hide details
+            } else {
+                details.style.display = 'block'; // Show details
+            }
+        }
+    </script>
+</head>
+
+<div style="
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 20px; 
+    font-family: 'Raleway', sans-serif;
+    color: white;
+">
+    <div style="
+        width: 100%;
+        max-width: 800px; 
+        background-color: black; 
+        padding: 30px; 
+        border-style: solid;
+        border-color: #FFFFFFCC;
+        border-radius: 30px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); 
+    ">
+        
+        <h2 style="text-align: center; color: #5b0868; margin-top: 0;">For Review</h2>
+
+        {% if for_review_tasks %}
+            <ul style="list-style-type: none; padding: 0;">
+                {% for task in for_review_tasks %}
+                    <li class="task-item">
+                        <div class="task-header" onclick="toggleDetails(event)">
+                            <span class="task-title">{{ task.task_title }}</span>
+                        </div>
+                        <div class="task-details">
+                            <p><strong>Name:</strong> {{ task.name }}</p> <!-- Name -->
+                            <p><strong>Roll No:</strong> {{ task.roll_no }}</p> <!-- Roll Number -->
+                            <p><strong>Description:</strong> {{ task.task_description }}</p>
+                            <p><strong>Due Date:</strong> {{ task.due_date }}</p>
+                            <p><strong>Task Link:</strong> <a href="{{ task.task_link }}">{{ task.task_link }}</a></p>
+
+                            <!-- Buttons for Approving or Rejecting the Task -->
+                           <!-- Buttons for Approving or Rejecting the Task -->
+<form action="{% url 'review_task' task.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" name="action" value="correct" class="button-correct">Correct</button>
+    <button type="submit" name="action" value="wrong" class="button-wrong">Wrong</button>
+</form>
+
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-tasks">No tasks for review.</p>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

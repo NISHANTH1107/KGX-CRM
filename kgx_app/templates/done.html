@@ -3,17 +3,130 @@
 {% block title %}Done{% endblock %}
 
 {% block content %}
-<h2>Done</h2>
-<ul>
-    {% for task in done_tasks %}
-        <li>
-            <strong>Task Title:</strong> {{ task.task_title }} <br>
-            <strong>Description:</strong> {{ task.task_description }} <br>
-            <strong>Due Date:</strong> {{ task.due_date }} <br>
-            <strong>Reference Link:</strong> <a href="{{ task.reference_link }}">{{ task.reference_link }}</a> <br>
-        </li>
-    {% empty %}
-        <li>No completed tasks.</li>
-    {% endfor %}
-</ul>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1E1E1E; /* Ensures the background is dark */
+        }
+
+        .task-item {
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            margin-bottom: 20px; /* Space between tasks */
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between; /* Space between title and assigned to */
+            align-items: center; /* Center align items */
+            padding: 15px; /* Padding for the header */
+            background-color: #333; /* Dark background for the header */
+            border-radius: 12px; /* Rounded corners */
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
+            cursor: pointer; /* Pointer cursor for clickable */
+        }
+
+        .task-header:hover {
+            background-color: #444; /* Change background on hover */
+            transform: translateY(-2px); /* Slight lift effect on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
+        }
+
+        .task-details {
+            display: none; /* Hide details by default */
+            padding: 20px; /* Increased padding for better spacing */
+            background-color: #1E1E1E; /* Slightly lighter background for contrast */
+            border: 1px solid #580475; /* Border for emphasis */
+            border-radius: 12px; /* Rounded corners */
+            margin-top: 10px; /* Space above details */
+            transition: all 0.3s ease; /* Smooth transition */
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        }
+
+        .task-details p {
+            margin: 8px 0; /* More space between lines */
+            color: #FFFFFF; /* Text color for the details */
+        }
+
+        .task-details strong {
+            color: #580475; /* Color for headings in details */
+            font-size: 1.1em; /* Slightly larger font for emphasis */
+        }
+
+        .no-tasks {
+            padding: 20px; 
+            background-color: #333; 
+            border-radius: 12px; 
+            text-align: center; 
+            color: #580475; /* Color for no tasks message */
+        }
+
+        a {
+            color: blue; /* Color for reference links */
+            text-decoration: none; /* No underline */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+    <script>
+        function toggleDetails(event) {
+            const details = event.currentTarget.nextElementSibling; // Get the details element
+            if (details.style.display === 'block') {
+                details.style.display = 'none'; // Hide details
+            } else {
+                details.style.display = 'block'; // Show details
+            }
+        }
+    </script>
+</head>
+
+<div style="
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 20px; 
+    font-family: 'Raleway', sans-serif;
+    color: white;
+">
+    <div style="
+        width: 100%;
+        max-width: 800px; 
+        background-color: black; 
+        padding: 30px; 
+        border-style: solid;
+        border-color: #FFFFFFCC;
+        border-radius: 30px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); 
+    ">
+        
+        <h2 style="text-align: center; color: #5b0868; margin-top: 0;">Done</h2>
+
+        <ul style="list-style-type: none; padding: 0;">
+            {% for task in done_tasks %}
+                <li class="task-item">
+                    <div class="task-header" onclick="toggleDetails(event)"> <!-- Call toggleDetails function on click -->
+                        <span class="task-title"><strong>{{ task.task_title }}</strong></span>
+                        <span style="color: #aeaeae;">{{ task.owner_name }}</span> <!-- Owner name placeholder -->
+                    </div>
+                    <div class="task-details"> <!-- Details container -->
+                        <p><strong>Name:</strong> {{ task.name }}</p> <!-- Name -->
+                        <p><strong>Roll No:</strong> {{ task.roll_no }}</p> <!-- Roll Number --> 
+                        <p><strong>Task Description:</strong> {{ task.task_description }}</p> <!-- Task Description -->
+                        <p><strong>Due Date:</strong> {{ task.due_date }}</p> <!-- Due Date -->
+                        <p><strong>Reference Link:</strong> <a href="{{ task.reference_link }}">{{ task.reference_link }}</a></p> <!-- Reference Link -->
+                    </div>
+                </li>
+            {% empty %}
+                <li class="no-tasks">
+                    No completed tasks.
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

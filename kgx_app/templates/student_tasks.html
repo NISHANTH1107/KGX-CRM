@@ -1,79 +1,229 @@
 {% extends 'base.html' %}
 
-{% block title %}Learn by practice{% endblock %}
-
+{% block title %}TASKS{% endblock %}
+{% load static %}
 {% block content %}
-<h2>To Do</h2>
-<ul>
-    {% for task in to_do_tasks %}
-        <li>
-            <strong>Task Title:</strong> {{ task.task_title }} <br>
-            <strong>Description:</strong> {{ task.task_description }} <br>
-            <strong>Due Date:</strong> {{ task.due_date }} <br>
-            <strong>Reference Link:</strong> <a href="{{ task.reference_link }}">{{ task.reference_link }}</a> <br>
-            
-            <!-- Start Task Button -->
-            <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Start</button>
-            </form>
-        </li>
-    {% empty %}
-        <li>No tasks assigned.</li>
-    {% endfor %}
-</ul>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
 
-<h2>In Progress</h2>
-<ul>
-    {% for in_progress_task in in_progress_tasks %}
-        <li>
-            <strong>Task Title:</strong> <a href="#" onclick="showLinkInput({{ in_progress_task.id }})">{{ in_progress_task.task_title }}</a> <br>
-            <strong>Description:</strong> {{ in_progress_task.task_description }} <br>
-            <strong>Due Date:</strong> {{ in_progress_task.due_date }} <br>
-            <strong>Reference Link:</strong> <a href="{{ in_progress_task.reference_link }}">{{ in_progress_task.reference_link }}</a><br>
-            
-            <!-- Floating Container for Link Input -->
-            <div id="link-input-{{ in_progress_task.id }}" class="floating-container">
-                <form action="{% url 'submit_task_link' in_progress_task.id %}" method="POST">
-                    {% csrf_token %}
-                    <label for="task_link">Add Task Link:</label>
-                    <input type="url" name="task_link" required>
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-        </li>
-    {% empty %}
-        <li>No tasks in progress.</li>
-    {% endfor %}
-</ul>
+<style>
+    body {
+        background-color: #000000; /* Black background for contrast */
+        color: #FFFFFF; /* White text for readability */
+        font-family: 'Poppins', sans-serif; /* Updated to Poppins for modern look */
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
 
-<h2>For Review</h2>
-<ul>
-    {% for review_task in for_review_tasks %}
-        <li>
-            <strong>Task Title:</strong> {{ review_task.task_title }} <br>
-            <strong>Description:</strong> {{ review_task.task_description }} <br>
-            <strong>Due Date:</strong> {{ review_task.due_date }} <br>
-            <strong>Reference Link:</strong> <a href="{{ review_task.reference_link }}">{{ review_task.reference_link }}</a> <br>
-            <strong>Task Link:</strong> {{ review_task.task_link }}  <!-- Display the task link -->
-        </li>
-    {% empty %}
-        <li>No tasks for review.</li>
-    {% endfor %}
-</ul>
+    .header {
+        padding: 20px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid #A507DB;
+        margin-bottom: 30px;
+    }
 
-<h2>Done</h2>
-<ul>
-    {% for done_task in done_tasks %}
-        <li>
-            <strong>Task Title:</strong> {{ done_task.task_title }} <br>
-            <strong>Description:</strong> {{ done_task.task_description }} <br>
-            <strong>Due Date:</strong> {{ done_task.due_date }} <br>
-            <strong>Reference Link:</strong> <a href="{{ done_task.reference_link }}">{{ done_task.reference_link }}</a> <br>
-        </li>
-    {% empty %}
-        <li>No tasks completed.</li>
-    {% endfor %}
-</ul>
+    .header .title {
+        font-size: 30px;
+        font-weight: 800;
+        color: #FFFFFF;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #580475, #A507DB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .task-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .task-section {
+        background: #1E1E1E;
+        border: 2px solid #AEAEAE;
+        border-radius: 25px;
+        padding: 20px;
+        margin: 10px;
+        width: fit-content;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .task-section:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        background: #FFFFFF;
+        font-family: 'Poppins', sans-serif;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .task-item {
+        background: #2D2D2D;
+        color: #AEAEAE;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer; /* Add cursor pointer for better UX */
+    }
+
+    .task-item img {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .task-icon {
+        width: 25px;
+        height: 25px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    a {
+        color: #00bfff;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .floating-container {
+        display: none;
+        position: fixed; /* Fixed positioning for the floating container */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1E1E1E; /* Dark background for the popup */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        z-index: 1000; /* Make sure it appears on top */
+    }
+
+    .floating-container.show {
+        display: block;
+    }
+
+    .close-btn {
+        cursor: pointer;
+        color: #A507DB; /* Accent color for close button */
+        font-size: 16px;
+        margin-bottom: 15px;
+        display: block;
+    }
+</style>
+
+<div class="header">
+    <div class="title">Tasks</div>
+</div>
+
+<div class="task-container">
+    <div class="task-section">
+        <h2>To Do</h2>
+        <div>
+            {% for task in to_do_tasks %}
+                <div class="task-item">
+                    <span><strong>{{ task.task_title }}</strong></span>
+                    <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">
+                            <img src="{% static 'kgx_app/start-button.png' %}" class="task-icon" />
+                        </button>
+                    </form>
+                </div>
+            {% empty %}
+                <div class="task-item">No tasks assigned.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="task-section">
+        <h2>In Progress</h2>
+        <div>
+            {% for in_progress_task in in_progress_tasks %}
+                <div class="task-item" onclick="showTaskDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title }}', '{{ in_progress_task.details }}')">
+                    <span><strong>{{ in_progress_task.task_title }}</strong></span>
+                    <img src="{% static 'kgx_app/in_progress.png' %}" class="task-icon" />
+                </div>
+            {% empty %}
+                <div class="task-item">No tasks in progress.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="task-section">
+        <h2>For Review</h2>
+        <div>
+            {% for review_task in for_review_tasks %}
+                <div class="task-item">
+                    <span><strong>{{ review_task.task_title }}</strong></span>
+                    <img src="{% static 'kgx_app/for_review.png' %}" class="task-icon" />
+                </div>
+            {% empty %}
+                <div class="task-item">No tasks for review.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="task-section">
+        <h2>Done</h2>
+        <div>
+            {% for done_task in done_tasks %}
+                <div class="task-item">
+                    <span><strong>{{ done_task.task_title }}</strong></span>
+                    <img src="{% static 'kgx_app/done.png' %}" class="task-icon" />
+                </div>
+            {% empty %}
+                <div class="task-item">No tasks completed.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Floating Details Container -->
+<div id="task-details" class="floating-container">
+    <span class="close-btn" onclick="closeTaskDetails()">X</span>
+    <h2 id="task-title"></h2>
+    <p id="task-description"></p>
+</div>
+
+<script>
+    function showTaskDetails(taskId, title, details) {
+        document.getElementById('task-title').innerText = title;
+        document.getElementById('task-description').innerText = details;
+        document.getElementById('task-details').classList.add('show');
+    }
+
+    function closeTaskDetails() {
+        document.getElementById('task-details').classList.remove('show');
+    }
+</script>
 
 {% endblock %}
