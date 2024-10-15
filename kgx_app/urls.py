@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from . import views
 urlpatterns = [
     path('', views.home_redirect, name="home_redirect"),
+    path('land/', views.landing_page, name='landing_page'),
    path('login', views.login_view, name="login"),
    path('logout/', views.logout_view, name='logout'),
    path('dashboard/', views.dashboard_view, name='dashboard'),

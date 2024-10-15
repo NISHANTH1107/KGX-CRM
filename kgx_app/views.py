@@ -20,15 +20,16 @@ from .utils import generate_wifi_report
 from django.utils.decorators import method_decorator
 
 def home_redirect(request):
-    try:
-        # Assuming `request.user` is linked to a Profile instance
-        profile = Profile.objects.get(roll_no=request.user.username)  # Assuming roll_no is the same as username
+    if request.user.is_authenticated:
+        # Redirect to the appropriate dashboard based on the role
+        profile = Profile.objects.get(roll_no=request.user.username)
         if profile.role == 'staff':
-            return redirect('staff_dashboard')  # Redirect to the staff dashboard if the user is staff
+            return redirect('staff_dashboard')
         else:
-            return redirect('dashboard')  # Redirect to the student dashboard if the user is not staff
-    except Profile.DoesNotExist:
-        return redirect('login')
+            return redirect('dashboard')
+    else:
+        # If not logged in, redirect to the login page
+        return redirect('land/')
 
 # views.py
 
@@ -379,3 +380,7 @@ def in_progress_view(request):
 def done_view(request):
     done_tasks = Done.objects.all()  # Retrieve all tasks from Done
     return render(request, 'done.html', {'done_tasks': done_tasks})
+
+
+def landing_page(request):
+    return render(request, 'landingpg.html')
