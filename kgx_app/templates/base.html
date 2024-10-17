@@ -360,10 +360,7 @@ body, html {
                 <img src="{% static 'kgx_app/work_on_holidays.png' %}" alt="Work on Holidays" class="nav-icon">
                 Work on Holidays
             </a>
-            <a href="{% url 'inventory' %}" class="nav-button {% if request.resolver_match.url_name == 'inventory' %}active{% endif %}">
-                <img src="{% static 'kgx_app/inventory.png' %}" alt="Inventory" class="nav-icon">
-                Inventory
-            </a>
+            
             
             <a href="{% url 'internship' %}" class="nav-button {% if request.resolver_match.url_name == 'internship' %}active{% endif %}">
                 <img src="{% static 'kgx_app/internships.png' %}" alt="Internships" class="nav-icon">

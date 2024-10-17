@@ -18,15 +18,26 @@ import base64
 import requests
 from .utils import generate_wifi_report
 from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from .models import Profile
+from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
+from kgx_app.models import Profile
+from django.core.exceptions import ObjectDoesNotExist
 
 def home_redirect(request):
     if request.user.is_authenticated:
-        # Redirect to the appropriate dashboard based on the role
-        profile = Profile.objects.get(roll_no=request.user.username)
-        if profile.role == 'staff':
-            return redirect('staff_dashboard')
-        else:
-            return redirect('dashboard')
+        try:
+            # Attempt to get the profile based on the roll number (username)
+            profile = Profile.objects.get(roll_no=request.user.username)
+            # Redirect to the appropriate dashboard based on the role
+            if profile.role == 'staff':
+                return redirect('staff_dashboard')
+            else:
+                return redirect('dashboard')
+        except Profile.DoesNotExist:
+            # If no profile exists for the user, redirect to profile creation page
+            return redirect('land/')
     else:
         # If not logged in, redirect to the login page
         return redirect('land/')
@@ -179,13 +190,6 @@ def work_on_holidays(request):
 def internship(request):
     internships = Internship.objects.all()  # Get all internships
     return render(request, 'internship.html', {'internships': internships})
-
-
-@login_required
-@role_required(allowed_roles=['student'])
-def inventory(request):
-    return render(request, 'inventory.html')
-
 
 @login_required
 @role_required(allowed_roles=['student'])

@@ -16,7 +16,6 @@ urlpatterns = [
    path('internship/', views.internship, name='internship'),
    path('contact/', views.contact_view, name='contact'),
    path('add_comment/', views.add_comment, name='add_comment'),
-   path('inventory/', views.inventory, name='inventory'),
    path('staff_dashboard/', views.staff_dashboard, name='staff_dashboard'),
    path('assign-task/', views.assign_task, name='assign_task'),
     path('staff/to-do/', views.to_do_view, name='to_do'),
