@@ -262,18 +262,17 @@
 <div class="container">
     <div class="section-two">
         <div class="comment-section" id="comment-section">
-            {% for comment in comments %}
-        <div class="comment">
-            <img 
-                src="{{ comment.user.profile.image.url }}" 
-                onerror="this.onerror=null; 
-                this.src='{% static 'kgx_app/default_profile.png' %}';" 
-                alt="Profile Picture" class="profile-pic" />
-            <div class="comment-content">
-                <p>{{ comment.content }}</p>
+        {% for comment in comments %}
+            <div class="comment">
+                <img 
+                    src="{{ comment.profile_image_url }}" 
+                    onerror="this.onerror=null; this.src='{% static 'kgx_app/default_profile.png' %}';" 
+                    alt="Profile Picture" class="profile-pic" />
+                <div class="comment-content">
+                    <p>{{ comment.content }}</p>
+                </div>
             </div>
-        </div>
-            {% endfor %}
+        {% endfor %}
         </div>
         <div class="comment-box">
             <i class="fas fa-comment-dots logo-icon"></i>
@@ -292,7 +291,7 @@
 </div>
 
 <script>
-    document.getElementById('submit-comment').addEventListener('click', function() {
+    function submitComment() {
         const content = document.getElementById('comment-input').value.trim();
         const commentSection = document.getElementById('comment-section');
 
@@ -342,6 +341,17 @@
             });
         } else {
             alert("Please enter a comment before submitting.");
+        }
+    }
+
+    // Event listener for clicking the submit button
+    document.getElementById('submit-comment').addEventListener('click', submitComment);
+
+    // Event listener for pressing Enter key in the input field
+    document.getElementById('comment-input').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action (form submission)
+            submitComment(); // Call the submit function
         }
     });
 </script>
