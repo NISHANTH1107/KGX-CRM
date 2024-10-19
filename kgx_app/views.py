@@ -200,8 +200,6 @@ def logout_view(request):
 
 @login_required
 @require_POST
-@csrf_exempt 
-@role_required(allowed_roles=['student']) # Use for testing, but ideally, keep CSRF protection enabled in production
 def add_comment(request):
     if request.method == 'POST':
         try:
@@ -211,16 +209,15 @@ def add_comment(request):
                 # Create a new comment in your Comment model
                 new_comment = Comment(user=request.user, content=content)  # Associate with the logged-in user
                 new_comment.save()
-                
+
                 # Prepare response data
-               
-                #response_data = {
-                #    'success': True,
-                #   'comment': content,
-                #    'profile_image': new_comment.user.profile.image.url if new_comment.user.profile.image else static('kgx_app/default_profile.png')
-                #}
-            
-                return JsonResponse({'success': True, 'comment': content})
+                profile_image = (
+                    new_comment.user.profile.image.url
+                    if hasattr(new_comment.user, 'profile') and new_comment.user.profile.image
+                    else static('kgx_app/default_profile.png')  # Use default image if profile or image doesn't exist
+                )
+
+                return JsonResponse({'success': True, 'comment': content, 'profile_image': profile_image})
             else:
                 return JsonResponse({'success': False, 'error': 'Comment cannot be empty.'})
         except Exception as e:

@@ -315,13 +315,20 @@
                 if (data.success) {
                     const newComment = document.createElement('div');
                     newComment.classList.add('comment');
+
+                    // Use the profile image URL from the server response or a default image
+                    const profileImage = data.profile_image || '{% static "kgx_app/default_profile.png" %}';
+
+                    // Ensure the HTML structure matches the server-rendered comments
                     newComment.innerHTML = `
-                        <img src="${data.profile_image}" 
-                             onerror="this.onerror=null; 
-                             this.src='{% static 'kgx_app/default_profile.png' %}';" 
-                             alt="Commenter">
-                        <div class="comment-content">${data.comment}</div>
+                        <img src="${profileImage}" 
+                             onerror="this.onerror=null; this.src='{% static 'kgx_app/default_profile.png' %}';" 
+                             alt="Commenter" class="profile-pic" />
+                        <div class="comment-content">
+                            <p>${data.comment}</p>
+                        </div>
                     `;
+
                     commentSection.appendChild(newComment); // Append the new comment to the end
                     commentSection.scrollTop = commentSection.scrollHeight; // Scroll to the bottom
                     document.getElementById('comment-input').value = ''; // Clear input box
@@ -336,6 +343,6 @@
         } else {
             alert("Please enter a comment before submitting.");
         }
-        
+    });
 </script>
 {% endblock %}
