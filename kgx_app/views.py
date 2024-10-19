@@ -19,6 +19,7 @@ import requests
 from .utils import generate_wifi_report
 from django.utils.decorators import method_decorator
 from kgx_app.models import Profile
+from django.db.models import Q
 
 def home_redirect(request):
     if request.user.is_authenticated:
@@ -391,7 +392,7 @@ def search_names(request):
     query = request.GET.get('q', '')
     if query:
         profiles = Profile.objects.filter(name__icontains=query)[:5]  # Limit to 5 suggestions
-        name_list = list(profiles.values_list('name', flat=True))  # Extract only the names
+        name_list = list(profiles.values_list('name','roll_no'))  # Extract only the names
     else:
         name_list = []
     

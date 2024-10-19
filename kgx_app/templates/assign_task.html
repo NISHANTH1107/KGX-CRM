@@ -35,16 +35,56 @@
         label {
             margin-bottom: 8px; /* Gap between label and input box */
         }
+        .suggestions-container {
+            display: none; 
+            position: absolute;
+            z-index: 1000;
+            width: 100%; 
+            max-width: 300px;
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+            max-height: 250px; 
+            overflow-y: auto; 
+            overflow-x: hidden; 
+            font-size: 14px; 
+            padding: 0; 
+        }
+        
         .suggestion-item {
-            padding: 10px;
+            padding: 12px;
             cursor: pointer;
-            color: white;
-            background-color: #333; /* Match background color */
+            color: #fff; /* White text for contrast */
+            background-color: #333; /* Darker background for suggestions */
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Smooth transition */
+            border-bottom: 1px solid #444; /* Divider between items */
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none; /* Remove border for the last item */
         }
         
         .suggestion-item:hover {
-            background-color: #444; /* Highlight on hover */
+            background-color: #5b0868; /* Highlight color on hover */
+            transform: scale(1.03);
         }
+        
+        .suggestions-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .suggestions-container::-webkit-scrollbar-track {
+            background: #333;
+        }
+        
+        .suggestions-container::-webkit-scrollbar-thumb {
+            background-color: #555;
+            border-radius: 8px;
+        }
+        
+        .suggestions-container::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }        
     </style>
 </head>
 
@@ -71,19 +111,20 @@
             <div style="display: flex; gap: 30px;"> <!-- Flex container for Name and Roll No -->
                 <div style="flex: 1;">
                     <label for="name" style="font-size: 1.2rem; color: #FFFFFF;">Name:</label>
-                    <input type="text" id="name" name="name" required style="
-                        width: 100%; 
+                    <input type="text" id="name" name="name" required autocomplete="off" style="
+                         width: 100%; 
                         padding: 12px; 
                         border-radius: 6px; 
                         background-color: #333; 
                         color: white;
                         transition: background-color 0.3s, box-shadow 0.3s;
                     " placeholder="Enter Name" onfocus="this.style.backgroundColor='#444'; this.style.boxShadow='0 0 5px #FFD700';" onblur="this.style.backgroundColor='#333'; this.style.boxShadow='none';">
+                    <div id="suggestions" class="suggestions-container"></div> <!-- Suggestions dropdown -->
                 </div>
 
                 <div style="flex: 1;">
                     <label for="roll_no" style="font-size: 1.2rem; color: #FFFFFF;">Roll No:</label>
-                    <input type="text" id="roll_no" name="roll_no" required style="
+                    <input type="text" id="roll_no" name="roll_no" required autocomplete="off" style="
                         width: 100%; 
                         padding: 12px; 
                         border-radius: 6px; 
@@ -159,4 +200,52 @@
         </form>
     </div>
 </div>
+<script>
+    const input = document.getElementById('name');
+    const rollNoInput = document.getElementById('roll_no');
+    const suggestionsBox = document.getElementById('suggestions');
+    
+    input.addEventListener('input', async () => {
+        const query = input.value;
+    
+        if (query.length < 1) {
+            suggestionsBox.style.display = 'none';
+            return;
+        }
+    
+        try {
+            const response = await fetch(`/search-names/?q=${query}`);
+            const suggestions = await response.json();
+    
+            // Clear the previous suggestions
+            suggestionsBox.innerHTML = '';
+    
+            if (suggestions.length > 0) {
+                suggestionsBox.style.display = 'block';
+    
+                // Create suggestion items
+                suggestions.forEach(profile => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.textContent = profile[0];  // Only display the name
+                    suggestionItem.classList.add('suggestion-item');
+    
+                    // When a suggestion is clicked, fill in the name and roll_no
+                    suggestionItem.onclick = () => {
+                        input.value = profile[0];  // Set the name input field
+                        rollNoInput.value = profile[1];  // Set the roll_no input field
+                        suggestionsBox.style.display = 'none';  // Hide the suggestions box
+                    };
+    
+                    // Append the suggestion item to the suggestions box
+                    suggestionsBox.appendChild(suggestionItem);
+                });
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            suggestionsBox.style.display = 'none';
+        }
+    });    
+</script>
 {% endblock %}
