@@ -6,19 +6,44 @@
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             font-family: 'Poppins', sans-serif; /* Updated font for a modern look */
         }
 
         input, textarea {
-            border-width: 0px 0px 0px 0px; /* Apply border width */
-            border-style: solid; /* Solid border */
-            border-color: #FFFFFFCC; /* White with opacity */
+            border: 2px solid transparent; /* Transparent border by default */
+            border-radius: 6px;
+            background-color: #333; 
+            color: white;
+            padding: 12px;
+            transition: background-color 0.3s, box-shadow 0.3s, border 0.3s; /* Added border transition */
+        }
+
+        input:hover, textarea:hover {
+            border-color: #FFFFFF; /* White border on hover */
+        }
+
+        input:focus, textarea:focus {
+            background-color: #444;
+            box-shadow: 0 0 5px #FFD700;
+            border-color: #FFFFFF; /* Keep white border on focus */
+            outline: none; /* Remove default outline */
         }
 
         label {
             margin-bottom: 8px; /* Gap between label and input box */
+        }
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            background-color: #333; /* Match background color */
+        }
+        
+        .suggestion-item:hover {
+            background-color: #444; /* Highlight on hover */
         }
     </style>
 </head>

@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect ,csrf_exempt
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Profile,Learnbypractice,Internship,Holiday,Comment,Wifi,ToDo,InProgress,ForReview,Done
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError ,ObjectDoesNotExist
 from .import generate_pdf,email_service
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -18,12 +18,7 @@ import base64
 import requests
 from .utils import generate_wifi_report
 from django.utils.decorators import method_decorator
-from django.http import JsonResponse
-from .models import Profile
-from django.shortcuts import get_object_or_404, redirect
-from django.shortcuts import get_object_or_404, redirect
 from kgx_app.models import Profile
-from django.core.exceptions import ObjectDoesNotExist
 
 def home_redirect(request):
     if request.user.is_authenticated:
@@ -388,3 +383,16 @@ def done_view(request):
 
 def landing_page(request):
     return render(request, 'landingpg.html')
+
+@csrf_exempt
+@login_required
+@role_required(allowed_roles=['staff'])
+def search_names(request):
+    query = request.GET.get('q', '')
+    if query:
+        profiles = Profile.objects.filter(name__icontains=query)[:5]  # Limit to 5 suggestions
+        name_list = list(profiles.values_list('name', flat=True))  # Extract only the names
+    else:
+        name_list = []
+    
+    return JsonResponse(name_list, safe=False)

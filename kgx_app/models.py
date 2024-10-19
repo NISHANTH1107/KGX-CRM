@@ -12,7 +12,7 @@ class Profile(models.Model):
         (STAFF, 'Staff'),
     ]
     
-    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', null=True)
     name = models.CharField(max_length=100)
     roll_no = models.CharField(primary_key=True, max_length=20)
     dept = models.CharField(max_length=100)

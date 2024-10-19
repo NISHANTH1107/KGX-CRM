@@ -22,6 +22,7 @@ urlpatterns = [
     path('staff/in-progress/', views.in_progress_view, name='in_progress'),
     path('staff/done/', views.done_view, name='done'),
     path('for_review/', views.for_review, name='for_review'),
+    path('search-names/', views.search_names, name='search_names'),
     path('review-task/<int:task_id>/', views.review_task, name='review_task'),
     path('student/tasks/start/<int:task_id>/', views.start_task, name='start_task'),
     path('submit_task_link/<int:task_id>/', views.submit_task_link, name='submit_task_link'),]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
