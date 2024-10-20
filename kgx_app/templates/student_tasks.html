@@ -46,18 +46,44 @@
     }
 
     .task-section {
-        background: #1E1E1E;
-        border: 2px solid #AEAEAE;
-        border-radius: 25px;
-        padding: 20px;
-        margin: 10px;
-        width: 200px;
-        height: fit-content;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        display: flex;
-        flex-direction: column;
-    }
+    background: #1E1E1E;
+    border: 2px solid #AEAEAE;
+    border-radius: 25px;
+    padding: 20px;
+    margin: 10px;
+    width: 200px; /* Set a fixed width */
+    height: fit-content; /* Set a fixed height to prevent expansion */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* Enable scrolling within the section */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.task-item {
+    background: #2D2D2D;
+    color: #AEAEAE;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    min-height: 50px;
+    max-height: 60px; /* Set a max height to limit the task item size */
+    overflow: hidden; /* Prevent the content from overflowing */
+    white-space: nowrap; /* Prevent text from wrapping into a new line */
+    text-overflow: ellipsis; /* Show ellipsis (...) when the text is too long */
+}
+
+/* Ensure long task titles are truncated */
+.task-item span {
+    max-width: 200px; /* Set a maximum width for the title text */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
     .task-section:hover {
         transform: translateY(-10px);
@@ -74,17 +100,7 @@
         -webkit-text-fill-color: transparent;
     }
 
-    .task-item {
-        background: #2D2D2D;
-        color: #AEAEAE;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
+   
 
     .task-item img {
         width: 20px;
@@ -169,21 +185,34 @@ p {
 }
 
 /* Start task button */
+/* Start Task button styling */
 .start-task-btn {
-    background-color: #5aac44; /* Trello uses a green shade */
+    background: linear-gradient(135deg, #580475, #A507DB); /* Gradient background */
     color: white;
-    padding: 10px 20px;
+    padding: 12px 25px;
     font-size: 16px;
+    font-weight: 600;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+    margin-top: 20px;
 }
 
+/* Hover effect for Start Task button */
 .start-task-btn:hover {
-    background-color: #519839; /* Darker green on hover */
+    background: linear-gradient(135deg, #A507DB, #580475); /* Reverse gradient on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Add a stronger shadow */
 }
+
+/* Active/Pressed state for the button */
+.start-task-btn:active {
+    transform: scale(0.98); /* Shrink slightly on click */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Reduce shadow on click */
+}
+
 
 /* Highlighting the task icon when task is started */
 .highlighted-icon {
@@ -242,9 +271,7 @@ p {
 }
 
 /* Base styles for task icons */
-.task-item img {
-   
-}
+
 
 /* Styles for the highlighted icon */
 .highlighted-icon {
@@ -280,6 +307,17 @@ p {
 }
 
 
+/* Box for task description */
+.description-box {
+    background-color: #2D2D2D; /* Dark background for the box */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid #A507DB; /* Border to highlight the box */
+    margin-bottom: 20px;
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 1.6;
+}
 
 
 </style>
@@ -315,7 +353,7 @@ p {
         <h2>In Progress</h2>
         <div>
             {% for in_progress_task in in_progress_tasks %}
-                <div class="task-item" onclick="showTaskDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title }}', '{{ in_progress_task.details }}')">
+                <div class="task-item" onclick="showInProgressDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title }}', '{{ in_progress_task.details }}', '{{ in_progress_task.reference_link }}', '{{ in_progress_task.due_date }}')">
                     <span><strong>{{ in_progress_task.task_title }}</strong></span>
                     <img src="{% static 'kgx_app/in_progress.png' %}" class="task-icon" />
                 </div>
@@ -355,16 +393,34 @@ p {
 </div>
 
 <!-- Sliding Task Details Modal -->
+<!-- Sliding Task Details Modal -->
 <div id="task-details" class="floating-container">
     <span class="close-btn" onclick="closeTaskDetails()">X</span>
     <div id="task-details-content">
         <h2 id="task-title"></h2> <!-- Task title added here -->
-        <p><strong>Task Description: </strong><span id="task-description"></span></p>
-        <p><strong>Reference Link: </strong><a id="task-reference-link" href="#" target="_blank">View Reference</a></p>
-        <p><strong>Due Date: </strong><span id="task-due-date"></span></p>
+
+        <!-- Task description in a box -->
+        <p><strong>Task Description:</strong></p>
+        <div class="description-box">
+            <span id="task-description"></span>
+        </div>
+
+        <p><strong>Reference Link:</strong> <a id="task-reference-link" href="#" target="_blank">View Reference</a></p>
+        <p><strong>Due Date:</strong> <span id="task-due-date"></span></p>
 
         <!-- Start Button -->
         <button id="start-task-btn" class="start-task-btn" onclick="startTask()">Start Task</button>
+    </div>
+</div>
+
+
+<div id="in-progress-details" class="floating-container">
+    <span class="close-btn" onclick="closeInProgressDetails()">X</span>
+    <div id="in-progress-details-content">
+        <h2 id="in-progress-title"></h2> <!-- Task title added here -->
+        <p><strong>Task Description: </strong><span id="in-progress-description"></span></p>
+        <p><strong>Reference Link: </strong><a id="in-progress-reference-link" href="#" target="_blank">View Reference</a></p>
+        <p><strong>Due Date: </strong><span id="in-progress-due-date"></span></p>
     </div>
 </div>
 
@@ -386,6 +442,7 @@ p {
 <script>
   // Function to handle task start
 // Function to handle task start
+// Function to handle task start in the "To Do" section
 function startTask(taskId) {
     // Close the floating container
     closeTaskDetails();
@@ -401,8 +458,7 @@ function startTask(taskId) {
     showCustomAlert("Click the Highlighted icon!");
 }
 
-
-// Function to show task details in the modal
+// Function to show task details in the modal for "To Do" section
 function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
     // Set task title in the modal
     document.getElementById('task-title').innerText = title;
@@ -417,9 +473,28 @@ function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
     document.getElementById('start-task-btn').setAttribute('onclick', 'startTask("' + taskId + '")');
 }
 
-// Function to close the task details modal
+// Function to close the "To Do" task details modal
 function closeTaskDetails() {
     document.getElementById('task-details').classList.remove('show');
+}
+
+// Function to show task details in the modal for "In Progress" section
+function showInProgressDetails(taskId, title, details, referenceLink, dueDate) {
+    // Set task title in the modal
+    document.getElementById('in-progress-title').innerText = title;
+
+    // Set task description, reference link, and due date
+    document.getElementById('in-progress-description').innerText = details;
+    document.getElementById('in-progress-reference-link').setAttribute('href', referenceLink);
+    document.getElementById('in-progress-due-date').innerText = dueDate;
+
+    // Show the modal for In Progress tasks
+    document.getElementById('in-progress-details').classList.add('show');
+}
+
+// Function to close the "In Progress" task details modal
+function closeInProgressDetails() {
+    document.getElementById('in-progress-details').classList.remove('show');
 }
 
 // Function to show the custom alert modal
@@ -440,7 +515,6 @@ function showCustomAlert(message) {
 function closeCustomAlert() {
     document.getElementById('custom-alert').classList.remove('show');
 }
-
 
 </script>
 
