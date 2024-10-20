@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect ,csrf_exempt
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Profile,Learnbypractice,Internship,Holiday,Comment,Wifi,ToDo,InProgress,ForReview,Done
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError ,ObjectDoesNotExist
 from .import generate_pdf,email_service
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -18,17 +18,25 @@ import base64
 import requests
 from .utils import generate_wifi_report
 from django.utils.decorators import method_decorator
+from kgx_app.models import Profile
+from django.db.models import Q
 
 def home_redirect(request):
-    try:
-        # Assuming `request.user` is linked to a Profile instance
-        profile = Profile.objects.get(roll_no=request.user.username)  # Assuming roll_no is the same as username
-        if profile.role == 'staff':
-            return redirect('staff_dashboard')  # Redirect to the staff dashboard if the user is staff
-        else:
-            return redirect('dashboard')  # Redirect to the student dashboard if the user is not staff
-    except Profile.DoesNotExist:
-        return redirect('login')
+    if request.user.is_authenticated:
+        try:
+            # Attempt to get the profile based on the roll number (username)
+            profile = Profile.objects.get(roll_no=request.user.username)
+            # Redirect to the appropriate dashboard based on the role
+            if profile.role == 'staff':
+                return redirect('staff_dashboard')
+            else:
+                return redirect('dashboard')
+        except Profile.DoesNotExist:
+            # If no profile exists for the user, redirect to profile creation page
+            return redirect('land/')
+    else:
+        # If not logged in, redirect to the login page
+        return redirect('land/')
 
 # views.py
 
@@ -73,20 +81,19 @@ def login_view(request):
 @login_required
 @role_required(allowed_roles=['student'])
 def dashboard_view(request):
-    comments = Comment.objects.select_related('user').all().order_by('-created_at')  # Fetch comments with user profile
-    for comment in comments:
+    # Calculate the time 24 hours ago
+    twenty_four_hours_ago = timezone.now() - timedelta(hours=24)
+
+    # Filter comments created in the last 24 hours
+    recent_comments = Comment.objects.filter(created_at__gte=twenty_four_hours_ago).select_related('user')
+
+    for comment in recent_comments:
         try:
             # Assuming the username is the roll number
             profile = Profile.objects.get(roll_no=comment.user.username)
             comment.profile_image_url = profile.image.url if profile.image else '/static/kgx_app/default_profile.png'
         except Profile.DoesNotExist:
             comment.profile_image_url = '/static/kgx_app/default_profile.png'  # Default image if profile does not exist
-
-   # Calculate the time 24 hours ago
-    twenty_four_hours_ago = timezone.now() - timedelta(hours=24)
-
-    # Filter comments created in the last 24 hours
-    recent_comments = Comment.objects.filter(created_at__gte=twenty_four_hours_ago)
 
     return render(request, 'dashboard.html', {'comments': recent_comments})
 
@@ -179,13 +186,6 @@ def internship(request):
     internships = Internship.objects.all()  # Get all internships
     return render(request, 'internship.html', {'internships': internships})
 
-
-@login_required
-@role_required(allowed_roles=['student'])
-def inventory(request):
-    return render(request, 'inventory.html')
-
-
 @login_required
 @role_required(allowed_roles=['student'])
 def contact_view(request):
@@ -199,33 +199,30 @@ def logout_view(request):
 
 @login_required
 @require_POST
-@csrf_exempt 
-@role_required(allowed_roles=['student']) # Use for testing, but ideally, keep CSRF protection enabled in production
 def add_comment(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             content = data.get('content')
+
             if content:
                 # Create a new comment in your Comment model
                 new_comment = Comment(user=request.user, content=content)  # Associate with the logged-in user
                 new_comment.save()
-                
+
                 # Prepare response data
-               
-                #response_data = {
-                #    'success': True,
-                #   'comment': content,
-                #    'profile_image': new_comment.user.profile.image.url if new_comment.user.profile.image else static('kgx_app/default_profile.png')
-                #}
-            
-                return JsonResponse({'success': True, 'comment': content})
+                profile_image = (
+                    new_comment.user.profile.image.url
+                    if hasattr(new_comment.user, 'profile') and new_comment.user.profile.image
+                    else static('kgx_app/default_profile.png')  # Use default image if profile or image doesn't exist
+                )
+
+                return JsonResponse({'success': True, 'comment': content, 'profile_image': profile_image})
             else:
                 return JsonResponse({'success': False, 'error': 'Comment cannot be empty.'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
-
 
 @login_required
 @role_required(allowed_roles=['staff'])
@@ -379,3 +376,20 @@ def in_progress_view(request):
 def done_view(request):
     done_tasks = Done.objects.all()  # Retrieve all tasks from Done
     return render(request, 'done.html', {'done_tasks': done_tasks})
+
+
+def landing_page(request):
+    return render(request, 'landingpg.html')
+
+@csrf_exempt
+@login_required
+@role_required(allowed_roles=['staff'])
+def search_names(request):
+    query = request.GET.get('q', '')
+    if query:
+        profiles = Profile.objects.filter(name__icontains=query)[:5]  # Limit to 5 suggestions
+        name_list = list(profiles.values_list('name','roll_no'))  # Extract only the names
+    else:
+        name_list = []
+    
+    return JsonResponse(name_list, safe=False)

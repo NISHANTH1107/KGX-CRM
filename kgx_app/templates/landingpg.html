@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Outfit&display=swap" rel="stylesheet" />
   <style>
+    /* Your existing CSS styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -46,7 +48,7 @@
 
     .left-section h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 150px; /* Font size for ELEVATE */
+      font-size: 150px;
       color: rgba(134, 28, 153, 1);
       line-height: 120px;
       margin-left: 100px;
@@ -54,7 +56,7 @@
 
     .left-section h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 110px; /* Font size for INNOVATE */
+      font-size: 110px;
       color: #fff;
       line-height: 100px;
       margin-left: 100px;
@@ -66,7 +68,7 @@
       color: #fff;
       text-align: justify;
       margin-top: 20px;
-      width: 600px; /* Fixed width same as "ELEVATE" */
+      width: 600px;
       margin-left: 100px;
     }
 
@@ -137,13 +139,12 @@
         and supporting them in transforming ideas into viable products and successful startups.</p>
 
       <div class="button-container">
-        <a href="#" class="button">Get Started</a>
+        <a href="{% url 'login' %}" class="button">Get Started</a>
       </div>
     </div>
 
     <div class="right-section">
-      <!-- Updated Image Path -->
-      <img src="/media/images/v1043_109.png" alt="Right Section Image" width="100%" height="auto">
+      <img src="{{ MEDIA_URL }}../../media/images/v1043_109.png" alt="Right Section Image" width="100%" height="auto">
       <div class="overlay"></div>
       <div class="gradient-overlay"></div>
     </div>

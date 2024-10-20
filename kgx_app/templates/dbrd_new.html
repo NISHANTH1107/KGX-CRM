@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Thoughts - Chatbox</title>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow: hidden; /* Prevents scrolling */
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Full height of the viewport */
+        }
+
+        /* First Circular gradient element */
+        .styled-circle {
+            width: 254.925px;
+            height: 272px;
+            position: absolute;
+            left: 10px;
+            bottom: 16px;
+            border-radius: 272px;
+            opacity: 0.9;
+            transform: rotate(-28.5deg);
+            background: linear-gradient(180deg, #300061 0%, #0A1030 100%);
+            z-index: 0;
+        }
+
+        /* Second Circle */
+        .box {
+            width: 350px;
+            height: 350px;
+            position: absolute;
+            top: 50px;
+            left: 550px;
+            z-index: 0;
+        }
+
+        .box .ellipse {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(180deg, #530061 0%, #3D0351 50%, #2C0645 75%, #0D0A30 100%);
+            border-radius: 50%;
+        }
+
+        /* Overlay box for background blur effect */
+        .overlay {
+            position: absolute;
+            width: calc(100% - 10px); /* Full width minus the left margin of the first circle */
+            height: 800px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            top: 50%;
+            left: 0; /* Adjusted to start from the left border */
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        /* Border Box */
+        .border-box {
+            width: 561px;
+            height: 660px;
+            position: absolute;
+            left: 181px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 30px;
+            border: 1px solid #EEEEEE;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Styling for the Share Your Thoughts text */
+        .share-your-thoughts {
+            width: 716px;
+            height: 728px;
+            position: absolute;
+            top: 50%;
+            right: 80px;
+            transform: translateY(-50%);
+            text-align: right;
+            z-index: 3;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+
+        .share-your-thoughts span {
+            display: block;
+            color: #861C99;
+            font-size: 150px;
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+
+        .share-your-thoughts span.white {
+            color: white; /* Make "SHARE YOUR" white */
+        }
+
+        .highlight {
+            color: #861C99;
+        }
+
+        /* New styling for Daily Updates text */
+        .daily-updates {
+            font-family: 'Outfit', sans-serif; /* Use Outfit font */
+            font-size: 30px; /* Set font size to 30 */
+            color: white; /* Set color to white */
+            font-weight: 500; /* Set font weight to medium */
+            margin-top: 10px; /* Add some spacing above the text */
+            text-align: right; /* Align text to the right */
+            z-index: 4; /* Make sure it is above other elements */
+            position: absolute; /* Position it absolutely */
+            bottom: 30px; /* Position it near the bottom of the container */
+            right: 90px; /* Align it with the right edge */
+        }
+
+        /* Chatbox styles */
+        .chatbox {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        /* Styles for chat messages area */
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .message img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .message-content {
+            background: #222;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        /* Styles for chat input area */
+        .chat-input {
+            display: flex;
+            align-items: center;
+            padding: 10px; /* Padding around input field */
+            background: white; /* Solid white background for the input area */
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        .chat-input img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 5px; /* Reduced padding for smaller height */
+            border: none; /* Remove border */
+            outline: none; /* Remove outline */
+            background: white; /* Solid white background for input field */
+            color: black; /* Black text for input */
+            border-radius: 10px; /* Make sure input also has rounded corners */
+            height: 20px; /* Reduced height for the input field */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- First Circular gradient element -->
+        <div class="styled-circle"></div>
+
+        <!-- Second Circle -->
+        <div class="box">
+            <img class="ellipse" src="img/ellipse-1.png" alt="Ellipse" />
+        </div>
+
+        <!-- Overlay for blur effect -->
+        <div class="overlay"></div>
+
+        <!-- Border Box (Now the chatbox) -->
+        <div class="border-box">
+            <!-- Chat Messages -->
+            <div class="chatbox">
+                <div class="chat-messages">
+                    <div class="message received">
+                        <img src="\KGX-CRM\media\images\Ellipse 493.png" alt="User 1">
+                        <div class="message-content">Hello! How can I assist you today?</div>
+                    </div>
+                    <div class="message received">
+                        <img src="\KGX-CRM\media\images\Ellipse 493.png" alt="User 2">
+                        <div class="message-content">Feel free to ask any questions!</div>
+                    </div>
+                </div>
+                <!-- Chat Input -->
+                <div class="chat-input">
+                    <input type="text" placeholder="Add a message" id="message-input">
+                    <img src="\KGX-CRM\media\images\uil_message.png" alt="Send Message Icon" id="send-icon" class="send-icon">
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Your Thoughts text -->
+        <div class="share-your-thoughts">
+            <span class="white">SHARE</span>
+            <span class="white">YOUR</span>
+            <span class="highlight">THOUG</span>
+            <span class="highlight">HTS</span>
+        </div>
+        
+        <!-- Daily Updates text -->
+        <div class="daily-updates">
+            Daily Updates For You
+        </div>
+    </div>
+
+    <script>
+        const messageInput = document.getElementById('message-input');
+        const sendIcon = document.getElementById('send-icon');
+
+        // Function to send a message
+        function sendMessage() {
+            const messageText = messageInput.value;
+
+            if (messageText.trim() !== '') {
+                const chatMessages = document.querySelector('.chat-messages');
+                const newMessage = document.createElement('div');
+                newMessage.classList.add('message', 'sent');
+                
+                // Correct image path for the profile
+                const profileImagePath = '\\KGX-CRM\\media\\images\\Ellipse 493.png';
+
+                newMessage.innerHTML = '<img src="' + profileImagePath + '" alt="User"><div class="message-content">' + messageText + '</div>';
+                chatMessages.appendChild(newMessage);
+
+                messageInput.value = ''; // Clear input after sending
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+            }
+        }
+
+        // Send message on click
+        sendIcon.addEventListener('click', sendMessage);
+
+        // Send message on Enter key press
+        messageInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% csrf_token %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+        body {
+            background-image: {% static 'kgx_app/bg_kgx.png' %};
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: Inter, sans-serif;
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 20px; /* Increase padding for a more spacious feel */
+                height: auto; /* Allow the container to grow naturally */
+            }
+    
+            .comment-section {
+                padding: 15px; /* Reduce padding for a compact look */
+            }
+    
+            .comment img {
+                width: 40px; /* Adjust avatar size */
+                height: 40px;
+            }
+    
+            .comment-box input {
+                width: 70%; /* Adjust input width for better fit */
+                padding: 10px; /* Slightly reduce padding */
+            }
+    
+            .comment-box button {
+                width: 45px; /* Adjust button size */
+                height: 45px;
+            }
+        }
+    
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+    
+        .section-two {
+            width: 100%; /* Make section-two take full width */
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 5%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    
+        /* Comment Section Styles */
+        .comment-section {
+            background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            border: 2px solid #580475; /* Border to frame the section */
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(10px); /* Optional: Adds a blur effect to the background */
+        }
+    
+        .comment {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background for comments */
+            margin-bottom: 15px;
+            flex-grow: 1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+    
+        .comment .comment-content {
+            flex-grow: 1;
+            background: rgba(7, 6, 6, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Shadow for the comment content */
+            font-size: 16px;
+            line-height: 1.5;
+            color: white; /* Ensure text color is white for readability */
+        }
+    
+        .comment img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid #580475; /* Border around the avatar */
+        }
+    
+        .comment-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        }
+    
+        .comment-box input {
+            width: 75%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #580475; /* Highlighted border */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Inner shadow */
+        }
+    
+        .comment-box button {
+            padding: 12px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background-color: #580475;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Button shadow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .comment-box button:hover {
+            background-color: #A507DB; /* Brighter color on hover */
+        }
+    
+        .comment-box button i {
+            font-size: 20px;
+        }
+    
+        .comment-box .logo-icon {
+            font-size: 24px; /* Adjust the icon size */
+            color: #580475; /* Match the theme color */
+            margin-right: 10px; /* Space between icon and input field */
+            border-radius: 50%; /* Optional: Make it round */
+            background-color: rgba(255, 255, 255, 0.1); /* Add background */
+            padding: 8px; /* Space inside the icon */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+
+        /* Styles for Share Your Thoughts */
+        .share-your-thoughts {
+            position: absolute;
+            right: 20px; /* Adjust for padding from the right */
+            top: 20%; /* Adjust to position vertically */
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            z-index: 10; /* Ensure it appears above other elements */
+        }
+
+        .share-your-thoughts span {
+            display: block;
+            color: #861C99;
+            font-size: 150px;
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+
+        .share-your-thoughts span.white {
+            color: white;
+        }
+
+        .highlight {
+            color: #861C99;
+        }
+
+        /* Adjust other styles as needed for the layout */
+    </style>
+</head>
+
+<div class="container">
+    <div class="section-two">
+        <div class="comment-section" id="comment-section">
+            {% for comment in comments %}
+                <div class="comment">
+                    <img src="{{ comment.user.profile.image.url }}" 
+                    onerror="this.onerror=null; 
+                    this.src='{% static 'kgx_app/default_profile.png' %}';" 
+                    alt="Profile Picture" class="profile-pic" />
+                    <div class="comment-content">
+                        <p>{{ comment.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="comment-box">
+            <i class="fas fa-comment-dots logo-icon"></i>
+            <input type="text" id="comment-input" placeholder="Type your message...">
+            <button id="submit-comment"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Share Your Thoughts Container -->
+    <div class="share-your-thoughts">
+        <span class="white">SHARE</span>
+        <span class="white">YOUR</span>
+        <span class="highlight">THOUG</span>
+        <span class="highlight">HTS</span>
+    </div>
+</div>
+
