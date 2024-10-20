@@ -10,9 +10,9 @@
 
 <style>
     body {
-        background-color: #000000; /* Black background for contrast */
-        color: #FFFFFF; /* White text for readability */
-        font-family: 'Poppins', sans-serif; /* Updated to Poppins for modern look */
+        background-color: #000000;
+        color: #FFFFFF;
+        font-family: 'Poppins', sans-serif;
         display: flex;
         flex-direction: column;
         padding: 20px;
@@ -82,7 +82,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        cursor: pointer; /* Add cursor pointer for better UX */
+        cursor: pointer;
     }
 
     .task-item img {
@@ -114,42 +114,100 @@
         text-decoration: underline;
     }
 
-    .floating-container {
-        display: none;
-        position: fixed; /* Fixed positioning for the floating container */
+    /* Centered modal for task details with updated styles */
+ /* Updated modal size and styles */
+ .floating-container {
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: #1E1E1E; /* Dark background for the popup */
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        z-index: 1000; /* Make sure it appears on top */
+        width: 500px; /* Increased width */
+        background: linear-gradient(135deg, #1E1E1E, #333333); /* Gradient for a more dynamic look */
+        padding: 40px; /* Increased padding */
+        border-radius: 20px; /* Softer rounded corners */
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); /* Stronger shadow for depth */
+        z-index: 1000;
+        transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+        opacity: 0;
+        visibility: hidden;
+        overflow-y: auto;
+        max-height: 80%; /* Allow scrolling inside if content is too long */
     }
 
     .floating-container.show {
-        display: block;
+        opacity: 1;
+        visibility: visible;
     }
 
+    /* Updated title styling */
+    #task-title {
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #A507DB, #580475);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; /* Gradient text effect */
+    }
+
+    /* Updated close button */
     .close-btn {
         cursor: pointer;
-        color: #A507DB; /* Accent color for close button */
-        font-size: 16px;
+        color: #FFFFFF;
+        font-size: 24px;
         margin-bottom: 15px;
         display: block;
+        text-align: right;
     }
+
+    /* Enhanced task description and button styles */
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #FFFFFF;
+        margin-bottom: 10px;
+    }
+
+    a {
+        color: #00bfff;
+        text-decoration: underline;
+    }
+
+    a:hover {
+        color: #007acc;
+    }
+
+    .start-task-btn {
+        background-color: #A507DB;
+        color: #FFFFFF;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+    }
+
+    .start-task-btn:hover {
+        background-color: #580475;
+    }
+
 </style>
 
 <div class="header">
     <div class="title">Tasks</div>
 </div>
 
-<div class="task-container">
+<div class="task-container" id="main-content">
     <div class="task-section">
         <h2>To Do</h2>
         <div>
             {% for task in to_do_tasks %}
-                <div class="task-item">
+                <div class="task-item" onclick="showTaskDetails('{{ task.id }}', '{{ task.task_description }}', '{{ task.reference_link }}', '{{ task.due_date }}')">
                     <span><strong>{{ task.task_title }}</strong></span>
                     <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
                         {% csrf_token %}
@@ -163,6 +221,7 @@
             {% endfor %}
         </div>
     </div>
+
 
     <div class="task-section">
         <h2>In Progress</h2>
@@ -207,23 +266,44 @@
     </div>
 </div>
 
-<!-- Floating Details Container -->
+<!-- Sliding Task Details Modal -->
 <div id="task-details" class="floating-container">
     <span class="close-btn" onclick="closeTaskDetails()">X</span>
-    <h2 id="task-title"></h2>
-    <p id="task-description"></p>
+    <div id="task-details-content">
+        <h2 id="task-title"></h2> <!-- Task title added here -->
+        <p><strong>Task Description: </strong><span id="task-description"></span></p>
+        <p><strong>Reference Link: </strong><a id="task-reference-link" href="#" target="_blank">View Reference</a></p>
+        <p><strong>Due Date: </strong><span id="task-due-date"></span></p>
+    </div>
+</div>
+
+        <!-- Start Task Button -->
+        <!-- Updated Start Task button in the modal -->
+
+
+    </div>
 </div>
 
 <script>
-    function showTaskDetails(taskId, title, details) {
+    function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
+        // Set task title in the modal
         document.getElementById('task-title').innerText = title;
+        
+        // Set task description, reference link, and due date
         document.getElementById('task-description').innerText = details;
+        document.getElementById('task-reference-link').setAttribute('href', referenceLink);
+        document.getElementById('task-due-date').innerText = dueDate;
+
+        // Show the modal and apply the background blur
         document.getElementById('task-details').classList.add('show');
+        document.getElementById('main-content').classList.add('blur-background');
     }
 
     function closeTaskDetails() {
         document.getElementById('task-details').classList.remove('show');
+        document.getElementById('main-content').classList.remove('blur-background');
     }
 </script>
+
 
 {% endblock %}
