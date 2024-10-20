@@ -89,6 +89,7 @@
         width: 20px;
         height: 20px;
         cursor: pointer;
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     button {
@@ -113,88 +114,172 @@
     a:hover {
         text-decoration: underline;
     }
+/* Floating container for task details */
+.floating-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; /* Width for the modal */
+    background: linear-gradient(135deg, #1A1A1A, #333333); /* Dark, sleek gradient */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7); /* Soft shadow for depth */
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: auto;
+    max-height: 80%; /* For scrollability */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
 
-    /* Centered modal for task details with updated styles */
- /* Updated modal size and styles */
- .floating-container {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 500px; /* Increased width */
-        background: linear-gradient(135deg, #1E1E1E, #333333); /* Gradient for a more dynamic look */
-        padding: 40px; /* Increased padding */
-        border-radius: 20px; /* Softer rounded corners */
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); /* Stronger shadow for depth */
-        z-index: 1000;
-        transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
-        opacity: 0;
-        visibility: hidden;
-        overflow-y: auto;
-        max-height: 80%; /* Allow scrolling inside if content is too long */
-    }
+.floating-container.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-    .floating-container.show {
-        opacity: 1;
-        visibility: visible;
-    }
+/* Title with gradient text */
+#task-title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #A507DB, #580475);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-    /* Updated title styling */
-    #task-title {
-        font-size: 26px;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 20px;
-        background: linear-gradient(135deg, #A507DB, #580475);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent; /* Gradient text effect */
-    }
+/* Close button */
+.close-btn {
+    cursor: pointer;
+    color: #AEAEAE;
+    font-size: 24px;
+    margin-bottom: 15px;
+    display: block;
+    text-align: right;
+}
 
-    /* Updated close button */
-    .close-btn {
-        cursor: pointer;
-        color: #FFFFFF;
-        font-size: 24px;
-        margin-bottom: 15px;
-        display: block;
-        text-align: right;
-    }
+/* Task description */
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
 
-    /* Enhanced task description and button styles */
-    p {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #FFFFFF;
-        margin-bottom: 10px;
-    }
+/* Start task button */
+.start-task-btn {
+    background-color: #5aac44; /* Trello uses a green shade */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
 
-    a {
-        color: #00bfff;
-        text-decoration: underline;
-    }
+.start-task-btn:hover {
+    background-color: #519839; /* Darker green on hover */
+}
 
-    a:hover {
-        color: #007acc;
-    }
+/* Highlighting the task icon when task is started */
+.highlighted-icon {
+    border: 2px solid #5aac44; /* Green border to indicate active state */
+    border-radius: 50%; /* Make it circular if needed */
+}
 
-    .start-task-btn {
-        background-color: #A507DB;
-        color: #FFFFFF;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 10px;
-        font-size: 20px;
-        font-weight: bold;
-        cursor: pointer;
-        width: 100%;
-        text-align: center;
-        margin-top: 20px;
-        transition: background-color 0.2s;
-    }
+/* Custom alert modal */
+#custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: #2D2D2D;
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
 
-    .start-task-btn:hover {
-        background-color: #580475;
+/* Show the custom alert */
+#custom-alert.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Alert message text */
+#custom-alert-message {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+/* Close button for alert */
+#custom-alert .close-btn {
+    cursor: pointer;
+    color: #FFFFFF;
+    font-size: 18px;
+    margin-top: 15px;
+    display: inline-block;
+    background: #580475;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#custom-alert .close-btn:hover {
+    background: #A507DB;
+}
+
+/* Base styles for task icons */
+.task-item img {
+   
+}
+
+/* Styles for the highlighted icon */
+.highlighted-icon {
+    transform: scale(1.1); /* Slightly enlarge the icon */
+    box-shadow: 0 0 15px rgba(64, 255, 0, 0.5); /* Golden glow effect */
+    border: 2px solid #00ff04; /* Golden border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease; /* Smooth transitions for effects */
+}
+
+/* Pop-in effect on hover */
+.highlighted-icon:hover {
+    animation: pop-in 0.5s forwards; /* Apply pop-in animation on hover */
+}
+
+/* Keyframes for the pop-in effect */
+@keyframes pop-in {
+    0% {
+        transform: scale(0.7); /* Start smaller */
+        opacity: 0; /* Start invisible */
     }
+    50% {
+        opacity: 1; /* Fade in */
+    }
+    100% {
+        transform: scale(1.1); /* End slightly enlarged */
+    }
+}
+
+/* Additional highlighting on hover */
+.highlighted-icon:hover {
+    box-shadow: 0 0 25px rgba(5, 133, 42, 0.8); /* Enhanced golden glow */
+    border: 3px solid #c5c5c5; /* Thicker golden border */
+}
+
+
+
 
 </style>
 
@@ -207,15 +292,17 @@
         <h2>To Do</h2>
         <div>
             {% for task in to_do_tasks %}
-                <div class="task-item" onclick="showTaskDetails('{{ task.id }}', '{{ task.task_description }}', '{{ task.reference_link }}', '{{ task.due_date }}')">
-                    <span><strong>{{ task.task_title }}</strong></span>
-                    <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit">
-                            <img src="{% static 'kgx_app/start-button.png' %}" class="task-icon" />
-                        </button>
-                    </form>
-                </div>
+            <div class="task-item" onclick="showTaskDetails('{{ task.id }}', '{{ task.task_title }}', '{{ task.task_description }}', '{{ task.reference_link }}', '{{ task.due_date }}')">
+                <span><strong>{{ task.task_title }}</strong></span>
+                <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">
+                        <img src="{% static 'kgx_app/start-button.png' %}" class="task-icon" data-task-id="{{ task.id }}" />
+                    </button>
+                </form>
+            </div>
+            
+            
             {% empty %}
                 <div class="task-item">No tasks assigned.</div>
             {% endfor %}
@@ -274,10 +361,21 @@
         <p><strong>Task Description: </strong><span id="task-description"></span></p>
         <p><strong>Reference Link: </strong><a id="task-reference-link" href="#" target="_blank">View Reference</a></p>
         <p><strong>Due Date: </strong><span id="task-due-date"></span></p>
+
+        <!-- Start Button -->
+        <button id="start-task-btn" class="start-task-btn" onclick="startTask()">Start Task</button>
     </div>
 </div>
 
+<!-- Custom Alert Modal -->
+<div id="custom-alert">
+    <div id="custom-alert-message">Alert message goes here</div>
+    <span class="close-btn" onclick="closeCustomAlert()">OK</span>
+</div>
+
+
         <!-- Start Task Button -->
+       
         <!-- Updated Start Task button in the modal -->
 
 
@@ -285,24 +383,64 @@
 </div>
 
 <script>
-    function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
-        // Set task title in the modal
-        document.getElementById('task-title').innerText = title;
-        
-        // Set task description, reference link, and due date
-        document.getElementById('task-description').innerText = details;
-        document.getElementById('task-reference-link').setAttribute('href', referenceLink);
-        document.getElementById('task-due-date').innerText = dueDate;
+  // Function to handle task start
+// Function to handle task start
+function startTask(taskId) {
+    // Close the floating container
+    closeTaskDetails();
 
-        // Show the modal and apply the background blur
-        document.getElementById('task-details').classList.add('show');
-        document.getElementById('main-content').classList.add('blur-background');
+    // Highlight the corresponding task icon in the "To Do" section
+    var taskIcon = document.querySelector('.task-item img[data-task-id="' + taskId + '"]');
+    
+    if (taskIcon) {
+        taskIcon.classList.add('highlighted-icon');
     }
+    
+    // Display the styled alert message
+    showCustomAlert("Click the Highlighted icon!");
+}
 
-    function closeTaskDetails() {
-        document.getElementById('task-details').classList.remove('show');
-        document.getElementById('main-content').classList.remove('blur-background');
-    }
+
+// Function to show task details in the modal
+function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
+    // Set task title in the modal
+    document.getElementById('task-title').innerText = title;
+
+    // Set task description, reference link, and due date
+    document.getElementById('task-description').innerText = details;
+    document.getElementById('task-reference-link').setAttribute('href', referenceLink);
+    document.getElementById('task-due-date').innerText = dueDate;
+
+    // Show the modal and pass the task ID to the "Start Task" button
+    document.getElementById('task-details').classList.add('show');
+    document.getElementById('start-task-btn').setAttribute('onclick', 'startTask("' + taskId + '")');
+}
+
+// Function to close the task details modal
+function closeTaskDetails() {
+    document.getElementById('task-details').classList.remove('show');
+}
+
+// Function to show the custom alert modal
+function showCustomAlert(message) {
+    // Set the alert message
+    document.getElementById('custom-alert-message').innerText = message;
+
+    // Show the alert modal
+    document.getElementById('custom-alert').classList.add('show');
+
+    // Auto-close the alert after 3 seconds
+    setTimeout(function() {
+        closeCustomAlert();
+    }, 3000);
+}
+
+// Function to close the custom alert modal
+function closeCustomAlert() {
+    document.getElementById('custom-alert').classList.remove('show');
+}
+
+
 </script>
 
 

@@ -98,7 +98,7 @@
 }
 
 .button-correct:hover {
-    background-color: #7c0c7a; /* Darker shade on hover */
+    background-color: #0c7c31; /* Darker shade on hover */
     transform: translateY(-2px); /* Lift effect */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow on hover */
 }
@@ -166,8 +166,8 @@
                            <!-- Buttons for Approving or Rejecting the Task -->
 <form action="{% url 'review_task' task.id %}" method="post">
     {% csrf_token %}
-    <button type="submit" name="action" value="correct" class="button-correct">Correct</button>
-    <button type="submit" name="action" value="wrong" class="button-wrong">Wrong</button>
+    <button type="submit" name="action" value="correct" class="button-correct">Accept</button>
+    <button type="submit" name="action" value="wrong" class="button-wrong">Reject</button>
 </form>
 
                         </div>
