@@ -254,12 +254,8 @@
             <div class="task-item" onclick="showTaskDetails('{{ task.id }}', '{{ task.task_title|escapejs }}', '{{ task.task_description|escapejs }}', '{{ task.reference_link|escapejs }}', '{{ task.due_date|escapejs }}')">
 
                 <span><strong>{{ task.task_title }}</strong></span>
-                <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">
-                        <img src="{% static 'kgx_app/start-button.png' %}" class="task-icon" data-task-id="{{ task.id }}" />
-                    </button>
-                </form>
+                
+                <img src="{% static 'kgx_app/start-button.png' %}" class="task-icon" data-task-id="{{ task.id }}" />
             </div>
             
             
@@ -329,8 +325,12 @@
         <p><strong>Reference Link:</strong> <a id="task-reference-link" href="#" target="_blank">View Reference</a></p>
         <p><strong>Due Date:</strong> <span id="task-due-date"></span></p>
 
-        <!-- Start Button -->
-       
+        <form id="start-task"  method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="submit-btn">Start</button>
+
+        </form>
+        
 
     </div>
 </div>
@@ -386,6 +386,9 @@ function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
     document.getElementById('task-reference-link').setAttribute('href', referenceLink);
     document.getElementById('task-due-date').innerText = dueDate;
     document.getElementById('task-details').classList.add('show');
+
+    var formActionUrl = "{% url 'start_task' 0 %}".replace('0', taskId);
+    document.getElementById('start-task').action = formActionUrl;
     
 }
 

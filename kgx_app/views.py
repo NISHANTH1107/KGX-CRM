@@ -228,7 +228,7 @@ def add_comment(request):
 @role_required(allowed_roles=['staff'])
 def staff_dashboard(request):
     # Logic for staff dashboard
-    return render(request, 'staff_dashboard.html')
+    return render(request, 'assign_task.html')
 
 
 @login_required
