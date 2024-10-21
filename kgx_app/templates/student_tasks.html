@@ -320,6 +320,8 @@ p {
 }
 
 
+
+
 </style>
 
 <div class="header">
@@ -356,11 +358,7 @@ p {
             {% for in_progress_task in in_progress_tasks %}
                 <div class="task-item" onclick="showInProgressDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title|escapejs }}', '{{ in_progress_task.task_description|escapejs }}', '{{ in_progress_task.reference_link|escapejs }}', '{{ in_progress_task.due_date|escapejs }}')">
                     <span><strong>{{ in_progress_task.task_title }}</strong></span>
-                    <form action="{% url 'submit_task_link' in_progress_task.id %}" method="POST" style="display:inline;">
-                        {% csrf_token %}
-                        <input type="url" name="task_link" placeholder="Paste task link here" required />
-                        <button type="submit">Submit</button>
-                    </form>
+                    <img src="{% static 'kgx_app/in_progress.png' %}" class="task-icon">
                 </div>
             {% empty %}
                 <div class="task-item">No tasks in progress.</div>
@@ -420,6 +418,7 @@ p {
 </div>
 
 
+<!-- Sliding Task Details Modal for In Progress -->
 <div id="in-progress-details" class="floating-container">
     <span class="close-btn" onclick="closeInProgressDetails()">X</span>
     <div id="in-progress-details-content">
@@ -427,8 +426,16 @@ p {
         <p><strong>Task Description: </strong><span id="in-progress-description"></span></p>
         <p><strong>Reference Link: </strong><a id="in-progress-reference-link" href="#" target="_blank">View Reference</a></p>
         <p><strong>Due Date: </strong><span id="in-progress-due-date"></span></p>
+
+        <!-- Form to submit task link -->
+        <form id="submit-task-link-form" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="url" name="task_link" placeholder="Paste task link here" required />
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
     </div>
 </div>
+
 
 <!-- Custom Alert Modal -->
 <div id="custom-alert">
@@ -478,9 +485,14 @@ function showInProgressDetails(taskId, title, details, referenceLink, dueDate) {
     document.getElementById('in-progress-reference-link').setAttribute('href', referenceLink);
     document.getElementById('in-progress-due-date').innerText = dueDate;
 
+    // Dynamically set the form's action URL
+    var formActionUrl = "{% url 'submit_task_link' 0 %}".replace('0', taskId);
+    document.getElementById('submit-task-link-form').action = formActionUrl;
+
     // Show the modal for In Progress tasks
     document.getElementById('in-progress-details').classList.add('show');
 }
+
 
 // Function to close the "In Progress" task details modal
 function closeInProgressDetails() {
