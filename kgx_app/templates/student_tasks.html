@@ -356,7 +356,11 @@ p {
             {% for in_progress_task in in_progress_tasks %}
                 <div class="task-item" onclick="showInProgressDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title|escapejs }}', '{{ in_progress_task.task_description|escapejs }}', '{{ in_progress_task.reference_link|escapejs }}', '{{ in_progress_task.due_date|escapejs }}')">
                     <span><strong>{{ in_progress_task.task_title }}</strong></span>
-                    <img src="{% static 'kgx_app/in_progress.png' %}" class="task-icon" />
+                    <form action="{% url 'submit_task_link' in_progress_task.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="url" name="task_link" placeholder="Paste task link here" required />
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
             {% empty %}
                 <div class="task-item">No tasks in progress.</div>

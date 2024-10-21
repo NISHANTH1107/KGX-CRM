@@ -299,7 +299,9 @@ def submit_task_link(request, task_id):
         # Remove the task from InProgress
         task.delete()
         
-        return redirect('student_tasks')  # Redirect back to the tasks page
+        return redirect('student_tasks')  # Redirect to the student tasks page
+    return redirect('student_tasks')
+
     
 
 
