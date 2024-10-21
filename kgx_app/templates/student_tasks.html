@@ -331,7 +331,8 @@ p {
         <h2>To Do</h2>
         <div>
             {% for task in to_do_tasks %}
-            <div class="task-item" onclick="showTaskDetails('{{ task.id }}', '{{ task.task_title }}', '{{ task.task_description }}', '{{ task.reference_link }}', '{{ task.due_date }}')">
+            <div class="task-item" onclick="showTaskDetails('{{ task.id }}', '{{ task.task_title|escapejs }}', '{{ task.task_description|escapejs }}', '{{ task.reference_link|escapejs }}', '{{ task.due_date|escapejs }}')">
+
                 <span><strong>{{ task.task_title }}</strong></span>
                 <form action="{% url 'start_task' task.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
@@ -353,7 +354,7 @@ p {
         <h2>In Progress</h2>
         <div>
             {% for in_progress_task in in_progress_tasks %}
-                <div class="task-item" onclick="showInProgressDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title }}', '{{ in_progress_task.details }}', '{{ in_progress_task.reference_link }}', '{{ in_progress_task.due_date }}')">
+                <div class="task-item" onclick="showInProgressDetails('{{ in_progress_task.id }}', '{{ in_progress_task.task_title|escapejs }}', '{{ in_progress_task.task_description|escapejs }}', '{{ in_progress_task.reference_link|escapejs }}', '{{ in_progress_task.due_date|escapejs }}')">
                     <span><strong>{{ in_progress_task.task_title }}</strong></span>
                     <img src="{% static 'kgx_app/in_progress.png' %}" class="task-icon" />
                 </div>
@@ -409,7 +410,8 @@ p {
         <p><strong>Due Date:</strong> <span id="task-due-date"></span></p>
 
         <!-- Start Button -->
-        <button id="start-task-btn" class="start-task-btn" onclick="startTask()">Start Task</button>
+       
+
     </div>
 </div>
 
@@ -443,35 +445,19 @@ p {
   // Function to handle task start
 // Function to handle task start
 // Function to handle task start in the "To Do" section
-function startTask(taskId) {
-    // Close the floating container
-    closeTaskDetails();
 
-    // Highlight the corresponding task icon in the "To Do" section
-    var taskIcon = document.querySelector('.task-item img[data-task-id="' + taskId + '"]');
-    
-    if (taskIcon) {
-        taskIcon.classList.add('highlighted-icon');
-    }
-    
-    // Display the styled alert message
-    showCustomAlert("Click the Highlighted icon!");
-}
 
 // Function to show task details in the modal for "To Do" section
 function showTaskDetails(taskId, title, details, referenceLink, dueDate) {
-    // Set task title in the modal
+    console.log("Showing task details for task:", taskId); // Add this line to check in the console
     document.getElementById('task-title').innerText = title;
-
-    // Set task description, reference link, and due date
     document.getElementById('task-description').innerText = details;
     document.getElementById('task-reference-link').setAttribute('href', referenceLink);
     document.getElementById('task-due-date').innerText = dueDate;
-
-    // Show the modal and pass the task ID to the "Start Task" button
     document.getElementById('task-details').classList.add('show');
-    document.getElementById('start-task-btn').setAttribute('onclick', 'startTask("' + taskId + '")');
+    
 }
+
 
 // Function to close the "To Do" task details modal
 function closeTaskDetails() {
