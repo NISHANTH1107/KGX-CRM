@@ -11,8 +11,6 @@
             background-color: #1E1E1E; /* Dark background for the body */
         }
 
-       
-
         .task-title {
             color: #FFFFFF; /* Color for task titles */
             font-weight: bold; /* Bold for emphasis */
@@ -84,17 +82,62 @@
             border-color: #3B1149; /* Gold border on hover */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Deeper shadow on hover */
         }
+        
+        .current-open-task {
+            background-color: #444; /* Darker background for the open task */
+            border: 2px solid #bc9fc8; /* Gold border for emphasis */
+        }
+
+        .description-box {
+            padding: 15px; /* Padding for spacing */
+            background-color: #2A2A2A; /* Dark background for contrast */
+            border: 1px solid #580475; /* Border for emphasis */
+            border-radius: 10px; /* Rounded corners */
+            margin-top: 10px; /* Space above the description box */
+            color: #FFFFFF; /* Text color */
+        }
+
     </style>
     <script>
+        let currentOpenTask = null; // Variable to store the currently open task details
+    
         function toggleDetails(event) {
-            const details = event.currentTarget.nextElementSibling; // Get the details element
-            if (details.style.display === 'block') {
-                details.style.display = 'none'; // Hide details
+            const allDetails = document.querySelectorAll('.task-details'); // Get all task details
+            const allHeaders = document.querySelectorAll('.task-header'); // Get all task headers
+            const clickedDetails = event.currentTarget.nextElementSibling; // Get the details element for the clicked task
+            const clickedHeader = event.currentTarget; // Get the clicked header
+    
+            // Close all details and remove current state from all headers
+            allDetails.forEach(details => {
+                details.style.display = 'none'; // Hide other details
+            });
+            allHeaders.forEach(header => {
+                header.classList.remove('current-open-task'); // Remove current open state from all headers
+            });
+    
+            // Toggle the clicked task's details
+            if (clickedDetails.style.display === 'block') {
+                clickedDetails.style.display = 'none'; // Hide if already open
+                currentOpenTask = null; // Reset current open task
             } else {
-                details.style.display = 'block'; // Show details
+                clickedDetails.style.display = 'block'; // Show if closed
+                clickedHeader.classList.add('current-open-task'); // Add current open state to clicked header
+                currentOpenTask = clickedDetails; // Store the currently open task details
             }
         }
+    
+        // Function to close the currently open task details if clicking outside
+        function closeDetailsOnClickOutside(event) {
+            if (currentOpenTask && !currentOpenTask.contains(event.target) && !event.target.closest('.task-header')) {
+                currentOpenTask.style.display = 'none'; // Hide the currently open details
+                currentOpenTask.previousElementSibling.classList.remove('current-open-task'); // Remove current open state from the header
+                currentOpenTask = null; // Reset current open task
+            }
+        }
+    
+        document.addEventListener('click', closeDetailsOnClickOutside); // Add click event listener to the document
     </script>
+    
 </head>
 
 <div style="
@@ -127,11 +170,18 @@
                         <span style="color: #aeaeae;">{{ task.owner_name }}</span> <!-- Adjust to match the correct field -->
                     </div>
                     <div class="task-details"> <!-- Details container -->
-                       <p><strong>Name:</strong> {{ task.name }}</p> <!-- Name -->
+                        <p><strong>Name:</strong> {{ task.name }}</p> <!-- Name -->
                         <p><strong>Roll No:</strong> {{ task.roll_no }}</p> <!-- Roll Number --> 
-                        <p><strong>Task Description:</strong> {{ task.task_description }}</p> <!-- Task Description -->
+                        <strong>Task Description:</strong>
+                        <div class="description-box">
+                            
+                            <p>{{ task.task_description }}</p> <!-- Task Description -->
+                        </div>
                         <p><strong>Due Date:</strong> {{ task.due_date }}</p> <!-- Due Date -->
                         <p><strong>Reference Link:</strong> <a href="{{ task.reference_link }}">{{ task.reference_link }}</a></p> <!-- Reference Link -->
+                        
+                        <!-- New box for Task Description -->
+                     
                     </div>
                 </li>
             {% empty %}

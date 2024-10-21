@@ -7,24 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
+     body {
             background-color: #1E1E1E; /* Dark background for the body */
-        }
-
-        .task-details {
-            display: none; /* Hide details by default */
-            padding: 20px; /* Increased padding for better spacing */
-            background-color: #1E1E1E; /* Slightly lighter background for contrast */
-            border: 1px solid #580475; /* Border for emphasis */
-            border-radius: 12px; /* Rounded corners */
-            margin-top: 10px; /* Space above details */
-            transition: all 0.3s ease; /* Smooth transition */
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-        }
-
-        .task-details p {
-            margin: 8px 0; /* More space between lines */
-            color: #FFFFFF; /* Text color for the details */
         }
 
         .task-title {
@@ -55,6 +39,21 @@
             transform: translateY(-2px); /* Slight lift effect on hover */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
         }
+        .task-details {
+            display: none; /* Hide details by default */
+            padding: 20px; /* Increased padding for better spacing */
+            background-color: #1E1E1E; /* Slightly lighter background for contrast */
+            border: 1px solid #580475; /* Border for emphasis */
+            border-radius: 12px; /* Rounded corners */
+            margin-top: 10px; /* Space above details */
+            transition: all 0.3s ease; /* Smooth transition */
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        }
+
+        .task-details p {
+            margin: 8px 0; /* More space between lines */
+            color: #FFFFFF; /* Text color for the details */
+        }
 
         .task-details strong {
             color: #580475; /* Color for headings in details */
@@ -66,11 +65,11 @@
             background-color: #333; 
             border-radius: 12px; 
             text-align: center; 
-            color: #580475; /* Color for no tasks message */
+            color: #580475; /* Gold color for no tasks message */
         }
 
         a {
-            color: blue; /* Color for reference links */
+            color: blue; /* Gold color for reference links */
             text-decoration: none; /* No underline */
         }
 
@@ -80,8 +79,22 @@
 
         /* New styling for dropdown hover */
         .task-details:hover {
-            border-color: #3B1149; /* Border on hover */
+            border-color: #3B1149; /* Gold border on hover */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Deeper shadow on hover */
+        }
+        
+        .current-open-task {
+            background-color: #444; /* Darker background for the open task */
+            border: 2px solid #bc9fc8; /* Gold border for emphasis */
+        }
+
+        .description-box {
+            padding: 15px; /* Padding for spacing */
+            background-color: #2A2A2A; /* Dark background for contrast */
+            border: 1px solid #580475; /* Border for emphasis */
+            border-radius: 10px; /* Rounded corners */
+            margin-top: 10px; /* Space above the description box */
+            color: #FFFFFF; /* Text color */
         }
         .button-correct, .button-wrong {
     padding: 10px 15px; /* Padding for buttons */
@@ -115,15 +128,45 @@
 
     </style>
     <script>
+        let currentOpenTask = null; // Variable to store the currently open task details
+    
         function toggleDetails(event) {
-            const details = event.currentTarget.nextElementSibling; // Get the details element
-            if (details.style.display === 'block') {
-                details.style.display = 'none'; // Hide details
+            const allDetails = document.querySelectorAll('.task-details'); // Get all task details
+            const allHeaders = document.querySelectorAll('.task-header'); // Get all task headers
+            const clickedDetails = event.currentTarget.nextElementSibling; // Get the details element for the clicked task
+            const clickedHeader = event.currentTarget; // Get the clicked header
+    
+            // Close all details and remove current state from all headers
+            allDetails.forEach(details => {
+                details.style.display = 'none'; // Hide other details
+            });
+            allHeaders.forEach(header => {
+                header.classList.remove('current-open-task'); // Remove current open state from all headers
+            });
+    
+            // Toggle the clicked task's details
+            if (clickedDetails.style.display === 'block') {
+                clickedDetails.style.display = 'none'; // Hide if already open
+                currentOpenTask = null; // Reset current open task
             } else {
-                details.style.display = 'block'; // Show details
+                clickedDetails.style.display = 'block'; // Show if closed
+                clickedHeader.classList.add('current-open-task'); // Add current open state to clicked header
+                currentOpenTask = clickedDetails; // Store the currently open task details
             }
         }
+    
+        // Function to close the currently open task details if clicking outside
+        function closeDetailsOnClickOutside(event) {
+            if (currentOpenTask && !currentOpenTask.contains(event.target) && !event.target.closest('.task-header')) {
+                currentOpenTask.style.display = 'none'; // Hide the currently open details
+                currentOpenTask.previousElementSibling.classList.remove('current-open-task'); // Remove current open state from the header
+                currentOpenTask = null; // Reset current open task
+            }
+        }
+    
+        document.addEventListener('click', closeDetailsOnClickOutside); // Add click event listener to the document
     </script>
+    
 </head>
 
 <div style="
@@ -148,6 +191,8 @@
         
         <h2 style="text-align: center; color: #5b0868; margin-top: 0;">For Review</h2>
 
+        <ul style="list-style-type: none; padding: 0;">
+
         {% if for_review_tasks %}
             <ul style="list-style-type: none; padding: 0;">
                 {% for task in for_review_tasks %}
@@ -158,7 +203,11 @@
                         <div class="task-details">
                             <p><strong>Name:</strong> {{ task.name }}</p> <!-- Name -->
                             <p><strong>Roll No:</strong> {{ task.roll_no }}</p> <!-- Roll Number -->
-                            <p><strong>Description:</strong> {{ task.task_description }}</p>
+                            <strong>Task Description:</strong>
+                            <div class="description-box">
+                                
+                                <p>{{ task.task_description }}</p> <!-- Task Description -->
+                            </div>
                             <p><strong>Due Date:</strong> {{ task.due_date }}</p>
                             <p><strong>Task Link:</strong> <a href="{{ task.task_link }}">{{ task.task_link }}</a></p>
 

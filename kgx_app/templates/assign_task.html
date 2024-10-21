@@ -108,7 +108,7 @@
         <form method="POST" action="{% url 'assign_task' %}">
             {% csrf_token %}
             
-            <div style="display: flex; gap: 30px;"> <!-- Flex container for Name and Roll No -->
+            <div style="display: flex; gap: 50px;"> <!-- Flex container for Name and Roll No -->
                 <div style="flex: 1;">
                     <label for="name" style="font-size: 1.2rem; color: #FFFFFF;">Name:</label>
                     <input type="text" id="name" name="name" required autocomplete="off" style="
