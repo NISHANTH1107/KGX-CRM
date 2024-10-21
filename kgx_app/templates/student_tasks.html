@@ -133,190 +133,108 @@
     }
 /* Floating container for task details */
 .floating-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; /* Width for the modal */
-    background: linear-gradient(135deg, #1A1A1A, #333333); /* Dark, sleek gradient */
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7); /* Soft shadow for depth */
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    overflow-y: auto;
-    max-height: 80%; /* For scrollability */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
-}
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px; /* Width for the modal */
+        background: linear-gradient(135deg, #1A1A1A, #333333); /* Dark, sleek gradient */
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7); /* Soft shadow for depth */
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        overflow-y: auto;
+        max-height: 80%; /* For scrollability */
+        transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    }
 
-.floating-container.show {
-    opacity: 1;
-    visibility: visible;
-}
+    .floating-container.show {
+        opacity: 1;
+        visibility: visible;
+    }
 
-/* Title with gradient text */
-#task-title {
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #A507DB, #580475);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+    /* Title styles */
+    .modal-title {
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center; /* Centered title */
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #A507DB, #580475);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
-/* Close button */
-.close-btn {
-    cursor: pointer;
-    color: #AEAEAE;
-    font-size: 24px;
-    margin-bottom: 15px;
-    display: block;
-    text-align: right;
-}
+    /* Box for task description */
+    .description-box {
+        background-color: #2D2D2D; /* Dark background for the box */
+        padding: 15px;
+        border-radius: 10px; /* Rounded corners */
+        border: 2px solid #A507DB; /* Border to highlight the box */
+        margin-bottom: 20px;
+        color: #FFFFFF;
+        font-size: 16px;
+        line-height: 1.6;
+    }
 
-/* Task description */
-p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #FFFFFF;
-    margin-bottom: 10px;
-}
+    /* Styling for the link input box */
+    .task-link-input {
+        width: calc(100% - 90px); /* Adjusting width to fit with button */
+        padding: 10px;
+        border: 2px solid #A507DB; /* Border color */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #1E1E1E; /* Dark background */
+        color: #FFFFFF; /* Text color */
+        margin-right: 10px; /* Space between input and button */
+        outline: none; /* Remove outline */
+        transition: border-color 0.3s ease; /* Smooth border transition */
+    }
 
-/* Start task button */
-/* Start Task button styling */
-.start-task-btn {
+    .task-link-input::placeholder {
+        color: #AEAEAE; /* Placeholder color */
+    }
+
+    .task-link-input:focus {
+        border-color: #580475; /* Border color on focus */
+    }
+
+    /* Submit button styles */
+    .submit-btn {
+        background: linear-gradient(135deg, #580475, #A507DB); /* Gradient background */
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+        margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #A507DB, #580475); /* Reverse gradient on hover */
+        transform: scale(1.05); /* Slightly enlarge the button */
+    }
+
+    .submit-btn:active {
+        transform: scale(0.98); /* Shrink slightly on click */
+    }
+    .close-btn {
     background: linear-gradient(135deg, #580475, #A507DB); /* Gradient background */
-    color: white;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
-    margin-top: 20px;
+    color: #FFFFFF; /* White text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background 0.3s ease; /* Transition for background color */
+    display: inline-block; /* Display as inline-block for better layout */
+    margin-bottom: 15px; /* Space below the button */
 }
 
-/* Hover effect for Start Task button */
-.start-task-btn:hover {
+.close-btn:hover {
     background: linear-gradient(135deg, #A507DB, #580475); /* Reverse gradient on hover */
-    transform: scale(1.05); /* Slightly enlarge the button */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Add a stronger shadow */
-}
-
-/* Active/Pressed state for the button */
-.start-task-btn:active {
-    transform: scale(0.98); /* Shrink slightly on click */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Reduce shadow on click */
-}
-
-
-/* Highlighting the task icon when task is started */
-.highlighted-icon {
-    border: 2px solid #5aac44; /* Green border to indicate active state */
-    border-radius: 50%; /* Make it circular if needed */
-}
-
-/* Custom alert modal */
-#custom-alert {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    background: #2D2D2D;
-    color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    text-align: center;
-}
-
-/* Show the custom alert */
-#custom-alert.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Alert message text */
-#custom-alert-message {
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-}
-
-/* Close button for alert */
-#custom-alert .close-btn {
-    cursor: pointer;
-    color: #FFFFFF;
-    font-size: 18px;
-    margin-top: 15px;
-    display: inline-block;
-    background: #580475;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-#custom-alert .close-btn:hover {
-    background: #A507DB;
-}
-
-/* Base styles for task icons */
-
-
-/* Styles for the highlighted icon */
-.highlighted-icon {
-    transform: scale(1.1); /* Slightly enlarge the icon */
-    box-shadow: 0 0 15px rgba(64, 255, 0, 0.5); /* Golden glow effect */
-    border: 2px solid #00ff04; /* Golden border */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease; /* Smooth transitions for effects */
-}
-
-/* Pop-in effect on hover */
-.highlighted-icon:hover {
-    animation: pop-in 0.5s forwards; /* Apply pop-in animation on hover */
-}
-
-/* Keyframes for the pop-in effect */
-@keyframes pop-in {
-    0% {
-        transform: scale(0.7); /* Start smaller */
-        opacity: 0; /* Start invisible */
-    }
-    50% {
-        opacity: 1; /* Fade in */
-    }
-    100% {
-        transform: scale(1.1); /* End slightly enlarged */
-    }
-}
-
-/* Additional highlighting on hover */
-.highlighted-icon:hover {
-    box-shadow: 0 0 25px rgba(5, 133, 42, 0.8); /* Enhanced golden glow */
-    border: 3px solid #c5c5c5; /* Thicker golden border */
-}
-
-
-/* Box for task description */
-.description-box {
-    background-color: #2D2D2D; /* Dark background for the box */
-    padding: 20px;
-    border-radius: 10px; /* Rounded corners */
-    border: 2px solid #A507DB; /* Border to highlight the box */
-    margin-bottom: 20px;
-    color: #FFFFFF;
-    font-size: 16px;
-    line-height: 1.6;
 }
 
 
@@ -422,15 +340,20 @@ p {
 <div id="in-progress-details" class="floating-container">
     <span class="close-btn" onclick="closeInProgressDetails()">X</span>
     <div id="in-progress-details-content">
-        <h2 id="in-progress-title"></h2> <!-- Task title added here -->
-        <p><strong>Task Description: </strong><span id="in-progress-description"></span></p>
+        <h2 id="in-progress-title" class="modal-title"></h2> <!-- Task title added here -->
+        
+        <!-- Task description in a separate box -->
+        <div class="description-box">
+            <p><strong>Task Description: </strong><span id="in-progress-description"></span></p>
+        </div>
+
         <p><strong>Reference Link: </strong><a id="in-progress-reference-link" href="#" target="_blank">View Reference</a></p>
         <p><strong>Due Date: </strong><span id="in-progress-due-date"></span></p>
 
         <!-- Form to submit task link -->
         <form id="submit-task-link-form" method="POST" style="display:inline;">
             {% csrf_token %}
-            <input type="url" name="task_link" placeholder="Paste task link here" required />
+            <input type="url" name="task_link" placeholder="Paste task link here" required class="task-link-input" />
             <button type="submit" class="submit-btn">Submit</button>
         </form>
     </div>
@@ -438,10 +361,7 @@ p {
 
 
 <!-- Custom Alert Modal -->
-<div id="custom-alert">
-    <div id="custom-alert-message">Alert message goes here</div>
-    <span class="close-btn" onclick="closeCustomAlert()">OK</span>
-</div>
+
 
 
         <!-- Start Task Button -->
