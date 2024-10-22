@@ -60,13 +60,21 @@
             <div class="skills-section">
                 <h2>Skills</h2>
                 <div class="skills-box">
-                    {% for skill in profile.skills.all %}
-                        <div class="skill-item">{{ skill.name }}</div>
-                    {% empty %}
-                    <p><strong>{{profile.skills|capfirst}}</strong></p>
-                    {% endfor %}
+                    {% if skills_list %}
+                        {% for skill in skills_list %}
+                            <div class="skill-item">
+                                {{ skill.strip|capfirst }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p><strong>No skills found</strong></p>
+                    {% endif %}
                 </div>
             </div>
+            
+            
+            
+            
         </div>
     </div>
 </div>
@@ -274,69 +282,68 @@
         text-decoration: underline;
     }
 
-    .skills-box {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        padding: 20px;
-        background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
-        border-radius: 15px;
-        width: fit-content;
-        margin-left: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    }
+   
 
-    .skills-box:hover {
-        transform: scale(1.02);
+
+    .skill-item {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    padding: 10px 25px;
+    background: linear-gradient(180deg, #580475 0%, #A507DB 100%);
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    display:inline-flex; /* Flexbox for alignment */
+    justify-content: center; /* Centers text horizontally */
+    align-items: center; /* Centers text vertically */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 120px;
+    min-height: 50px;
+    text-align: center;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+
+.skill-item:hover {
+    transform: scale(1.02);
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
         background: linear-gradient(180deg, #A507DB 0%, #580475 100%);
-        border: 2px solid #ffffff;
+        border: 2px solid #060505;
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 1024px) {
+    .split-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-container {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .left-box, .right-box {
+        width: 100%;
+        padding: 20px 10px;
+    }
+
+    .profile-header h1 {
+        font-size: 32px;
+    }
+
+    .skills-box {
+        margin: 0 auto;
+        width: 90%;
     }
 
     .skill-item {
-        font-size: 20px;
-        font-weight: 700;
-        color: #ffffff;
-        padding: 10px 20px;
-        background: #2a2a2a;
-        border-radius: 20px;
-        transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        font-size: 16px; /* Smaller font size for smaller screens */
+        min-width: 100px; /* Adjust width for smaller screens */
     }
+}
 
-    .skill-item:hover {
-        background: #ffffff;
-        color: #2a2a2a;
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        letter-spacing: 1px;
-    }
-
-    /* Media Queries for Responsiveness */
-    @media screen and (max-width: 1024px) {
-        .split-container {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .profile-container {
-            flex-direction: column;
-            width: 90%;
-        }
-
-        .left-box, .right-box {
-            width: 100%;
-            padding: 20px 10px;
-        }
-
-        .profile-header h1 {
-            font-size: 32px;
-        }
-
-        .skills-box {
-            margin: 0 auto;
-            width: 90%;
-        }
-    }
 
     @media screen and (max-width: 768px) {
         .profile-header h1 {
@@ -402,6 +409,24 @@
             padding: 6px 10px;
         }
     }
+ /* Scrollbar styles */
+ ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
 
+        ::-webkit-scrollbar-track {
+            background: #333; /* Background color of the scrollbar track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5b0868; /* Thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+            border: 2px solid #333; /* Border to make the thumb blend into the track */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #580475; /* Darker color when hovered */
+        }
 </style>
 {% endblock %}

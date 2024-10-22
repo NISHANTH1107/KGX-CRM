@@ -70,7 +70,7 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    min-height: 50px;
+    min-height: 30px;
     max-height: 60px; /* Set a max height to limit the task item size */
     overflow: hidden; /* Prevent the content from overflowing */
     white-space: nowrap; /* Prevent text from wrapping into a new line */
@@ -236,7 +236,25 @@
 .close-btn:hover {
     background: linear-gradient(135deg, #A507DB, #580475); /* Reverse gradient on hover */
 }
+ /* Scrollbar styles */
+ ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
 
+        ::-webkit-scrollbar-track {
+            background: #333; /* Background color of the scrollbar track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5b0868; /* Thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+            border: 2px solid #333; /* Border to make the thumb blend into the track */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #580475; /* Darker color when hovered */
+        }
 
 
 

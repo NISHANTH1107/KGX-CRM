@@ -35,6 +35,26 @@
         label {
             margin-bottom: 8px; /* Gap between label and input box */
         }
+
+         /* Scrollbar styles */
+         ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #333; /* Background color of the scrollbar track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5b0868; /* Thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+            border: 2px solid #333; /* Border to make the thumb blend into the track */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #580475; /* Darker color when hovered */
+        }
         .suggestions-container {
             display: none; 
             position: absolute;
