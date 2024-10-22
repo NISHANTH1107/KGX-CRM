@@ -70,11 +70,12 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    min-height: 30px;
+    min-height: 20px;
     max-height: 60px; /* Set a max height to limit the task item size */
     overflow: hidden; /* Prevent the content from overflowing */
     white-space: nowrap; /* Prevent text from wrapping into a new line */
     text-overflow: ellipsis; /* Show ellipsis (...) when the text is too long */
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Transition effects for hover */
 }
 
 /* Ensure long task titles are truncated */
@@ -84,6 +85,19 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+/* Hover effect for task items */
+.task-item:hover {
+    background: linear-gradient(135deg, #3E3E3E, #5b0868); /* Gradient background on hover */
+    transform: scale(1.05); /* Slightly enlarge the task item on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Add a soft shadow for depth */
+}
+
+/* Hover effect for task icon */
+.task-item img:hover {
+    transform: scale(1.2); /* Slightly enlarge the icon on hover */
+}
+
 
     .task-section:hover {
         transform: translateY(-10px);
@@ -102,12 +116,7 @@
 
    
 
-    .task-item img {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-         transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+   
 
     button {
         background: none;
@@ -302,10 +311,10 @@
         <h2>For Review</h2>
         <div>
             {% for review_task in for_review_tasks %}
-                <div class="task-item">
-                    <span><strong>{{ review_task.task_title }}</strong></span>
-                    <img src="{% static 'kgx_app/for_review.png' %}" class="task-icon" />
-                </div>
+            <div class="task-item" onclick="showForReviewDetails('{{ review_task.id }}', '{{ review_task.task_title|escapejs }}', '{{ review_task.task_description|escapejs }}', '{{ review_task.reference_link|escapejs }}', '{{ review_task.due_date|escapejs }}')">
+                <span><strong>{{ review_task.task_title }}</strong></span>
+                <img src="{% static 'kgx_app/for_review.png' %}" class="task-icon" />
+            </div>
             {% empty %}
                 <div class="task-item">No tasks for review.</div>
             {% endfor %}
@@ -316,10 +325,10 @@
         <h2>Done</h2>
         <div>
             {% for done_task in done_tasks %}
-                <div class="task-item">
-                    <span><strong>{{ done_task.task_title }}</strong></span>
-                    <img src="{% static 'kgx_app/done.png' %}" class="task-icon" />
-                </div>
+            <div class="task-item" onclick="showDoneDetails('{{ done_task.id }}', '{{ done_task.task_title|escapejs }}', '{{ done_task.task_description|escapejs }}', '{{ done_task.reference_link|escapejs }}', '{{ done_task.due_date|escapejs }}')">
+                <span><strong>{{ done_task.task_title }}</strong></span>
+                <img src="{% static 'kgx_app/done.png' %}" class="task-icon" />
+            </div>
             {% empty %}
                 <div class="task-item">No tasks completed.</div>
             {% endfor %}
@@ -361,8 +370,9 @@
         <h2 id="in-progress-title" class="modal-title"></h2> <!-- Task title added here -->
         
         <!-- Task description in a separate box -->
+        <p><strong>Task Description: </strong>
         <div class="description-box">
-            <p><strong>Task Description: </strong><span id="in-progress-description"></span></p>
+            <span id="in-progress-description"></span></p>
         </div>
 
         <p><strong>Reference Link: </strong><a id="in-progress-reference-link" href="#" target="_blank">View Reference</a></p>
@@ -376,6 +386,39 @@
         </form>
     </div>
 </div>
+
+<!-- Sliding Task Details Modal for For Review -->
+<div id="for-review-details" class="floating-container">
+    <span class="close-btn" onclick="closeForReviewDetails()">X</span>
+    <div id="for-review-details-content">
+        <h2 id="for-review-title" class="modal-title"></h2> <!-- Task title added here -->
+        <p><strong>Task Description: </strong>
+        <!-- Task description in a separate box -->
+        <div class="description-box">
+            <span id="for-review-description"></span></p>
+        </div>
+
+        <p><strong>Reference Link: </strong><a id="for-review-reference-link" href="#" target="_blank">View Reference</a></p>
+        <p><strong>Due Date: </strong><span id="for-review-due-date"></span></p>
+    </div>
+</div>
+
+<!-- Sliding Task Details Modal for Done -->
+<div id="done-details" class="floating-container">
+    <span class="close-btn" onclick="closeDoneDetails()">X</span>
+    <div id="done-details-content">
+        <h2 id="done-title" class="modal-title"></h2> <!-- Task title added here -->
+ <p><strong>Task Description: </strong>
+        <!-- Task description in a separate box -->
+        <div class="description-box">
+           <span id="done-description"></span></p>
+        </div>
+
+        <p><strong>Reference Link: </strong><a id="done-reference-link" href="#" target="_blank">View Reference</a></p>
+        <p><strong>Due Date: </strong><span id="done-due-date"></span></p>
+    </div>
+</div>
+
 
 
 <!-- Custom Alert Modal -->
@@ -457,6 +500,43 @@ function showCustomAlert(message) {
 // Function to close the custom alert modal
 function closeCustomAlert() {
     document.getElementById('custom-alert').classList.remove('show');
+}
+// Function to show task details in the modal for "For Review" section
+function showForReviewDetails(taskId, title, details, referenceLink, dueDate) {
+    // Set task title in the modal
+    document.getElementById('for-review-title').innerText = title;
+
+    // Set task description, reference link, and due date
+    document.getElementById('for-review-description').innerText = details;
+    document.getElementById('for-review-reference-link').setAttribute('href', referenceLink);
+    document.getElementById('for-review-due-date').innerText = dueDate;
+
+    // Show the modal for For Review tasks
+    document.getElementById('for-review-details').classList.add('show');
+}
+
+// Function to close the "For Review" task details modal
+function closeForReviewDetails() {
+    document.getElementById('for-review-details').classList.remove('show');
+}
+
+// Function to show task details in the modal for "Done" section
+function showDoneDetails(taskId, title, details, referenceLink, dueDate) {
+    // Set task title in the modal
+    document.getElementById('done-title').innerText = title;
+
+    // Set task description, reference link, and due date
+    document.getElementById('done-description').innerText = details;
+    document.getElementById('done-reference-link').setAttribute('href', referenceLink);
+    document.getElementById('done-due-date').innerText = dueDate;
+
+    // Show the modal for Done tasks
+    document.getElementById('done-details').classList.add('show');
+}
+
+// Function to close the "Done" task details modal
+function closeDoneDetails() {
+    document.getElementById('done-details').classList.remove('show');
 }
 
 </script>
