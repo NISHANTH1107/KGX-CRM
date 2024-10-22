@@ -13,7 +13,7 @@ def start_scheduler():
     # Add the holiday email job
     scheduler.add_job(
         Command().job_holiday_email,
-        trigger=CronTrigger(hour=10, minute=26),
+        trigger=CronTrigger(hour=21, minute=41),
         id='holiday_email_job',
         replace_existing=True
     )
@@ -21,7 +21,7 @@ def start_scheduler():
     # Add the WiFi report job
     scheduler.add_job(
         Command().job_wifi_report,
-        trigger=CronTrigger(hour=10, minute=25),
+        trigger=CronTrigger(hour=21, minute=41),
         id='wifi_report_job',
         replace_existing=True
     )
