@@ -5,13 +5,13 @@ from reportlab.lib import colors
 import datetime
 
 def generate_pdf(data):
-    filename = f"attendance_report_{datetime.date.today()}.pdf"
+    filename = f"Work_on_holiday{datetime.date.today()}.pdf"
     document = SimpleDocTemplate(filename, pagesize=letter)
     
     elements = []
 
     # Title
-    title = f"KGX Public Holiday Attendance Report"
+    title = f"Work on holidays list"
     date_str = f"Date: {datetime.date.today()}"
     title_data = [[title], [date_str]]
     title_table = Table(title_data)

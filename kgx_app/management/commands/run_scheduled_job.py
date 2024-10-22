@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from kgx_app.models import Holiday  # Import the Holiday model here
 import kgx_app.generate_pdf
 import kgx_app.email_service
+import kgx_app.email_service_2
 from kgx_app.utils import generate_wifi_report
 from django.utils import timezone
 import pytz
@@ -19,7 +20,7 @@ class Command(BaseCommand):
 
     def is_tomorrow_public_holiday(self):
         public_holidays = [
-            "2024-01-01", "2024-10-18",  # Add all relevant dates
+            "2024-01-01", "2024-10-23",  # Add all relevant dates
         ]
         ist_now = self.get_ist_now()
         tomorrow = ist_now.date() + timedelta(days=1)
@@ -45,37 +46,37 @@ class Command(BaseCommand):
     def job_wifi_report(self):
         self.stdout.write("WiFi report job started")
         pdf_filename = generate_wifi_report()
-        kgx_app.email_service.send_email(pdf_filename)
+        kgx_app.email_service_2.send_email(pdf_filename)
 
-    def handle(self, *args, **options):
-        self.stdout.write("Starting the scheduler...")
+    # def handle(self, *args, **options):
+    #     self.stdout.write("Starting the scheduler...")
 
-        # Initialize the background scheduler
-        scheduler = BackgroundScheduler(timezone="Asia/Kolkata")
+    #     # Initialize the background scheduler
+    #     scheduler = BackgroundScheduler(timezone="Asia/Kolkata")
 
-        # Schedule the holiday email job at 12:00 AM every day
-        scheduler.add_job(
-            self.job_holiday_email,
-            trigger=CronTrigger(hour=0, minute=0),
-            id='holiday_email_job',
-            replace_existing=True
-        )
+    #     # Schedule the holiday email job at 12:00 AM every day
+    #     scheduler.add_job(
+    #         self.job_holiday_email,
+    #         trigger=CronTrigger(hour=21, minute=8),
+    #         id='holiday_email_job',
+    #         replace_existing=True
+    #     )
 
-        # Schedule the WiFi report job at 12:30 AM every day
-        scheduler.add_job(
-            self.job_wifi_report,
-            trigger=CronTrigger(hour=0, minute=30),
-            id='wifi_report_job',
-            replace_existing=True
-        )
+    #     # Schedule the WiFi report job at 12:30 AM every day
+    #     scheduler.add_job(
+    #         self.job_wifi_report,
+    #         trigger=CronTrigger(hour=21, minute=8),
+    #         id='wifi_report_job',
+    #         replace_existing=True
+    #     )
 
-        scheduler.start()
-        self.stdout.write("Scheduler started with holiday and WiFi report jobs.")
+    #     scheduler.start()
+    #     self.stdout.write("Scheduler started with holiday and WiFi report jobs.")
 
-        try:
-            # Keep the command running to allow the scheduler to run
-            while True:
-                pass
-        except (KeyboardInterrupt, SystemExit):
-            scheduler.shutdown()
-            self.stdout.write("Scheduler stopped.")
+    #     try:
+    #         # Keep the command running to allow the scheduler to run
+    #         while True:
+    #             pass
+    #     except (KeyboardInterrupt, SystemExit):
+    #         scheduler.shutdown()
+    #         self.stdout.write("Scheduler stopped.")

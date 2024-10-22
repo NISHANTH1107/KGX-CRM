@@ -13,9 +13,9 @@ def send_email(pdf_filename):
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg['Subject'] = "KGX work on holiday list"
+    msg['Subject'] = "WIFI List"
 
-    body = "Please find attached Student list for the upcoming public holiday."
+    body = "Please find attached the student list WIFI access"
     msg.attach(MIMEText(body, 'plain'))
 
     with open(pdf_filename, "rb") as attachment:
