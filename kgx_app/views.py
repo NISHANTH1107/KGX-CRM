@@ -101,7 +101,11 @@ def dashboard_view(request):
 @role_required(allowed_roles=['student'])
 def profile(request):
     profile = get_object_or_404(Profile, roll_no=request.user.username)
-    return render(request, 'profile.html', {'profile': profile})
+    # Split the skills string into a list
+    skills_list = profile.skills.split(",") if profile.skills else []
+    return render(request, 'profile.html', {'profile': profile, 'skills_list': skills_list})
+
+
     
 
 @login_required

@@ -41,7 +41,7 @@
             width: 100%;
             max-width: 600px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            margin-bottom: 50px;
+            margin-bottom: 5px;
             box-sizing: border-box;
         }
 
@@ -106,12 +106,14 @@
             padding: 20px;
             box-sizing: border-box;
             margin-top: 20px;
+            margin-right: 10px;
         }
 
         .image-container img {
             width: 80%;
             height: auto;
             border-radius: 20px;
+            margin-right: 1px;
         }
 
         .popup {
@@ -186,6 +188,25 @@
             .image-container {
                 padding: 10px; /* Reduce padding for mobile */
             }
+        }
+           /* Scrollbar styles */
+           ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #333; /* Background color of the scrollbar track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5b0868; /* Thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+            border: 2px solid #333; /* Border to make the thumb blend into the track */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #580475; /* Darker color when hovered */
         }
     </style>
 </head>

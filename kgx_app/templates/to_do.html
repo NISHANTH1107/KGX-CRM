@@ -69,13 +69,19 @@
         }
 
         a {
-            color: blue; /* Gold color for reference links */
-            text-decoration: none; /* No underline */
-        }
+    color: blue; /* Keep the color as blue */
+    text-decoration: none; /* No underline */
+    word-wrap: break-word; /* Break long words onto a new line */
+    word-break: break-all; /* Force break if the word is too long */
+    overflow-wrap: break-word; /* Handle overflow by breaking words */
+    display: inline-block; /* Ensure the link stays within its container */
+    max-width: 100%; /* Ensure the link doesn't overflow */
+}
 
-        a:hover {
-            text-decoration: underline; /* Underline on hover */
-        }
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
 
         /* New styling for dropdown hover */
         .task-details:hover {
@@ -95,6 +101,25 @@
             border-radius: 10px; /* Rounded corners */
             margin-top: 10px; /* Space above the description box */
             color: #FFFFFF; /* Text color */
+        }
+         /* Scrollbar styles */
+         ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #333; /* Background color of the scrollbar track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5b0868; /* Thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+            border: 2px solid #333; /* Border to make the thumb blend into the track */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #580475; /* Darker color when hovered */
         }
     </style>
    <script>
@@ -169,7 +194,7 @@
                         <span style="color: #aeaeae;">{{ task.assigned_to }}</span>
                     </div>
                     <div class="task-details"> <!-- Details container -->
-                        <p><strong>Name:</strong> {{ task.name }}</p> <!-- Name -->
+                        <p><strong>Name:</strong> {{ task.name|capfirst }}</p> <!-- Name -->
                         <p><strong>Roll No:</strong> {{ task.roll_no }}</p> <!-- Roll Number -->
                         <strong>Task Description:</strong>
                         <div class="description-box">

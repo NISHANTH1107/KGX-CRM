@@ -8,56 +8,86 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
         body {
             background-image: {% static 'kgx_app/bg_kgx.png' %};
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
             font-family: Inter, sans-serif;
+            overflow: hidden;
         }
 
         .container {
-            display: flex; /* Use flexbox for layout */
-            height: 100vh; /* Full height of the viewport */
-            justify-content: space-between; /* Space between the left and right sections */
-            padding: 20px; /* Add some padding */
+            display: flex;
+            height: 100vh;
+            justify-content: space-between;
+            padding: 20px;
+            margin-right: 300px;
+            margin-left: 1px;
         }
         
         .section-two {
-            width: 65%; /* Make section-two take a proportion of the width */
+            width: 65%;
             background: rgba(0, 0, 0, 0.6);
             border-radius: 5%;
             padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            width: 800px;
+            margin-left: 2px;
+            transition: transform 0.3s ease; /* Hover effect */
+        }
+
+        .section-two:hover {
+            transform: translateY(-10px); /* Lift on hover */
         }
         
-        /* Comment Section Styles */
         .comment-section {
-            background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-            border: 2px solid #580475; /* Border to frame the section */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 2px solid #580475;
             overflow-y: auto;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            backdrop-filter: blur(10px); /* Optional: Adds a blur effect to the background */
+            backdrop-filter: blur(10px);
+            width:500px;
         }
-    
+
+        .comment-section::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .comment-section::-webkit-scrollbar-thumb {
+            background-color: #580475;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .comment-section::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
         .comment {
             display: flex;
             align-items: center;
             padding: 15px;
             border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background for comments */
+            background: rgba(255, 255, 255, 0.1);
             margin-bottom: 15px;
             flex-grow: 1;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .comment:hover {
+            transform: translateX(10px); /* Slight right slide on hover */
         }
     
         .comment .comment-content {
@@ -65,10 +95,15 @@
             background: rgba(7, 6, 6, 0.9);
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Shadow for the comment content */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             font-size: 16px;
             line-height: 1.5;
-            color: white; /* Ensure text color is white for readability */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment .comment-content:hover {
+            background-color: rgba(7, 6, 6, 1); /* Darken on hover */
         }
     
         .comment img {
@@ -76,7 +111,12 @@
             height: 50px;
             border-radius: 50%;
             margin-right: 15px;
-            border: 2px solid #580475; /* Border around the avatar */
+            border: 2px solid #580475;
+            transition: transform 0.3s ease;
+        }
+
+        .comment img:hover {
+            transform: scale(1.1); /* Enlarge image slightly on hover */
         }
     
         .comment-box {
@@ -91,8 +131,14 @@
             width: 75%;
             padding: 12px;
             border-radius: 10px;
-            border: 2px solid #580475; /* Highlighted border */
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Inner shadow */
+            border: 2px solid #580475;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .comment-box input:focus {
+            border-color: #A507DB; /* Border color on focus */
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2); /* Deepen shadow on focus */
         }
     
         .comment-box button {
@@ -104,16 +150,17 @@
             background-color: #580475;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Button shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
         }
-    
+
         .comment-box button:hover {
-            background-color: #A507DB; /* Brighter color on hover */
+            background-color: #A507DB;
+            transform: scale(1.1); /* Enlarge button slightly on hover */
         }
     
         .comment-box button i {
@@ -121,33 +168,44 @@
         }
     
         .comment-box .logo-icon {
-            font-size: 24px; /* Adjust the icon size */
-            color: #580475; /* Match the theme color */
-            margin-right: 10px; /* Space between icon and input field */
-            border-radius: 50%; /* Optional: Make it round */
-            background-color: rgba(255, 255, 255, 0.1); /* Add background */
-            padding: 8px; /* Space inside the icon */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            font-size: 24px;
+            color: #580475;
+            margin-right: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
         }
 
-        /* Styles for Share Your Thoughts */
+        .comment-box .logo-icon:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Lighten background on hover */
+        }
+
         .share-your-thoughts {
-            position: relative; /* Change to relative positioning */
-            width: 30%; /* Set width to control space taken */
+            position: relative;
+            width: 30%;
             font-family: 'Cormorant Garamond', serif;
             font-weight: 600;
-            z-index: 10; /* Ensure it appears above other elements */
-            padding: 20px; /* Add padding for spacing */
-            text-align: right; /* Align text to the right */
-            margin-top: 100px; /* Adjust for vertical alignment */
+            z-index: 10;
+            padding: 20px;
+            text-align: right;
+            margin-top: 100px;
+            margin-left: 1px;
         }
         
         .share-your-thoughts span {
             display: block;
             color: #861C99;
-            font-size: 90px; /* Adjusted font size for consistency */
+            font-size: 90px;
             font-weight: 600;
-            word-wrap: break-word;
+            margin-left: 50px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .share-your-thoughts span:hover {
+            color: #A507DB; /* Change text color on hover */
+            transform: translateX(10px); /* Slight right slide on hover */
         }
         
         .share-your-thoughts span.white {
@@ -156,11 +214,11 @@
         
         .highlight {
             color: #861C99;
-            font-size: 80px; /* Smaller font size for 'THOUGHTS' to improve alignment */
-            line-height: 1; /* Adjust line height for better spacing */
+            font-size: 80px;
+            line-height: 1;
+            margin-left: 50px;
         }
 
-        /* Media query for tablets and small laptops */
         @media (max-width: 1024px) {
             .container {
                 flex-direction: column;
@@ -188,30 +246,29 @@
             }
         }
 
-        /* Media query for mobile devices */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
-                padding: 20px; /* Increase padding for a more spacious feel */
-                height: auto; /* Allow the container to grow naturally */
+                padding: 20px;
+                height: auto;
             }
     
             .comment-section {
-                padding: 15px; /* Reduce padding for a compact look */
+                padding: 15px;
             }
     
             .comment img {
-                width: 40px; /* Adjust avatar size */
+                width: 40px;
                 height: 40px;
             }
     
             .comment-box input {
-                width: 70%; /* Adjust input width for better fit */
-                padding: 10px; /* Slightly reduce padding */
+                width: 70%;
+                padding: 10px;
             }
     
             .comment-box button {
-                width: 45px; /* Adjust button size */
+                width: 45px;
                 height: 45px;
             }
 
@@ -230,21 +287,20 @@
             }
         }
 
-        /* Media query for smaller mobile devices */
         @media (max-width: 480px) {
             .comment img {
-                width: 30px; /* Adjust avatar size */
+                width: 30px;
                 height: 30px;
             }
 
             .comment-box input {
-                width: 60%; /* Adjust input width for better fit */
-                padding: 8px; /* Slightly reduce padding */
+                width: 60%;
+                padding: 8px;
             }
 
             .comment-box button {
-                width: 35px; /* Adjust button size */
-                height: 35px;
+                width: 40px;
+                height: 40px;
             }
 
             .share-your-thoughts span {
@@ -255,7 +311,26 @@
                 font-size: 30px;
             }
         }
-        
+         /* Scrollbar styles */
+         ::-webkit-scrollbar {
+            width: 10px; /* Width of the scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #333; /* Background color of the scrollbar track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5b0868; /* Thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+            border: 2px solid #333; /* Border to make the thumb blend into the track */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #580475; /* Darker color when hovered */
+        }
+    
     </style>
 </head>
 
@@ -285,8 +360,7 @@
     <div class="share-your-thoughts">
         <span class="white">SHARE</span>
         <span class="white">YOUR</span>
-        <span class="highlight">THOUG</span>
-        <span class="highlight">HTS</span>
+        <span class="highlight">THOUGHTS</span>
     </div>
 </div>
 
