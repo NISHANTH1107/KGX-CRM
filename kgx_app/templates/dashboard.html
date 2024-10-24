@@ -219,98 +219,6 @@
             margin-left: 50px;
         }
 
-        @media (max-width: 1024px) {
-            .container {
-                flex-direction: column;
-                padding: 20px;
-                height: auto;
-            }
-
-            .section-two {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-
-            .share-your-thoughts {
-                width: 100%;
-                text-align: center;
-                margin-top: 0;
-            }
-
-            .share-your-thoughts span {
-                font-size: 70px;
-            }
-
-            .highlight {
-                font-size: 60px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                padding: 20px;
-                height: auto;
-            }
-    
-            .comment-section {
-                padding: 15px;
-            }
-    
-            .comment img {
-                width: 40px;
-                height: 40px;
-            }
-    
-            .comment-box input {
-                width: 70%;
-                padding: 10px;
-            }
-    
-            .comment-box button {
-                width: 45px;
-                height: 45px;
-            }
-
-            .share-your-thoughts {
-                width: 100%;
-                text-align: center;
-                margin-top: 0;
-            }
-
-            .share-your-thoughts span {
-                font-size: 50px;
-            }
-
-            .highlight {
-                font-size: 40px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .comment img {
-                width: 30px;
-                height: 30px;
-            }
-
-            .comment-box input {
-                width: 60%;
-                padding: 8px;
-            }
-
-            .comment-box button {
-                width: 40px;
-                height: 40px;
-            }
-
-            .share-your-thoughts span {
-                font-size: 40px;
-            }
-
-            .highlight {
-                font-size: 30px;
-            }
-        }
          /* Scrollbar styles */
          ::-webkit-scrollbar {
             width: 10px; /* Width of the scrollbar */
@@ -330,7 +238,83 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #580475; /* Darker color when hovered */
         }
-    
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column; /* Stack elements vertically */
+                padding: 20px;
+                height: auto; /* Allow height to adjust based on content */
+            }
+        
+            .section-two {
+                width: 100%; /* Use full width for smaller screens */
+                margin-bottom: 20px; /* Space between sections */
+                min-width: 300px; /* Prevent excessive shrinking */
+            }
+        
+            .comment-section {
+                width: 100%; /* Ensure comment section takes full width */
+                min-width: 300px; /* Set minimum width to prevent shrinking */
+            }
+        
+            .share-your-thoughts {
+                width: 100%; /* Make this full width */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .comment-section {
+                padding: 15px; /* Adjust padding */
+                width: 100%; /* Full width */
+                min-width: 300px; /* Set minimum width */
+            }
+        
+            .comment img {
+                width: 40px; /* Adjust image size */
+                height: 40px; /* Adjust image size */
+            }
+        
+            .comment-box input {
+                width: 70%; /* Adjust input width */
+                padding: 10px; /* Adjust padding */
+            }
+        
+            .comment-box button {
+                width: 45px; /* Adjust button size */
+                height: 45px; /* Adjust button size */
+            }
+        
+            .share-your-thoughts span {
+                font-size: 50px; /* Adjust font size */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .comment img {
+                width: 30px; /* Adjust image size */
+                height: 30px; /* Adjust image size */
+            }
+        
+            .comment-section {
+                padding: 10px; /* Reduce padding for smaller screens */
+                min-width: 280px; /* Set a smaller min-width for very small screens */
+            }
+        
+            .comment-box input {
+                width: 60%; /* Adjust input width */
+                padding: 8px; /* Adjust padding */
+            }
+        
+            .comment-box button {
+                width: 40px; /* Adjust button size */
+                height: 40px; /* Adjust button size */
+            }
+        
+            .share-your-thoughts span {
+                font-size: 40px; /* Adjust font size */
+            }
+        }
+        
     </style>
 </head>
 
