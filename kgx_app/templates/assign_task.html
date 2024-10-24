@@ -12,6 +12,8 @@
             font-family: 'Poppins', sans-serif; /* Updated font for a modern look */
         }
 
+        
+
         input, textarea {
             border: 2px solid transparent; /* Transparent border by default */
             border-radius: 6px;
@@ -22,7 +24,8 @@
         }
 
         input:hover, textarea:hover {
-            border-color: #FFFFFF; /* White border on hover */
+            border-color: #FFFFFF;
+            transform: scale(1.03); /* White border on hover */
         }
 
         input:focus, textarea:focus {
@@ -105,8 +108,40 @@
         .suggestions-container::-webkit-scrollbar-thumb:hover {
             background: #777;
         }        
+        .form-container {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: scale(1.03); /* Slight zoom on hover */
+            box-shadow: 0 0 20px rgba(88, 4, 117, 0.8); /* Add a glowing shadow on hover */
+        }
+        .header {
+        padding: 20px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid #A507DB;
+        margin-bottom: 5px;
+    }
+
+    .header .title {
+        font-size: 30px;
+        font-weight: 800;
+        color: #FFFFFF;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #580475, #A507DB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
     </style>
 </head>
+<div class="header">
+    <div class="title">Assign Task</div>
+</div>
+
 
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: black; margin: 0; overflow: hidden;">
     <div style="
@@ -122,7 +157,7 @@
         gap: 30px; /* Increased gap between elements for better spacing */
     ">
 
-        <h2 style="text-align: center; color: #5b0868; margin-top: 0;">Assign a New Task</h2> <!-- Title with a different font color -->
+        <!-- Title with a different font color -->
 
         <!-- Add a form tag for data submission -->
         <form method="POST" action="{% url 'assign_task' %}">
@@ -219,6 +254,37 @@
             " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 10px #333';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">Assign Task</button>
         </form>
     </div>
+    <!-- Modal Structure (hidden by default) -->
+<div id="modal" style="
+display: none; 
+position: fixed; 
+top: 50%; 
+left: 50%; 
+transform: translate(-50%, -50%);
+background-color: #1E1E1E; /* Darker background to match your page */
+color: white; 
+padding: 30px; 
+border-radius: 12px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+z-index: 10000; /* Ensure it's above all other content */
+text-align: center;
+">
+<p style="font-size: 1.2rem;">Task has been assigned successfully!</p>
+<button onclick="closeModal()" style="
+    padding: 12px 24px; 
+    background-color: #580475; 
+    color: white; 
+    border: none; 
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+" 
+onmouseover="this.style.backgroundColor='#5b0868'; this.style.transform='scale(1.05)';" 
+onmouseout="this.style.backgroundColor='#580475'; this.style.transform='scale(1)';">
+    Close
+</button>
+</div>
 </div>
 <script>
     const input = document.getElementById('name');
@@ -267,5 +333,23 @@
             suggestionsBox.style.display = 'none';
         }
     });    
+    const form = document.querySelector('form');
+    const modal = document.getElementById('modal');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent actual form submission
+
+        // Show the modal
+        modal.style.display = 'block';
+    });
+
+    function closeModal() {
+        // Close the modal
+        modal.style.display = 'none';
+
+        // Proceed with form submission
+        form.submit();
+    }
+    
 </script>
 {% endblock %}
