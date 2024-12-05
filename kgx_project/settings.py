@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'
 
 # Ensure this line is included
-
+PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'private_key.pem')
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
