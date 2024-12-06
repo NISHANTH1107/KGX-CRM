@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +25,7 @@
             width: 100%;
             flex-wrap: wrap;
             gap: 20px;
+            background-color: #000000;
         }
 
         h1 {
@@ -35,7 +35,7 @@
         }
 
         form {
-            background-color: #2c2c2c;
+            background-color: #1E1E1E;
             padding: 40px;
             border-radius: 60px;
             width: 100%;
@@ -163,50 +163,51 @@
         /* Media queries for responsiveness */
         @media (max-width: 768px) {
             .container {
-                flex-direction: column; /* Stack containers vertically */
+                flex-direction: column;
                 align-items: center;
             }
 
             form,
             .image-container {
-                max-width: 100%; /* Ensure full width for containers */
-                padding: 20px; /* Adjust padding for smaller screens */
+                max-width: 100%;
+                padding: 20px;
             }
         }
 
         @media (max-width: 480px) {
             form {
-                padding: 20px; /* Adjust padding for mobile */
-                border-radius: 20px; /* Adjust border-radius for mobile */
+                padding: 20px;
+                border-radius: 20px;
             }
 
             button[type="submit"] {
-                font-size: 14px; /* Adjust font size for mobile */
-                padding: 8px; /* Adjust padding for mobile */
+                font-size: 14px;
+                padding: 8px;
             }
 
             .image-container {
-                padding: 10px; /* Reduce padding for mobile */
+                padding: 10px;
             }
         }
-           /* Scrollbar styles */
-           ::-webkit-scrollbar {
-            width: 10px; /* Width of the scrollbar */
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #333; /* Background color of the scrollbar track */
-            border-radius: 10px; /* Rounded corners for the track */
+            background: #333;
+            border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #5b0868; /* Thumb color */
-            border-radius: 10px; /* Rounded corners for the thumb */
-            border: 2px solid #333; /* Border to make the thumb blend into the track */
+            background: #5b0868;
+            border-radius: 10px;
+            border: 2px solid #333;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #580475; /* Darker color when hovered */
+            background: #580475;
         }
     </style>
 </head>
@@ -220,9 +221,10 @@
 <body>
     <div class="container">
         <div>
-            <h1>FILL TO WORK ON HOLIDAYS</h1>
+            
             <form method="post" id="holidayForm">
                 {% csrf_token %}
+                <h1>FILL TO WORK ON HOLIDAYS</h1>
                 <div>
                     <label for="id_name">Name</label>
                     {{ form.name }}
@@ -256,9 +258,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById("holidayForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form from submitting
+
+            // Form validation (check if fields are filled)
+            let isValid = true;
+            const inputs = document.querySelectorAll("#holidayForm input");
+            inputs.forEach(input => {
+                if (input.value === "") {
+                    isValid = false;
+                    alert("Please fill all fields.");
+                }
+            });
+
+            if (isValid) {
+                // Show popup
+                document.getElementById("popup").style.display = "flex";
+            }
+        });
+
+        // Close popup when clicking OK
+        document.getElementById("okButton").addEventListener("click", function() {
+            document.getElementById("popup").style.display = "none";
+            // Optionally, submit the form after closing the popup
+            document.getElementById("holidayForm").submit();
+        });
+    </script>
 </body>
 
-
-
 {% endblock %}
-</html>

@@ -127,7 +127,7 @@ a:hover {
 }
 
 .button-wrong:hover {
-    background-color: #ff4f81; /* Darker shade on hover */
+    background-color: #be1616; /* Darker shade on hover */
     transform: translateY(-2px); /* Lift effect */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow on hover */
 }
@@ -150,7 +150,26 @@ a:hover {
         ::-webkit-scrollbar-thumb:hover {
             background: #580475; /* Darker color when hovered */
         }
+        .header {
+        padding: 20px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid #A507DB;
+        margin-bottom: auto;
+    }
 
+    .header .title {
+        font-size: 30px;
+        font-weight: 400;
+        color: #FFFFFF;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #580475, #A507DB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'Poppins', sans-serif;
+    }
     </style>
     <script>
         let currentOpenTask = null; // Variable to store the currently open task details
@@ -193,7 +212,9 @@ a:hover {
     </script>
     
 </head>
-
+<div class="header">
+    <div class="title">for review tasks</div>
+</div>
 <div style="
     display: flex; 
     justify-content: center; 
@@ -214,7 +235,7 @@ a:hover {
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); 
     ">
         
-        <h2 style="text-align: center; color: #5b0868; margin-top: 0;">For Review</h2>
+       
 
         <ul style="list-style-type: none; padding: 0;">
 
