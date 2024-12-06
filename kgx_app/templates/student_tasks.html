@@ -269,6 +269,13 @@
             background: #580475; /* Darker color when hovered */
         }
 
+        @media (max-width: 768px) {
+        .floating-container {
+            width: 85%; /* Adjust width for smaller screens */
+            padding: 20px; /* Reduce padding */
+        }
+    }
+
 
 
 </style>
@@ -324,7 +331,7 @@
             {% endfor %}
         </div>
     </div>
-
+   
     <div class="task-section">
         <h2>Done</h2>
         <div>
