@@ -26,7 +26,7 @@ STATIC_URL = '/static/'
 PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'private_key.pem')
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_REDIRECT_URL = 'dashboard'  # Redirect to the dashboard after successful login
 LOGOUT_REDIRECT_URL = 'login'  # Redirect to the login page after logout
